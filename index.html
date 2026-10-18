@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090a08">
+<meta name="description" content="A personal workspace for planning, learning, reading and reflection.">
+<title>My Planner Studio</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="My Planner">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="#" aria-label="My Planner home">
+      <span class="brand-mark">m<span>.</span></span>
+      <span class="brand-copy"><strong>my planner</strong><small>PERSONAL STUDIO</small></span>
+    </a>
+    <nav id="tabs" aria-label="Main navigation">
+      <div class="nav-label">WORKSPACE</div>
+      <button data-t="dash"><span class="nav-icon">◫</span><span>Overview</span></button>
+      <button data-t="cal"><span class="nav-icon">▦</span><span>Calendar</span></button>
+      <button data-t="daily"><span class="nav-icon">☷</span><span>Daily tasks</span></button>
+      <button data-t="up"><span class="nav-icon">↗</span><span>Upcoming</span></button>
+      <div class="nav-label nav-gap">PERSONAL GROWTH</div>
+      <button data-t="books"><span class="nav-icon">▤</span><span>Reading room</span></button>
+      <button data-t="words"><span class="nav-icon">Aa</span><span>Word bank</span></button>
+      <button data-t="quotes"><span class="nav-icon">❝</span><span>Quotes</span></button>
+      <button data-t="week"><span class="nav-icon">◷</span><span>Weekly review</span></button>
+      <div class="nav-label nav-gap">COMPANION</div>
+      <button data-t="chat"><span class="nav-icon accent-icon">✳</span><span>Ask a friend</span><span class="nav-badge">AI</span></button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="sidebar-status"><span class="status-dot"></span><span>YOUR SPACE, YOUR PACE</span></div>
+      <div class="sidebar-account"><span class="account-monogram">J</span><div><strong>Personal workspace</strong><small>Plan with intention</small></div></div>
+    </div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar">
+      <div class="heading-block"><div class="eyebrow"><span class="eyebrow-dot"></span> YOUR PERSONAL SPACE</div><h1 id="page-title">Calendar</h1><p id="today-label">Make room for what matters.</p></div>
+      <div class="top-actions"><button id="acct" class="top-button"><span>☁</span><span class="button-label">Sign in</span></button><button id="bell" class="top-button" aria-label="Alerts"><span>♧</span><span class="button-label">Alerts</span></button><button id="cfg" class="top-button settings-button"><span>⚙</span><span class="button-label">Settings</span></button></div>
+    </header>
+    <div id="banner"></div>
+    <main>
+      <section id="v-cal" class="sec"></section>
+      <section id="v-daily" class="sec"></section>
+      <section id="v-books" class="sec"></section>
+      <section id="v-words" class="sec"></section>
+      <section id="v-quotes" class="sec"></section>
+      <section id="v-dash" class="sec"></section>
+      <section id="v-up" class="sec"></section>
+      <section id="v-week" class="sec"></section>
+      <section id="v-chat" class="sec"><div class="card chat-card"><div class="chat-heading"><span class="chat-symbol">✳</span><div><div class="eyebrow">YOUR PLANNING COMPANION</div><h2>Let's think it through.</h2><p class="mute">Tell me about a trip, event or goal. We'll work through the details together.</p></div></div><div id="msgs"></div><div class="chat-input-row"><input id="chatin" placeholder="What are you planning today?"><button class="p" id="send">Send <span>↗</span></button></div></div></section>
+    </main>
+    <footer class="workspace-footer"><span>MAKE SPACE FOR WHAT MATTERS</span><span>MY PLANNER STUDIO <b>✳</b></span></footer>
+  </div>
+</div>
+<div id="modal" hidden><div class="sheet" id="sheet"></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+(function(){
+ const labels={cal:'Calendar',daily:'Daily tasks',books:'Reading room',words:'Word bank',quotes:'Quotes',dash:'Overview',up:'Upcoming',week:'Weekly review',chat:'Your companion'};
+ function update(){const b=document.querySelector('#tabs button.on');if(!b)return;const h=document.getElementById('page-title');if(h)h.textContent=labels[b.dataset.t]||'My Planner';}
+ document.getElementById('tabs').addEventListener('click',()=>setTimeout(update,0));
+ const d=document.getElementById('today-label');if(d)d.textContent=new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+ setTimeout(update,100);
+})();
+</script>
+</body>
+</html>
