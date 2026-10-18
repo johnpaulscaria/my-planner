@@ -1031,6 +1031,384 @@ main, #banner {
 }
 
 
+/* MY PLANNER — PREMIUM DARK GRADIENT OVERRIDE */
+
+:root {
+  --bg: #080908;
+  --panel: #10110f;
+  --card: #141612;
+  --raised: #1b1d18;
+  --hover: #24271e;
+  --ink: #f5f4ed;
+  --mute: #96988c;
+  --line: #292c25;
+  --acc: #c9f36b;
+  --acc-hover: #dcff96;
+  --accbg: #242e18;
+}
+
+/* Force the main app layout */
+html, body {
+  margin: 0 !important;
+  min-height: 100% !important;
+  background: #080908 !important;
+  color: var(--ink) !important;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 75% 0%, #29331b35, transparent 36%),
+    radial-gradient(ellipse at 15% 70%, #171a1630, transparent 40%),
+    #080908 !important;
+}
+
+.studio-shell {
+  display: block !important;
+  min-height: 100vh !important;
+}
+
+.studio-sidebar {
+  position: fixed !important;
+  display: flex !important;
+  flex-direction: column !important;
+  inset: 0 auto 0 0 !important;
+  width: 248px !important;
+  height: 100vh !important;
+  padding: 26px 15px 16px !important;
+  overflow: hidden !important;
+  background: linear-gradient(180deg, #11120f 0%, #0c0d0b 100%) !important;
+  border-right: 1px solid #292b24 !important;
+  z-index: 100 !important;
+}
+
+.studio-brand {
+  flex: 0 0 auto !important;
+  padding: 0 8px 32px !important;
+  color: #f5f4ed !important;
+  text-decoration: none !important;
+}
+
+.studio-logo {
+  background: linear-gradient(145deg, #d8ff8b, #a5d34c) !important;
+  color: #15180e !important;
+  border-radius: 11px !important;
+  box-shadow: 0 0 28px #c9f36b18 !important;
+}
+
+.studio-section-label {
+  flex: 0 0 auto !important;
+  display: block !important;
+  padding: 0 10px 9px !important;
+  color: #777a6d !important;
+  font-size: 9px !important;
+  line-height: 1.4 !important;
+  letter-spacing: .13em !important;
+  font-weight: 750 !important;
+  white-space: nowrap !important;
+}
+
+.studio-label-gap { margin-top: 22px !important; }
+
+.studio-sidebar nav#tabs {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 3px !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+.studio-sidebar nav#tabs button {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 11px !important;
+  width: 100% !important;
+  min-height: 42px !important;
+  padding: 10px 12px !important;
+  border: 1px solid transparent !important;
+  border-radius: 9px !important;
+  background: transparent !important;
+  color: #a1a397 !important;
+  text-align: left !important;
+  font-size: 12px !important;
+  font-weight: 540 !important;
+  white-space: nowrap !important;
+  box-shadow: none !important;
+}
+
+.studio-sidebar nav#tabs button:hover {
+  background: #1b1d17 !important;
+  color: #f6f5ef !important;
+  border-color: #292c23 !important;
+}
+
+.studio-sidebar nav#tabs button.on {
+  background: linear-gradient(100deg, #29341c, #1c2316) !important;
+  color: #d3fa85 !important;
+  border-color: #3b4929 !important;
+  box-shadow: inset 2px 0 #c9f36b !important;
+}
+
+.studio-sidebar nav#tabs button .studio-icon {
+  flex: 0 0 21px !important;
+  width: 21px !important;
+  text-align: center !important;
+}
+
+.studio-sidebar nav#tabs .studio-section-label {
+  width: 100% !important;
+  margin-left: 0 !important;
+  white-space: nowrap !important;
+}
+
+.studio-sidebar-bottom {
+  display: none !important;
+}
+
+/* Workspace alignment */
+.studio-main {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 100vh !important;
+  margin: 0 0 0 248px !important;
+  padding: 0 clamp(24px, 4vw, 58px) !important;
+  background: transparent !important;
+}
+
+.studio-topbar {
+  width: 100% !important;
+  max-width: 1240px !important;
+  min-height: 126px !important;
+  margin: 0 auto !important;
+  padding: 28px 0 23px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 22px !important;
+  border-bottom: 1px solid #282a23 !important;
+  background: transparent !important;
+}
+
+.studio-kicker {
+  color: #898c7e !important;
+  font-size: 9px !important;
+  letter-spacing: .16em !important;
+}
+
+.studio-topbar h1 {
+  margin: 7px 0 4px !important;
+  font-size: clamp(25px, 2.4vw, 32px) !important;
+  font-weight: 650 !important;
+  letter-spacing: -.055em !important;
+  color: #f4f3ec !important;
+}
+
+.studio-heading > p {
+  color: #888a7e !important;
+  font-size: 11px !important;
+}
+
+.studio-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 7px !important;
+  flex: 0 0 auto !important;
+}
+
+.studio-top-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  min-height: 37px !important;
+  padding: 8px 12px !important;
+  border: 1px solid #303229 !important;
+  border-radius: 10px !important;
+  background: linear-gradient(145deg, #1b1d18, #141511) !important;
+  color: #c7c8bc !important;
+  font-size: 11px !important;
+}
+
+.studio-top-button:hover {
+  background: #25291f !important;
+  border-color: #566342 !important;
+  color: var(--acc) !important;
+}
+
+.studio-top-button.studio-settings {
+  color: var(--acc) !important;
+  border-color: #39432c !important;
+}
+
+/* Keep actual planner content centered */
+.studio-content {
+  display: block !important;
+  flex: 1 0 auto !important;
+  width: 100% !important;
+  max-width: 1240px !important;
+  margin: 26px auto 0 !important;
+}
+
+.studio-content .sec { display: none !important; }
+.studio-content .sec.on { display: block !important; }
+
+.studio-content .card {
+  background: linear-gradient(145deg, #171914 0%, #11120f 100%) !important;
+  border: 1px solid #2b2e25 !important;
+  border-radius: 15px !important;
+  box-shadow: 0 12px 35px #0003 !important;
+}
+
+.studio-content .card h2,
+.studio-content .card h3 {
+  color: #f1f0e8;
+}
+
+.studio-content .stat div {
+  background: linear-gradient(145deg, #20231b, #161713) !important;
+  border: 1px solid #30342a !important;
+}
+
+.studio-content .stat b { color: var(--acc) !important; }
+
+/* Premium controls */
+button {
+  border-radius: 9px;
+  transition: background .18s ease, border-color .18s ease,
+    color .18s ease, transform .18s ease;
+}
+
+button:active { transform: scale(.985); }
+
+button.p,
+.studio-content button.p {
+  background: linear-gradient(135deg, #d6ff8b, #b7e45d) !important;
+  border: 1px solid #c9f36b !important;
+  border-radius: 10px !important;
+  color: #15180e !important;
+  font-weight: 750 !important;
+  box-shadow: 0 3px 18px #c9f36b15 !important;
+}
+
+button.p:hover,
+.studio-content button.p:hover {
+  background: linear-gradient(135deg, #e4ffb0, #c9f36b) !important;
+}
+
+.studio-content input,
+.studio-content select,
+.studio-content textarea {
+  background: #0d0e0c !important;
+  color: #f5f4ed !important;
+  border: 1px solid #30332a !important;
+  border-radius: 10px !important;
+}
+
+.studio-content input:focus,
+.studio-content select:focus,
+.studio-content textarea:focus {
+  border-color: #8eaa56 !important;
+  box-shadow: 0 0 0 3px #c9f36b12 !important;
+}
+
+/* Remove the old quote panel, use the dedicated Quotes page instead */
+.studio-quote { display: none !important; }
+
+.studio-footer {
+  display: flex !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  max-width: 1240px !important;
+  margin: 25px auto 0 !important;
+  padding: 16px 0 20px !important;
+  border-top: 1px solid #282a23 !important;
+  color: #77796d !important;
+  font-size: 8px !important;
+  letter-spacing: .12em !important;
+}
+
+.studio-footer b { color: var(--acc) !important; }
+
+/* Responsive */
+@media (max-width: 900px) and (min-width: 651px) {
+  .studio-sidebar { width: 218px !important; }
+  .studio-main { margin-left: 218px !important; padding: 0 22px !important; }
+  .studio-quote { display: none !important; }
+}
+
+@media (max-width: 650px) {
+  .studio-sidebar {
+    position: sticky !important;
+    inset: auto !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    padding: 9px 10px 7px !important;
+    overflow: visible !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid #2b2d25 !important;
+    background: #10110ff5 !important;
+    backdrop-filter: blur(16px);
+  }
+
+  .studio-brand { padding: 0 3px 9px !important; }
+  .studio-sidebar-bottom { display: none !important; }
+
+  .studio-sidebar nav#tabs {
+    flex: 0 0 auto !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 4px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+  }
+
+  .studio-sidebar nav#tabs button {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-height: 35px !important;
+    padding: 8px 10px !important;
+    font-size: 10px !important;
+  }
+
+  .studio-sidebar nav#tabs .studio-section-label { display: none !important; }
+  .studio-sidebar nav#tabs .studio-icon { width: auto !important; flex-basis: auto !important; }
+
+  .studio-main {
+    margin: 0 !important;
+    padding: 0 13px !important;
+  }
+
+  .studio-topbar {
+    min-height: 0 !important;
+    padding: 19px 0 16px !important;
+    gap: 8px !important;
+  }
+
+  .studio-topbar h1 { font-size: 22px !important; }
+  .studio-heading > p { font-size: 10px !important; }
+  .studio-actions { gap: 3px !important; }
+  .studio-top-button { min-height: 33px !important; padding: 6px 8px !important; }
+  .studio-action-label { display: none !important; }
+  .studio-content { margin-top: 17px !important; }
+  .studio-content .card { padding: 14px !important; }
+  .studio-footer { font-size: 7px !important; }
+}
+
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: .01ms !important;
