@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Planner</title>
+<meta name="theme-color" content="#3b6ef5">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Planner">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><h1>📅 My Planner</h1><span><button id="acct" class="g">☁️ Sign in</button><button id="bell" class="g">🔔 Alerts</button><button id="cfg" class="g">⚙️ Settings</button></span></header>
+<nav id="tabs">
+<button data-t="cal">Calendar</button><button data-t="daily">Daily</button><button data-t="up">Upcoming</button><button data-t="week">Weekly review</button><button data-t="chat">Ask friend</button>
+</nav>
+<div id="banner"></div>
+<main>
+<section id="v-cal" class="sec"></section>
+<section id="v-daily" class="sec"></section>
+<section id="v-up" class="sec"></section>
+<section id="v-week" class="sec"></section>
+<section id="v-chat" class="sec">
+ <div class="card">
+  <div class="mute" style="margin-bottom:8px">Tell me what is coming up (a trip, an event, a goal). I will ask a few questions, then suggest dates, checklists and itineraries you can add with one tap.</div>
+  <div id="msgs"></div>
+  <div style="display:flex;gap:8px"><input id="chatin" placeholder="e.g. I am going to Goa next month"><button class="p" id="send">Send</button></div>
+ </div>
+</section>
+</main>
+<div id="modal" hidden><div class="sheet" id="sheet"></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
