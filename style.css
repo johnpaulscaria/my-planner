@@ -1409,6 +1409,158 @@ button.p:hover,
 }
 
 
+/* QUOTES — editorial collection */
+
+.quotes-intro { margin-bottom: 27px; }
+
+.quotes-kicker {
+  color: var(--acc);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .18em;
+}
+
+.quotes-intro h2 {
+  margin: 9px 0 7px;
+  font-size: clamp(27px, 3vw, 38px);
+  font-weight: 650;
+  letter-spacing: -.06em;
+}
+
+.quotes-intro p {
+  margin: 0;
+  color: #95978a;
+  font-size: 12px;
+}
+
+.quotes-feature {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(24px, 4vw, 48px);
+  border: 1px solid #34392a;
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse at 85% 10%, #c9f16912, transparent 42%),
+    radial-gradient(ellipse at 0% 100%, #222a1b90, transparent 55%),
+    linear-gradient(135deg, #1b1e17, #10110e 75%);
+  box-shadow: 0 20px 55px #0004;
+}
+
+.quotes-mark {
+  color: var(--acc);
+  font-family: Georgia, serif;
+  font-size: 66px;
+  line-height: .85;
+  opacity: .9;
+}
+
+.quotes-feature blockquote {
+  max-width: 740px;
+  margin: 20px 0 22px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(23px, 3vw, 36px);
+  line-height: 1.38;
+  font-weight: 400;
+  letter-spacing: -.025em;
+  color: #f2f1e8;
+}
+
+.quotes-author {
+  font-size: 12px;
+  color: var(--acc);
+  font-weight: 650;
+}
+
+.quotes-rule {
+  width: 100%;
+  height: 1px;
+  margin: 28px 0 16px;
+  background: linear-gradient(90deg, #454b37, #292b23 70%, transparent);
+}
+
+.quotes-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.quotes-controls > span {
+  font-size: 9px;
+  letter-spacing: .14em;
+  color: #929487;
+  font-weight: 750;
+}
+
+.quote-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 14px;
+  border-radius: 9px;
+  background: #c9f36b;
+  color: #171a10;
+  border-color: #c9f36b;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.quote-next:hover {
+  background: #dcff96;
+  color: #171a10;
+}
+
+.quotes-subheading {
+  margin: 30px 0 13px;
+  font-size: 9px;
+  letter-spacing: .16em;
+  font-weight: 800;
+  color: #898b7e;
+}
+
+.quotes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.quote-mini {
+  min-width: 0;
+  padding: 19px;
+  border: 1px solid #2d3027;
+  border-radius: 13px;
+  background: linear-gradient(145deg, #181a15, #11120f);
+}
+
+.quote-mini .mini-mark {
+  font-family: Georgia, serif;
+  font-size: 31px;
+  color: #8eaa56;
+  line-height: 1;
+}
+
+.quote-mini blockquote {
+  margin: 9px 0 17px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.5;
+  color: #e8e7df;
+}
+
+.quote-mini .mini-author {
+  font-size: 10px;
+  color: #a8b98a;
+  font-weight: 650;
+}
+
+@media (max-width: 650px) {
+  .quotes-grid { grid-template-columns: 1fr; }
+  .quotes-feature { padding: 23px; border-radius: 15px; }
+  .quotes-feature blockquote { font-size: 25px; }
+  .quote-mini { padding: 16px; }
+}
+
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: .01ms !important;
