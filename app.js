@@ -12,7 +12,8 @@ const nice = ds => parse(ds).toLocaleDateString('en', { weekday: 'short', day: '
 const CATS = { birthday: ['🎂 Birthday', '#e0559c'], travel: ['✈️ Travel', '#0ea5a5'], bills: ['💳 Bills', '#8b5cf6'], work: ['💼 Work', '#3b6ef5'], health: ['🩺 Health', '#ef7a3c'], other: ['📌 Other', '#6b7280'] };
 const cat = e => CATS[e.cat] || CATS.other;
 
-let S = { events: [], habits: [], done: {} }, tab = 'cal', sel = today(), view = new Date(), wk = 0, hist = [];
+const BLANK = () => ({ events: [], habits: [], done: {}, books: [], reads: {}, words: [] });
+let S = BLANK(), tab = 'cal', sel = today(), view = new Date(), wk = 0, hist = [];
 view.setDate(1);
 const cfg = () => { try { return JSON.parse(localStorage.getItem('planner.cfg') || '{}'); } catch (e) { return {}; } };
 const save = () => { S.ts = Date.now(); try { localStorage.setItem('planner.v1', JSON.stringify(S)); } catch (e) { } push(); };
@@ -33,7 +34,7 @@ const eventsOn = ds => S.events.filter(e => occurs(e, ds)).sort((a, b) => (a.tim
 function hstat(ds) {
   const act = S.habits.filter(h => h.start <= ds);
   if (!act.length) return '';
-  const n = (S.done[ds] || []).filter(id => act.some(h => h.id === id)).length;
+  const n = act.filter(h => hdone(h, ds)).length;
   if (n === act.length) return 'full';
   if (n > 0) return 'part';
   return ds < today() ? 'miss' : 'pend';
@@ -58,6 +59,9 @@ function render() {
   if (tab === 'daily') rDaily();
   if (tab === 'up') rUp();
   if (tab === 'week') rWeek();
+  if (tab === 'books') rBooks();
+  if (tab === 'words') rWords();
+  if (tab === 'dash') rDash();
 }
 function evRows(ds) {
   const list = eventsOn(ds);
@@ -73,8 +77,8 @@ function evRows(ds) {
 function habRows(ds) {
   const act = S.habits.filter(h => h.start <= ds);
   if (!act.length) return '<div class="mute">No daily tasks yet. Add some in the Daily tab.</div>';
-  const fut = ds > today(), dn = S.done[ds] || [];
-  return act.map(h => `<label class="row"><input type="checkbox" data-a="hab" data-h="${h.id}" data-d="${ds}" ${dn.includes(h.id) ? 'checked' : ''} ${fut ? 'disabled' : ''}><span class="grow ${dn.includes(h.id) ? 'done' : ''}">${esc(h.t)}</span></label>`).join('');
+  const fut = ds > today();
+  return act.map(h => { const dn = hdone(h, ds), auto = !!h.auto; return `<label class="row"><input type="checkbox" data-a="hab" data-h="${h.id}" data-d="${ds}" ${dn ? 'checked' : ''} ${fut || auto ? 'disabled' : ''}><span class="grow ${dn ? 'done' : ''}">${esc(h.t)}${auto ? ' <span class="mute">(' + (h.auto === 'read' ? 'ticks when you log pages' : 'ticks when you add a word') + ')</span>' : ''}</span></label>`; }).join('');
 }
 function rCal() {
   const y = view.getFullYear(), m = view.getMonth(), lead = new Date(y, m, 1).getDay(), dim = new Date(y, m + 1, 0).getDate();
@@ -85,7 +89,7 @@ function rCal() {
     h += `<button class="cell ${ds === sel ? 'sel' : ''} ${ds === today() ? 'tod' : ''}" data-a="sel" data-d="${ds}"><span>${d}</span><span class="dots">${ev.map(e => `<u style="background:${cat(e)[1]}"></u>`).join('')}</span><i class="hb ${hstat(ds)}"></i></button>`;
   }
   h += `</div><div class="leg"><span style="--c:var(--ok)">All tasks done</span><span style="--c:var(--part)">Some done</span><span style="--c:var(--miss)">Missed</span>${Object.values(CATS).map(c => `<span style="--c:${c[1]}">${c[0].split(' ')[1]}</span>`).join('')}</div></div>`;
-  h += `<div class="card"><div class="bar"><b>${nice(sel)}</b><button class="p" data-a="new" data-d="${sel}">+ Add event</button></div>${evRows(sel)}<div style="margin-top:10px"><b>Daily tasks</b>${habRows(sel)}</div></div>`;
+  h += `<div class="card"><div class="bar"><b>${nice(sel)}</b><button class="p" data-a="new" data-d="${sel}">+ Add event</button></div>${evRows(sel)}<div style="margin-top:10px"><b>Daily tasks</b>${habRows(sel)}</div>${dayExtras(sel)}</div>`;
   $('#v-cal').innerHTML = h;
 }
 function rDaily() {
@@ -97,7 +101,7 @@ function rDaily() {
   }
   $('#v-daily').innerHTML = `<div class="card"><div class="bar"><b>Today</b><span class="mute">${nice(t)}</span></div>${habRows(t)}</div>
   <div class="card"><b>Last 14 days</b><div style="display:flex;gap:4px;justify-content:space-between;margin:10px 0">${strip}</div><div class="mute">${full} days fully done · ${miss} days missed</div></div>
-  <div class="card"><b>My daily tasks</b><div style="display:flex;gap:8px;margin:8px 0"><input id="newhab" placeholder="e.g. Drink 2L water"><button class="p" data-a="addhab">Add</button></div>${S.habits.map(h => `<div class="row"><span class="grow">${esc(h.t)}</span><button class="g" data-a="delhab" data-h="${h.id}">Remove</button></div>`).join('') || '<div class="mute">Nothing yet.</div>'}</div>`;
+  <div class="card"><b>My daily tasks</b><div style="display:flex;gap:8px;margin:8px 0"><input id="newhab" placeholder="e.g. Drink 2L water"><button class="p" data-a="addhab">Add</button></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px"><button data-a="addauto" data-k="read">+ Reading habit</button><button data-a="addauto" data-k="vocab">+ New-word habit</button></div>${S.habits.map(h => `<div class="row"><span class="grow">${esc(h.t)}</span><button class="g" data-a="delhab" data-h="${h.id}">Remove</button></div>`).join('') || '<div class="mute">Nothing yet.</div>'}</div>`;
 }
 function rUp() {
   const t = today(), out = [];
@@ -114,7 +118,7 @@ function weekData() {
   let poss = 0, don = 0;
   const per = S.habits.map(h => {
     let p = 0, d = 0;
-    days.forEach(x => { if (h.start <= x && x <= t) { p++; if ((S.done[x] || []).includes(h.id)) d++; } });
+    days.forEach(x => { if (h.start <= x && x <= t) { p++; if (hdone(h, x)) d++; } });
     poss += p; don += d; return { h, p, d };
   }).filter(x => x.p);
   const evs = []; days.forEach(x => eventsOn(x).forEach(e => { if (isStart(e, x)) evs.push({ e, x }); }));
@@ -171,6 +175,165 @@ function saveEv(id) {
   $('#modal').hidden = true; save(); render();
 }
 
+/* ---------- books, words, dashboard ---------- */
+let per = 'week', poff = 0, rd = today(), wq = '', wf = 'all', card = null;
+const bookById = id => S.books.find(b => b.id === id);
+const pagesOn = ds => Object.values(S.reads[ds] || {}).reduce((a, b) => a + b, 0);
+const wordsOn = ds => S.words.filter(w => w.date === ds).length;
+const pagesFor = id => Object.values(S.reads).reduce((a, d) => a + (d[id] || 0), 0);
+const srcName = w => { const b = bookById(w.src); return b ? b.title : (w.srcText || ''); };
+const hdone = (h, ds) => h.auto === 'read' ? pagesOn(ds) > 0 : h.auto === 'vocab' ? wordsOn(ds) > 0 : (S.done[ds] || []).includes(h.id);
+const bname = id => (bookById(id) || { title: '(deleted book)' }).title;
+const box = (n, l) => `<div><b>${n}</b><span class="mute">${l}</span></div>`;
+const dayExtras = ds => { const p = pagesOn(ds), w = S.words.filter(x => x.date === ds); return `<div style="margin-top:10px"><b>Reading and words</b><div class="mute">${p ? '📖 ' + p + ' pages read' : 'No pages logged'}${w.length ? ' · 🔤 ' + w.map(x => esc(x.w)).join(', ') : ''}</div></div>`; };
+
+function range() {
+  const t = new Date(); t.setHours(0, 0, 0, 0); let a, b, label;
+  const sd = d => d.toLocaleDateString('en', { day: 'numeric', month: 'short' });
+  if (per === 'week') { a = new Date(t); a.setDate(a.getDate() - (a.getDay() + 6) % 7 + poff * 7); b = new Date(a); b.setDate(b.getDate() + 6); label = sd(a) + ' – ' + sd(b) + ', ' + b.getFullYear(); }
+  else if (per === 'month') { a = new Date(t.getFullYear(), t.getMonth() + poff, 1); b = new Date(a.getFullYear(), a.getMonth() + 1, 0); label = a.toLocaleString('en', { month: 'long', year: 'numeric' }); }
+  else { a = new Date(t.getFullYear() + poff, 0, 1); b = new Date(a.getFullYear(), 11, 31); label = String(a.getFullYear()); }
+  return { a: fmt(a), b: fmt(b), label };
+}
+function stats(r) {
+  const t = today(), inR = d => d >= r.a && d <= r.b;
+  let pages = 0, days = 0, best = 0, poss = 0, done = 0, full = 0, miss = 0, ev = 0; const byBook = {};
+  Object.keys(S.reads).forEach(d => {
+    if (!inR(d)) return;
+    const n = pagesOn(d); if (n > 0) { pages += n; days++; best = Math.max(best, n); }
+    Object.entries(S.reads[d]).forEach(([id, k]) => { byBook[id] = (byBook[id] || 0) + k; });
+  });
+  for (let d = r.a; d <= r.b && d <= t; d = addDays(d, 1)) {
+    S.habits.filter(h => h.start <= d).forEach(h => { poss++; if (hdone(h, d)) done++; });
+    const st = hstat(d); if (st === 'full') full++; if (st === 'miss') miss++;
+  }
+  for (let d = r.a; d <= r.b; d = addDays(d, 1)) S.events.forEach(e => { if (isStart(e, d)) ev++; });
+  return {
+    pages, days, best, avg: days ? Math.round(pages / days) : 0, full, miss, ev, pct: poss ? Math.round(done / poss * 100) : 0,
+    fin: S.books.filter(b => b.status === 'done' && b.finished && inR(b.finished)).length,
+    started: S.books.filter(b => b.started && inR(b.started)).length,
+    words: S.words.filter(w => inR(w.date)).length, mast: S.words.filter(w => w.mDate && inR(w.mDate)).length,
+    top: Object.entries(byBook).sort((x, y) => y[1] - x[1]).slice(0, 5)
+  };
+}
+function chart(r) {
+  const bars = [];
+  if (per === 'year') for (let m = 0; m < 12; m++) { const pre = r.a.slice(0, 4) + '-' + pad(m + 1); bars.push({ l: 'JFMAMJJASOND'[m], v: Object.keys(S.reads).filter(d => d.startsWith(pre)).reduce((x, d) => x + pagesOn(d), 0) }); }
+  else for (let d = r.a; d <= r.b; d = addDays(d, 1)) bars.push({ l: per === 'week' ? parse(d).toLocaleDateString('en', { weekday: 'narrow' }) : String(parse(d).getDate()), v: pagesOn(d) });
+  const mx = Math.max(1, ...bars.map(x => x.v));
+  return `<div style="display:flex;gap:3px;align-items:flex-end;height:96px">${bars.map(x => `<div style="flex:1;text-align:center"><div title="${x.v} pages" style="background:var(--acc);border-radius:4px 4px 0 0;height:${Math.round(x.v / mx * 70)}px;min-height:${x.v ? 2 : 0}px"></div><div class="mute" style="font-size:10px">${x.l}</div></div>`).join('')}</div><div class="mute" style="margin-top:4px">Pages read ${per === 'year' ? 'per month' : 'per day'}</div>`;
+}
+function dashBar() {
+  const r = range();
+  return `<div class="bar"><span>${['week', 'month', 'year'].map(p => `<button data-a="per" data-p="${p}" class="${per === p ? 'p' : ''}">${p[0].toUpperCase() + p.slice(1)}</button>`).join(' ')}</span><span><button data-a="pprev">‹</button> <b style="margin:0 4px">${r.label}</b> <button data-a="pnext">›</button></span></div>`;
+}
+function rDash() {
+  const r = range(), s = stats(r);
+  $('#v-dash').innerHTML = `<div class="card">${dashBar()}</div>
+  <div class="card"><b>📚 Reading</b><div class="stat" style="margin-top:8px">${box(s.pages, 'pages read')}${box(s.days, 'reading days')}${box(s.avg, 'avg pages/day')}${box(s.best, 'best day')}${box(s.fin, 'books finished')}${box(s.started, 'books started')}</div><div style="margin-top:12px">${chart(r)}</div>${s.top.length ? '<div style="margin-top:10px">' + s.top.map(([id, n]) => `<div class="row"><span class="grow">${esc(bname(id))}</span><span class="mute">${n} pages</span></div>`).join('') + '</div>' : ''}</div>
+  <div class="card"><b>🔤 Vocabulary</b><div class="stat" style="margin-top:8px">${box(s.words, 'new words')}${box(s.mast, 'mastered')}${box(S.words.length, 'words in total')}</div></div>
+  <div class="card"><b>✅ Daily tasks and events</b><div class="stat" style="margin-top:8px">${box(s.pct + '%', 'tasks done')}${box(s.full, 'perfect days')}${box(s.miss, 'missed days')}${box(s.ev, 'events')}</div></div>`;
+}
+
+/* books */
+const bookRow = b => {
+  const n = pagesFor(b.id), pc = b.pages ? Math.min(100, Math.round(n / b.pages * 100)) : 0;
+  return `<div class="row" style="align-items:flex-start"><div class="grow"><b>${esc(b.title)}</b>${b.author ? ' <span class="mute">by ' + esc(b.author) + '</span>' : ''}<div class="mute">${n}${b.pages ? ' / ' + b.pages : ''} pages${b.rating ? ' · ' + '★'.repeat(b.rating) : ''}${b.finished ? ' · finished ' + b.finished : ''}</div>${b.pages ? `<div class="hb" style="width:100%;margin-top:4px"><div style="height:4px;border-radius:2px;background:var(--acc);width:${pc}%"></div></div>` : ''}${b.thoughts ? `<div class="mute" style="margin-top:4px;white-space:pre-wrap">“${esc(b.thoughts.slice(0, 140))}${b.thoughts.length > 140 ? '…' : ''}”</div>` : ''}</div><button class="g" data-a="editbook" data-b="${b.id}">Open</button></div>`;
+};
+function rBooks() {
+  const r = range(), s = stats(r), opts = S.books.filter(b => b.status !== 'done');
+  const entries = Object.entries(S.reads[rd] || {}).map(([id, n]) => `<div class="row"><span class="grow">${esc(bname(id))}</span><span>${n} pages</span><button class="g" data-a="unlog" data-d="${rd}" data-b="${id}">✕</button></div>`).join('');
+  const grp = (st, ttl) => { const l = S.books.filter(b => b.status === st); return l.length ? `<div class="card"><b>${ttl}</b>${l.map(bookRow).join('')}</div>` : ''; };
+  $('#v-books').innerHTML = `<div class="card">${dashBar()}<div class="stat">${box(s.pages, 'pages read')}${box(s.days, 'reading days')}${box(s.fin, 'books finished')}</div></div>
+  <div class="card"><div class="bar"><b>Log pages read</b><input id="lg-d" type="date" value="${rd}" max="${today()}" style="width:auto"></div>
+  ${opts.length ? `<div style="display:flex;gap:8px"><select id="lg-b">${opts.map(b => `<option value="${b.id}">${esc(b.title)}</option>`).join('')}</select><input id="lg-n" type="number" min="1" placeholder="Pages" style="max-width:100px"><button class="p" data-a="logpages">Add</button></div>` : '<div class="mute">Add a book first, then log your pages here.</div>'}
+  <div style="margin-top:8px">${entries}<div class="mute" style="margin-top:6px">Total on ${nice(rd)}: <b>${pagesOn(rd)}</b> pages</div></div></div>
+  <div style="margin-bottom:12px"><button class="p" data-a="newbook">+ Add book</button></div>${grp('reading', 'Currently reading')}${grp('want', 'Want to read')}${grp('done', 'Finished')}`;
+}
+function logPages() {
+  const id = $('#lg-b').value, n = Math.round(Number($('#lg-n').value));
+  if (!id || !(n > 0)) { alert('Pick a book and enter the number of pages.'); return; }
+  const day = S.reads[rd] || (S.reads[rd] = {}); day[id] = (day[id] || 0) + n;
+  const b = bookById(id);
+  if (b.status === 'want') { b.status = 'reading'; b.started = b.started || rd; }
+  if (b.pages && pagesFor(id) >= b.pages && b.status !== 'done') { b.status = 'done'; b.finished = rd; }
+  save(); render();
+}
+function openBook(id) {
+  const b = bookById(id) || { title: '', author: '', pages: '', status: 'reading', started: today(), finished: '', rating: 0, thoughts: '', notes: '' };
+  const ws = id ? S.words.filter(w => w.src === id) : [];
+  $('#sheet').innerHTML = `<h3 style="margin:0 0 6px">${id ? 'Book' : 'New book'}</h3>
+  <label>Title</label><input id="b-t" value="${esc(b.title)}">
+  <div class="two"><div><label>Author</label><input id="b-a" value="${esc(b.author)}"></div><div><label>Total pages</label><input id="b-p" type="number" min="1" value="${b.pages || ''}"></div></div>
+  <div class="two"><div><label>Status</label><select id="b-s">${[['want', 'Want to read'], ['reading', 'Reading'], ['done', 'Finished']].map(([v, l]) => `<option value="${v}" ${b.status === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div><div><label>My rating</label><select id="b-r">${[0, 1, 2, 3, 4, 5].map(n => `<option value="${n}" ${b.rating === n ? 'selected' : ''}>${n ? '★'.repeat(n) : 'Not rated'}</option>`).join('')}</select></div></div>
+  <div class="two"><div><label>Started</label><input id="b-st" type="date" value="${b.started || ''}"></div><div><label>Finished</label><input id="b-f" type="date" value="${b.finished || ''}"></div></div>
+  <label>My thoughts and review</label><textarea id="b-th" rows="5">${esc(b.thoughts)}</textarea>
+  <label>Favourite quotes and notes</label><textarea id="b-n" rows="3">${esc(b.notes)}</textarea>
+  ${id ? `<div class="mute" style="margin-top:8px">${pagesFor(id)} pages logged · ${ws.length} words learned from this book${ws.length ? ': ' + ws.slice(0, 8).map(w => esc(w.w)).join(', ') : ''}</div>` : ''}
+  <div style="display:flex;gap:8px;margin-top:14px"><button class="p" data-a="savebook" data-b="${id || ''}" style="flex:1">Save</button><button data-a="close">Cancel</button>${id ? '<button data-a="delbook" data-b="' + id + '" style="color:var(--miss)">Delete</button>' : ''}</div>`;
+  $('#modal').hidden = false;
+}
+function saveBook(id) {
+  const title = $('#b-t').value.trim();
+  if (!title) { alert('Please add a title.'); return; }
+  const st = $('#b-s').value;
+  const o = { title, author: $('#b-a').value.trim(), pages: Number($('#b-p').value) || 0, status: st, rating: Number($('#b-r').value), started: $('#b-st').value, finished: $('#b-f').value, thoughts: $('#b-th').value.trim(), notes: $('#b-n').value.trim() };
+  if (st !== 'want' && !o.started) o.started = today();
+  if (st === 'done' && !o.finished) o.finished = today();
+  if (st !== 'done') o.finished = '';
+  const old = bookById(id);
+  if (old) Object.assign(old, o); else S.books.push(Object.assign({ id: uid() }, o));
+  $('#modal').hidden = true; save(); render();
+}
+function delBook(id) {
+  const b = bookById(id);
+  S.words.forEach(w => { if (w.src === id) { w.src = ''; w.srcText = b.title; } });
+  Object.keys(S.reads).forEach(d => { delete S.reads[d][id]; if (!Object.keys(S.reads[d]).length) delete S.reads[d]; });
+  S.books = S.books.filter(x => x.id !== id); $('#modal').hidden = true; save(); render();
+}
+
+/* words */
+function rWords() {
+  const r = range(), s = stats(r);
+  $('#v-words').innerHTML = `<div class="card">${dashBar()}<div class="stat">${box(s.words, 'new words')}${box(s.mast, 'mastered')}${box(S.words.length, 'words in total')}</div></div>
+  <div class="card"><div class="bar"><b>My words</b><span><button data-a="practice">Practice</button> <button class="p" data-a="newword">+ Add word</button></span></div>
+  <div style="display:flex;gap:8px;margin-bottom:6px"><input id="wq" placeholder="Search words or meanings" value="${esc(wq)}"><select id="wf" style="max-width:130px">${[['all', 'All'], ['learning', 'Learning'], ['mastered', 'Mastered']].map(([v, l]) => `<option value="${v}" ${wf === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+  <div id="wlist">${wlist()}</div></div>`;
+}
+function wlist() {
+  const q = wq.toLowerCase();
+  const l = S.words.filter(w => (wf === 'all' || (wf === 'mastered') === !!w.mastered) && (!q || (w.w + ' ' + w.meaning + ' ' + srcName(w)).toLowerCase().includes(q))).sort((a, b) => b.date.localeCompare(a.date));
+  return l.map(w => `<div class="row" style="align-items:flex-start"><div class="grow"><b>${esc(w.w)}</b> ${w.mastered ? '<span class="tag" style="background:var(--ok)">mastered</span>' : ''}<div>${esc(w.meaning)}</div>${w.example ? `<div class="mute"><i>“${esc(w.example)}”</i></div>` : ''}<div class="mute">${srcName(w) ? 'From ' + esc(srcName(w)) + ' · ' : ''}${w.date}</div></div><button class="g" data-a="editword" data-w="${w.id}">Edit</button></div>`).join('') || '<div class="mute">No words yet. Add the first one you come across while reading.</div>';
+}
+function openWord(id) {
+  const w = S.words.find(x => x.id === id) || { w: '', meaning: '', src: '', srcText: '', example: '', date: today(), mastered: false };
+  $('#sheet').innerHTML = `<h3 style="margin:0 0 6px">${id ? 'Edit word' : 'New word'}</h3>
+  <label>Word</label><input id="w-w" value="${esc(w.w)}">
+  <label>Meaning</label><textarea id="w-m" rows="2">${esc(w.meaning)}</textarea>
+  <label>Where did I find it?</label><select id="w-s"><option value="">Not a book</option>${S.books.map(b => `<option value="${b.id}" ${w.src === b.id ? 'selected' : ''}>${esc(b.title)}</option>`).join('')}</select>
+  <input id="w-o" placeholder="Or type another source (article, movie, chat)" value="${esc(w.srcText || '')}" style="margin-top:6px">
+  <label>Sentence where I saw it (optional)</label><textarea id="w-e" rows="2">${esc(w.example || '')}</textarea>
+  <div class="two"><div><label>Date learned</label><input id="w-d" type="date" value="${w.date}"></div><div><label>Status</label><select id="w-ms"><option value="0">Learning</option><option value="1" ${w.mastered ? 'selected' : ''}>Mastered</option></select></div></div>
+  <div style="display:flex;gap:8px;margin-top:14px"><button class="p" data-a="saveword" data-w="${id || ''}" style="flex:1">Save</button><button data-a="close">Cancel</button>${id ? '<button data-a="delword" data-w="' + id + '" style="color:var(--miss)">Delete</button>' : ''}</div>`;
+  $('#modal').hidden = false;
+}
+function saveWord(id) {
+  const w = $('#w-w').value.trim(), m = $('#w-m').value.trim();
+  if (!w || !m) { alert('Please add the word and its meaning.'); return; }
+  const mast = $('#w-ms').value === '1', src = $('#w-s').value;
+  const old = S.words.find(x => x.id === id);
+  const o = { w, meaning: m, src, srcText: src ? '' : $('#w-o').value.trim(), example: $('#w-e').value.trim(), date: $('#w-d').value || today(), mastered: mast, mDate: mast ? ((old && old.mDate) || today()) : '' };
+  if (old) Object.assign(old, o); else S.words.push(Object.assign({ id: uid() }, o));
+  $('#modal').hidden = true; save(); render();
+}
+function practice() {
+  const pool = S.words.filter(w => !w.mastered);
+  $('#modal').hidden = false;
+  if (!pool.length) { $('#sheet').innerHTML = '<h3 style="margin:0 0 6px">Practice</h3><div>Nothing to practise right now. Add new words first.</div><button data-a="close" style="margin-top:12px">Close</button>'; return; }
+  card = pool[Math.floor(Math.random() * pool.length)];
+  $('#sheet').innerHTML = `<h3 style="margin:0 0 6px">Practice</h3><div style="font-size:28px;font-weight:700;margin:14px 0">${esc(card.w)}</div><div id="ans" class="mute" style="min-height:64px">Try to recall the meaning first.</div><div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap"><button data-a="reveal">Show meaning</button><button data-a="again">Next word</button><button class="p" data-a="got">I know it</button><button data-a="close">Close</button></div>`;
+}
+
 /* ---------- settings, backup ---------- */
 function openCfg() {
   const c = cfg();
@@ -183,7 +346,7 @@ function openCfg() {
   <div style="display:flex;gap:8px;margin-top:14px"><button class="p" data-a="savecfg" style="flex:1">Save</button><button data-a="close">Close</button></div>`;
   $('#modal').hidden = false;
   $('#c-f').onchange = async e => {
-    try { const d = JSON.parse(await e.target.files[0].text()); if (!Array.isArray(d.events)) throw 0; S = Object.assign({ events: [], habits: [], done: {} }, d); save(); $('#modal').hidden = true; render(); } catch (x) { alert('That file is not a valid planner backup.'); }
+    try { const d = JSON.parse(await e.target.files[0].text()); if (!Array.isArray(d.events)) throw 0; S = Object.assign(BLANK(), d); save(); $('#modal').hidden = true; render(); } catch (x) { alert('That file is not a valid planner backup.'); }
   };
 }
 function exportData() {
@@ -274,7 +437,7 @@ async function pull() {
   const r = data && data.data;
   if (r && Array.isArray(r.events) && (r.ts || 0) > (S.ts || 0)) {
     try { localStorage.setItem('planner.prev', JSON.stringify(S)); } catch (e) { }
-    S = Object.assign({ events: [], habits: [], done: {} }, r);
+    S = Object.assign(BLANK(), r);
     try { localStorage.setItem('planner.v1', JSON.stringify(S)); } catch (e) { }
     render(); cloud = 'ok'; badge();
   } else if (!r || (S.ts || 0) > (r.ts || 0)) push();
@@ -332,13 +495,37 @@ document.addEventListener('click', ev => {
   else if (a === 'signup') doAuth(true);
   else if (a === 'signout') { sb.auth.signOut(); $('#modal').hidden = true; }
   else if (a === 'syncnow') { $('#modal').hidden = true; pull(); }
+  else if (a === 'per') { per = b.dataset.p; poff = 0; render(); }
+  else if (a === 'pprev') { poff--; render(); }
+  else if (a === 'pnext') { poff++; render(); }
+  else if (a === 'newbook') openBook(null);
+  else if (a === 'editbook') openBook(b.dataset.b);
+  else if (a === 'savebook') saveBook(b.dataset.b || null);
+  else if (a === 'delbook') { if (confirm('Delete this book and its reading log?')) delBook(b.dataset.b); }
+  else if (a === 'logpages') logPages();
+  else if (a === 'unlog') { const d = S.reads[b.dataset.d]; if (d) { delete d[b.dataset.b]; if (!Object.keys(d).length) delete S.reads[b.dataset.d]; save(); render(); } }
+  else if (a === 'newword') openWord(null);
+  else if (a === 'editword') openWord(b.dataset.w);
+  else if (a === 'saveword') saveWord(b.dataset.w || null);
+  else if (a === 'delword') { if (confirm('Delete this word?')) { S.words = S.words.filter(w => w.id !== b.dataset.w); $('#modal').hidden = true; save(); render(); } }
+  else if (a === 'practice' || a === 'again') practice();
+  else if (a === 'reveal' && card) $('#ans').innerHTML = esc(card.meaning) + (card.example ? '<br><i>“' + esc(card.example) + '”</i>' : '');
+  else if (a === 'got' && card) { card.mastered = true; card.mDate = today(); save(); render(); practice(); }
+  else if (a === 'addauto') {
+    const k = b.dataset.k;
+    if (S.habits.some(h => h.auto === k)) alert('You already have this habit.');
+    else { S.habits.push({ id: uid(), t: k === 'read' ? 'Read (log pages in Books)' : 'Learn a new word', start: today(), auto: k }); save(); render(); }
+  }
   else if (b.id === 'send') ask();
 });
 document.addEventListener('change', ev => {
   const c = ev.target, a = c.dataset && c.dataset.a;
+  if (c.id === 'lg-d') { rd = c.value || today(); render(); }
+  if (c.id === 'wf') { wf = c.value; $('#wlist').innerHTML = wlist(); }
   if (a === 'item') { const e = S.events.find(x => x.id === c.dataset.e); if (e) { e.items[c.dataset.i].d = c.checked; save(); render(); } }
   if (a === 'hab') { const d = c.dataset.d, l = S.done[d] || (S.done[d] = []), i = l.indexOf(c.dataset.h); if (c.checked && i < 0) l.push(c.dataset.h); if (!c.checked && i >= 0) l.splice(i, 1); save(); render(); }
 });
+document.addEventListener('input', e => { if (e.target.id === 'wq') { wq = e.target.value; $('#wlist').innerHTML = wlist(); } });
 $('#chatin').addEventListener('keydown', e => { if (e.key === 'Enter') ask(); });
 $('#modal').addEventListener('click', e => { if (e.target.id === 'modal') $('#modal').hidden = true; });
 
