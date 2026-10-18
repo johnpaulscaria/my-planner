@@ -61,3 +61,12 @@ Cloud sync (Supabase or Firebase), installable PWA with offline support, push re
 Sync copies the whole planner and the most recently changed device wins. Before an older local copy is replaced, it is kept in the browser under `planner.prev`.
 
 **Install as an app**: Chrome/Edge on desktop, use the install icon in the address bar. Android Chrome: menu, Install app. iPhone Safari: Share, Add to Home Screen. After you push an update, close and reopen the app once or twice to pick up the new version.
+
+## Books, words and dashboard
+
+- **📚 Books**: add books, log pages read per day, and write your thoughts, rating and favourite quotes for each one. Pages logged on any day show up on the calendar. A book moves to "Finished" when you log all its pages.
+- **🔤 Words**: save new words with the meaning, the book or place you found them, and the sentence you saw them in. Search them, practise them, and mark them as mastered.
+- **📊 Dashboard**: weekly, monthly and yearly numbers for pages, reading days, books finished, new words, mastered words, daily task completion and events. The same numbers appear at the top of Books and Words.
+- **Daily tab**: tap "+ Reading habit" and "+ New-word habit". They tick themselves when you log pages or add a word.
+
+Everything is stored in the same planner data, so it syncs through Supabase with no extra setup.
