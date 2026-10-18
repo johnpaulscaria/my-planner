@@ -30,7 +30,7 @@ nav button{white-space:nowrap}nav button.on{background:var(--accbg);border-color
 .alert{background:var(--accbg);border:1px solid var(--acc);border-radius:12px;padding:8px 12px;margin-bottom:8px;font-size:14px}
 input[type=checkbox]{width:18px;height:18px;flex:none}
 .done{text-decoration:line-through;color:var(--mute)}
-.stat{display:flex;gap:10px}.stat div{flex:1;text-align:center;background:var(--bg);border-radius:12px;padding:10px}.stat b{font-size:22px;display:block}
+.stat{display:flex;gap:8px;flex-wrap:wrap}.stat div{flex:1;min-width:84px;text-align:center;background:var(--bg);border-radius:12px;padding:10px}.stat b{font-size:22px;display:block}
 #modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;z-index:20}
 #modal[hidden]{display:none}
 #modal .sheet{background:var(--bg);width:100%;max-width:520px;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;padding:16px}
