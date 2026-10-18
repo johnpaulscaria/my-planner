@@ -4,8 +4,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>My Planner — Personal Workspace</title>
-<meta name="theme-color" content="#111210">
+<title>My Planner</title>
+<meta name="theme-color" content="#0b0c0b">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
@@ -14,68 +14,92 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="app-shell">
-  <aside class="sidebar">
-    <a class="brand" href="#" aria-label="My Planner home">
-      <span class="brand-mark">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <rect x="3.5" y="5" width="17" height="15" rx="3"/>
-          <path d="M8 3.5v4M16 3.5v4M4 9.5h16M8 13h3M8 16h6"/>
-        </svg>
-      </span>
-      <span class="brand-copy">
+<div class="studio-shell">
+
+  <aside class="studio-sidebar">
+    <a class="studio-brand" href="#" aria-label="My Planner">
+      <span class="studio-logo">m<span>.</span></span>
+      <span class="studio-brand-text">
         <strong>my planner</strong>
-        <small>PERSONAL WORKSPACE</small>
+        <small>PERSONAL STUDIO</small>
       </span>
     </a>
 
-    <div class="nav-label">WORKSPACE</div>
-    <nav id="tabs" aria-label="Main navigation">
-      <button data-t="dash"><span class="nav-icon">◫</span><span>Overview</span></button>
-      <button data-t="cal"><span class="nav-icon">▦</span><span>Calendar</span></button>
-      <button data-t="daily"><span class="nav-icon">☷</span><span>Daily tasks</span></button>
-      <button data-t="up"><span class="nav-icon">↗</span><span>Upcoming</span></button>
+    <div class="studio-section-label">YOUR WORKSPACE</div>
+    <nav id="tabs" aria-label="Planner navigation">
+      <button data-t="dash">
+        <span class="studio-icon">◫</span><span>Overview</span><span class="studio-arrow">↗</span>
+      </button>
+      <button data-t="cal">
+        <span class="studio-icon">▦</span><span>Calendar</span>
+      </button>
+      <button data-t="daily">
+        <span class="studio-icon">☷</span><span>Daily tasks</span>
+      </button>
+      <button data-t="up">
+        <span class="studio-icon">↗</span><span>Upcoming</span>
+      </button>
 
-      <div class="nav-label nav-label-spaced">PERSONAL GROWTH</div>
-      <button data-t="books"><span class="nav-icon">▤</span><span>Bookshelf</span></button>
-      <button data-t="words"><span class="nav-icon">Aa</span><span>Word bank</span></button>
-      <button data-t="week"><span class="nav-icon">◷</span><span>Weekly review</span></button>
+      <div class="studio-section-label studio-label-gap">PERSONAL GROWTH</div>
+      <button data-t="books">
+        <span class="studio-icon">▤</span><span>Reading room</span>
+      </button>
+      <button data-t="words">
+        <span class="studio-icon">Aa</span><span>Word bank</span>
+      </button>
+      <button data-t="week">
+        <span class="studio-icon">◷</span><span>Weekly review</span>
+      </button>
 
-      <div class="nav-label nav-label-spaced">ASSISTANT</div>
-      <button data-t="chat"><span class="nav-icon">✳</span><span>Ask a friend</span></button>
+      <div class="studio-section-label studio-label-gap">YOUR COMPANION</div>
+      <button data-t="chat">
+        <span class="studio-icon studio-spark">✳</span><span>Ask a friend</span>
+        <span class="studio-ai-badge">AI</span>
+      </button>
     </nav>
 
-    <div class="sidebar-bottom">
-      <div class="focus-note">
-        <span class="focus-spark">✦</span>
-        <strong>Make room for what matters.</strong>
-        <p>A little progress, every day.</p>
+    <div class="studio-sidebar-bottom">
+      <div class="studio-quote">
+        <span class="studio-quote-star">✳</span>
+        <p>Build a life that feels as good as it looks.</p>
+        <small>ONE DAY AT A TIME</small>
       </div>
-      <div class="sidebar-footer">
-        <span class="status-dot"></span>
-        <span>Your personal space</span>
-        <span class="footer-version">v1.0</span>
+
+      <div class="studio-account-row">
+        <span class="studio-avatar">P</span>
+        <span class="studio-account-copy">
+          <strong>Personal workspace</strong>
+          <small>Your space to grow</small>
+        </span>
+        <span class="studio-online-dot"></span>
       </div>
     </div>
   </aside>
 
-  <div class="workspace">
-    <header class="topbar">
-      <div class="topbar-title">
-        <span class="eyebrow">YOUR SPACE</span>
-        <h1 id="page-title">Overview</h1>
+  <div class="studio-main">
+    <header class="studio-topbar">
+      <div class="studio-heading">
+        <div class="studio-kicker"><span></span> YOUR PERSONAL SPACE</div>
+        <h1 id="studio-page-title">Overview</h1>
+        <p id="studio-date">A little more intentional, every day.</p>
       </div>
-      <div class="top-actions">
-        <span class="today-chip" id="today-chip">Your day, thoughtfully planned</span>
-        <button id="acct" class="g action-btn" aria-label="Sign in">☁ <span>Sign in</span></button>
-        <button id="bell" class="g action-btn" aria-label="Alerts">♧ <span>Alerts</span></button>
-        <button id="cfg" class="g action-btn settings-btn" aria-label="Settings">⚙ <span>Settings</span></button>
+
+      <div class="studio-actions">
+        <button id="acct" class="studio-top-button">
+          <span>↗</span><span class="studio-action-label">Sign in</span>
+        </button>
+        <button id="bell" class="studio-top-button" aria-label="Alerts">
+          <span>♧</span><span class="studio-action-label">Alerts</span>
+        </button>
+        <button id="cfg" class="studio-top-button studio-settings">
+          <span>⚙</span><span class="studio-action-label">Settings</span>
+        </button>
       </div>
     </header>
 
     <div id="banner"></div>
 
-    <main>
+    <main class="studio-content">
       <section id="v-cal" class="sec"></section>
       <section id="v-daily" class="sec"></section>
       <section id="v-books" class="sec"></section>
@@ -85,30 +109,27 @@
       <section id="v-week" class="sec"></section>
 
       <section id="v-chat" class="sec">
-        <div class="card chat-card">
-          <div class="chat-intro">
-            <span class="chat-symbol">✳</span>
+        <div class="card studio-chat-card">
+          <div class="studio-chat-heading">
+            <span class="studio-chat-symbol">✳</span>
             <div>
-              <h2>Your planning companion</h2>
-              <div class="mute" style="margin-bottom:8px">
-                Tell me what is coming up (a trip, an event, a goal).
-                I will ask a few questions, then suggest dates, checklists
-                and itineraries you can add with one tap.
-              </div>
+              <div class="studio-eyebrow">YOUR AI COMPANION</div>
+              <h2>A little help thinking things through.</h2>
+              <p class="mute">Tell me about a trip, event or goal. We'll work through the details together.</p>
             </div>
           </div>
           <div id="msgs"></div>
-          <div class="chat-input-row">
-            <input id="chatin" placeholder="e.g. I am going to Goa next month">
+          <div class="studio-chat-input">
+            <input id="chatin" placeholder="What are you planning today?">
             <button class="p" id="send">Send <span>↗</span></button>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="workspace-footer">
-      <span>DESIGNED FOR A MORE INTENTIONAL DAY</span>
-      <span>MY PLANNER <span class="footer-dot">✦</span></span>
+    <footer class="studio-footer">
+      <span>MAKE SPACE FOR WHAT MATTERS</span>
+      <span>CRAFTED FOR YOUR EVERYDAY <b>✳</b></span>
     </footer>
   </div>
 </div>
@@ -118,48 +139,44 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="config.js"></script>
 <script src="app.js"></script>
-
 <script>
 (function () {
-  const labels = {
+  const names = {
+    dash: 'Overview',
     cal: 'Calendar',
     daily: 'Daily tasks',
-    books: 'Bookshelf',
-    words: 'Word bank',
-    dash: 'Overview',
     up: 'Upcoming',
+    books: 'Reading room',
+    words: 'Word bank',
     week: 'Weekly review',
-    chat: 'Ask a friend'
+    chat: 'Your companion'
   };
 
-  const title = document.getElementById('page-title');
-  const tabs = document.getElementById('tabs');
-  const chip = document.getElementById('today-chip');
-
-  function updateTitle() {
+  function refreshStudioHeader() {
     const active = document.querySelector('#tabs button.on');
-    if (active && title) {
-      const label = labels[active.dataset.t] || active.textContent.trim();
-      title.textContent = label;
-      document.title = label + ' — My Planner';
-    }
+    if (!active) return;
+    const title = document.getElementById('studio-page-title');
+    if (title) title.textContent = names[active.dataset.t] || 'My Planner';
   }
 
-  if (tabs) {
-    tabs.addEventListener('click', function () {
-      setTimeout(updateTitle, 50);
+  const nav = document.getElementById('tabs');
+  if (nav) {
+    nav.addEventListener('click', function () {
+      setTimeout(refreshStudioHeader, 30);
     });
   }
 
-  if (chip) {
-    chip.textContent = new Date().toLocaleDateString(undefined, {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric'
+  const date = document.getElementById('studio-date');
+  if (date) {
+    date.textContent = new Date().toLocaleDateString(undefined, {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
     });
   }
 
-  setTimeout(updateTitle, 300);
+  setTimeout(refreshStudioHeader, 100);
 })();
 </script>
 </body>
