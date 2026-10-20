@@ -237,10 +237,41 @@ function rDash() {
 }
 
 /* books */
+
 const bookRow = b => {
-  const n = pagesFor(b.id), pc = b.pages ? Math.min(100, Math.round(n / b.pages * 100)) : 0;
-  return `<div class="row" style="align-items:flex-start"><div class="grow"><b>${esc(b.title)}</b>${b.author ? ' <span class="mute">by ' + esc(b.author) + '</span>' : ''}<div class="mute">${n}${b.pages ? ' / ' + b.pages : ''} pages${b.rating ? ' · ' + '★'.repeat(b.rating) : ''}${b.finished ? ' · finished ' + b.finished : ''}</div>${b.pages ? `<div class="hb" style="width:100%;margin-top:4px"><div style="height:4px;border-radius:2px;background:var(--acc);width:${pc}%"></div></div>` : ''}${b.thoughts ? `<div class="mute" style="margin-top:4px;white-space:pre-wrap">“${esc(b.thoughts.slice(0, 140))}${b.thoughts.length > 140 ? '…' : ''}”</div>` : ''}</div><button class="g" data-a="editbook" data-b="${b.id}">Open</button></div>`;
+  const n = pagesFor(b.id);
+  const pc = b.pages ? Math.min(100, Math.round(n / b.pages * 100)) : 0;
+
+  return `
+    <div class="row" style="align-items:flex-start">
+      <div class="grow">
+        <b>${esc(b.title)}</b>
+        ${b.author ? ' <span class="mute">by ' + esc(b.author) + '</span>' : ''}
+
+        <div class="mute">
+          ${n}${b.pages ? ' / ' + b.pages : ''} pages
+          ${b.rating ? ' · ' + '★'.repeat(b.rating) : ''}
+          ${b.finished ? ' · finished ' + esc(b.finished) : ''}
+        </div>
+
+        ${b.pages ? `
+          <div class="hb" style="width:100%;margin-top:4px">
+            <div style="height:4px;border-radius:2px;background:var(--acc);width:${pc}%"></div>
+          </div>` : ''}
+
+        ${b.thoughts ? `
+          <div class="mute" style="margin-top:4px;white-space:pre-wrap">
+            “${esc(b.thoughts.slice(0, 140))}${b.thoughts.length > 140 ? '…' : ''}”
+          </div>` : ''}
+      </div>
+
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="g" data-a="viewbook" data-b="${b.id}">View</button>
+        <button class="g" data-a="editbook" data-b="${b.id}">Open</button>
+      </div>
+    </div>`;
 };
+
 function rBooks() {
   const r = range(), s = stats(r), opts = S.books.filter(b => b.status !== 'done');
   const entries = Object.entries(S.reads[rd] || {}).map(([id, n]) => `<div class="row"><span class="grow">${esc(bname(id))}</span><span>${n} pages</span><button class="g" data-a="unlog" data-d="${rd}" data-b="${id}">✕</button></div>`).join('');
@@ -260,6 +291,267 @@ function logPages() {
   if (b.pages && pagesFor(id) >= b.pages && b.status !== 'done') { b.status = 'done'; b.finished = rd; }
   save(); render();
 }
+
+function viewBook(id) {
+  const b = bookById(id);
+  if (!b) {
+    alert('Book not found.');
+    return;
+  }
+
+  const words = S.words.filter(w => w.src === id);
+  const pageCount = pagesFor(id);
+  const stars = b.rating ? '★'.repeat(b.rating) + '☆'.repeat(5 - b.rating) : 'Not rated';
+
+  const wordSection = words.length
+    ? words.map(w => `
+        <article class="word">
+          <h3>${esc(w.w)}</h3>
+          <p>${esc(w.meaning || '')}</p>
+          ${w.example ? `<blockquote>${esc(w.example)}</blockquote>` : ''}
+        </article>
+      `).join('')
+    : '<p class="empty">No vocabulary saved from this book yet.</p>';
+
+  const review = b.thoughts
+    ? esc(b.thoughts)
+    : 'No review written yet.';
+
+  const notes = b.notes
+    ? esc(b.notes)
+    : 'No favourite quotes or notes saved yet.';
+
+  const preview = window.open('', '_blank');
+
+  if (!preview) {
+    alert('Your browser blocked the preview. Allow pop-ups for this planner and try again.');
+    return;
+  }
+
+  preview.document.open();
+  preview.document.write(`<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(b.title)} — Reading Journal</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #eeeae3;
+    color: #25251f;
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.8;
+  }
+
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    background: rgba(255,255,255,.96);
+    border-bottom: 1px solid #dedbd3;
+    font-family: Arial, sans-serif;
+  }
+
+  .toolbar button {
+    border: 1px solid #d2cfc6;
+    background: white;
+    border-radius: 8px;
+    padding: 9px 14px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+
+  .book {
+    max-width: 850px;
+    margin: 35px auto;
+    padding: 0 20px;
+  }
+
+  .page {
+    background: #fffefa;
+    min-height: 650px;
+    padding: clamp(28px, 7vw, 76px);
+    margin-bottom: 28px;
+    box-shadow: 0 8px 35px rgba(0,0,0,.07);
+    border: 1px solid #e5e0d5;
+    overflow-wrap: anywhere;
+  }
+
+  .cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 720px;
+    text-align: center;
+    border-top: 7px solid #8c9274;
+  }
+
+  .eyebrow {
+    font: 11px Arial, sans-serif;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #85856f;
+  }
+
+  h1 {
+    font-size: clamp(34px, 7vw, 56px);
+    line-height: 1.15;
+    margin: 28px 0 12px;
+    font-weight: normal;
+  }
+
+  h2 {
+    font-size: 29px;
+    font-weight: normal;
+    line-height: 1.3;
+    margin: 0 0 28px;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: normal;
+  }
+
+  .author {
+    color: #77766b;
+    font-size: 18px;
+  }
+
+  .meta {
+    margin-top: 45px;
+    color: #77766b;
+    font: 13px/2 Arial, sans-serif;
+  }
+
+  .section-label {
+    font: 11px Arial, sans-serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #85856f;
+    margin-bottom: 22px;
+  }
+
+  .content {
+    white-space: pre-wrap;
+    font-size: 17px;
+  }
+
+  .quotes {
+    white-space: pre-wrap;
+    font-size: 18px;
+    line-height: 2;
+  }
+
+  .word {
+    padding: 12px 0;
+    border-bottom: 1px solid #e8e3da;
+  }
+
+  .word h3 { margin-bottom: 2px; }
+  .word p { margin-top: 0; }
+
+  blockquote {
+    margin: 12px 0;
+    padding-left: 18px;
+    border-left: 2px solid #a5a58c;
+    color: #656458;
+    font-style: italic;
+  }
+
+  .empty { color: #929084; font-style: italic; }
+
+  .footer {
+    margin-top: 60px;
+    padding-top: 16px;
+    border-top: 1px solid #e5e0d5;
+    font: 10px Arial, sans-serif;
+    letter-spacing: 1.5px;
+    color: #969486;
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .book { padding: 0 10px; margin: 18px auto; }
+    .page { padding: 28px 22px; min-height: 500px; }
+    .cover { min-height: 580px; }
+    .toolbar { padding: 10px; }
+  }
+
+  @media print {
+    body { background: white; }
+    .toolbar { display: none; }
+    .book { max-width: none; padding: 0; margin: 0; }
+    .page {
+      box-shadow: none;
+      border: none;
+      margin: 0;
+      min-height: 0;
+      padding: 20mm 18mm;
+      break-after: page;
+    }
+    .cover { min-height: 240mm; }
+    .page:last-child { break-after: auto; }
+  }
+</style>
+</head>
+<body>
+  <div class="toolbar">
+    <span>MY READING JOURNAL</span>
+    <div>
+      <button onclick="window.print()">Print / Save PDF</button>
+      <button onclick="window.close()">Close preview</button>
+    </div>
+  </div>
+
+  <main class="book">
+    <section class="page cover">
+      <div class="eyebrow">My Reading Journal</div>
+      <h1>${esc(b.title)}</h1>
+      <div class="author">${b.author ? 'by ' + esc(b.author) : ''}</div>
+      <div class="meta">
+        ${b.status === 'done' ? 'BOOK COMPLETED' : 'READING NOTES'}<br>
+        ${b.finished ? 'Finished on ' + esc(b.finished) : ''}<br>
+        ${b.pages ? esc(String(b.pages)) + ' pages' : ''}<br>
+        ${pageCount} pages logged<br>
+        ${stars}
+      </div>
+      <div class="footer">A BOOK READ · A THOUGHT KEPT</div>
+    </section>
+
+    <section class="page">
+      <div class="section-label">01 — My reflection</div>
+      <h2>What I took from this book</h2>
+      <div class="content">${review}</div>
+      <div class="footer">${esc(b.title)} · MY READING JOURNAL</div>
+    </section>
+
+    <section class="page">
+      <div class="section-label">02 — Passages worth keeping</div>
+      <h2>Favourite quotes & notes</h2>
+      <div class="quotes">${notes}</div>
+      <div class="footer">${esc(b.title)} · MY READING JOURNAL</div>
+    </section>
+
+    <section class="page">
+      <div class="section-label">03 — Vocabulary</div>
+      <h2>Words I learned</h2>
+      ${wordSection}
+      <div class="footer">${esc(b.title)} · MY READING JOURNAL</div>
+    </section>
+  </main>
+</body>
+</html>`);
+  preview.document.close();
+}
+
 function openBook(id) {
   const b = bookById(id) || { title: '', author: '', pages: '', status: 'reading', started: today(), finished: '', rating: 0, thoughts: '', notes: '' };
   const ws = id ? S.words.filter(w => w.src === id) : [];
@@ -529,6 +821,8 @@ document.addEventListener('click', ev => {
   else if (a === 'pprev') { poff--; render(); }
   else if (a === 'pnext') { poff++; render(); }
   else if (a === 'newbook') openBook(null);
+  else if (a === 'viewbook') viewBook(b.dataset.b);
+  else if (a === 'editbook') openBook(b.dataset.b);
   else if (a === 'editbook') openBook(b.dataset.b);
   else if (a === 'savebook') saveBook(b.dataset.b || null);
   else if (a === 'delbook') { if (confirm('Delete this book and its reading log?')) delBook(b.dataset.b); }
