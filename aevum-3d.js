@@ -27,6 +27,36 @@
     style.textContent = `
       #aevum-3d{position:fixed;inset:0;z-index:10020;background:#090a0b;color:#eee8dc;font-family:Georgia,serif;overflow:hidden}
       #aevum-3d canvas{display:block;width:100%;height:100%;touch-action:none}
+      .a3d-book{width:min(900px,96vw);max-height:88vh;overflow:hidden;background:#21170f;color:#2f2418;border:1px solid #b69b70;box-shadow:0 25px 100px #000;display:flex;flex-direction:column}
+      .a3d-book-head{height:42px;flex:none;background:#21170f;color:#d6c29e;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:10px Arial;letter-spacing:.2em}
+      .a3d-book-head button{background:none;border:0;color:#d6c29e;font-size:18px;cursor:pointer}
+      .a3d-book-layout{display:grid;grid-template-columns:230px 1fr;min-height:520px;overflow:auto}
+      .a3d-book-side{background:linear-gradient(145deg,#47301d,#281a12);color:#ead9b8;padding:35px 26px;display:flex;flex-direction:column;gap:14px}
+      .a3d-book-cross{font-size:42px;text-align:center;color:#c5a46b}
+      .a3d-book-side h3{font:17px Georgia;letter-spacing:.16em;text-align:center}
+      .a3d-book-side p{font:italic 14px Georgia;line-height:1.6;text-align:center;color:#d8c6a7}
+      .a3d-book-side small{font:9px Arial;letter-spacing:.15em;color:#bba47e}
+      .a3d-book-side strong{font:18px Georgia;color:#f4e5c9}
+      .a3d-book-rule{height:1px;background:#ad8e5b66;margin:8px 0}
+      .a3d-book-page{position:relative;background:repeating-linear-gradient(0deg,#e9ddc4,#e9ddc4 28px,#e4d6bb 29px);padding:32px 48px 20px;overflow:auto;min-height:520px}
+      .a3d-book-page:before{content:'';position:absolute;left:18px;top:0;bottom:0;width:1px;background:#b49c76}
+      .a3d-book-page-no{font:9px Arial;letter-spacing:.2em;color:#8c7655;border-bottom:1px solid #b9a27d;padding-bottom:12px}
+      .a3d-book-content{font:16px/1.72 Georgia,serif;color:#35291c;max-width:620px;margin:0 auto}
+      .a3d-book-content h2{text-align:center;font:30px Georgia;margin:22px 0 8px;color:#382717}
+      .a3d-book-content h4{text-align:center;font:italic 17px Georgia;color:#80643d;margin:0 0 24px}
+      .a3d-book-content h3{font:18px Georgia;color:#654a2b;margin:20px 0 6px}
+      .a3d-book-content p{margin:10px 0}
+      .a3d-book-ornament{text-align:center;color:#a88b5c;font-size:20px}
+      .a3d-scripture,.a3d-rubric{font:10px Arial!important;letter-spacing:.12em;color:#826d4d!important}
+      .a3d-bead-count{display:flex;gap:7px;justify-content:center;margin:20px 0}
+      .a3d-bead-count span{width:27px;height:27px;border:1px solid #a78a5b;border-radius:50%;display:grid;place-items:center;font:11px Arial;color:#725a39}
+      .a3d-bead-count span.done{background:#795b34;color:#fff}
+      .a3d-book-controls{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #b9a27d;margin-top:24px;padding-top:14px}
+      .a3d-book-controls button,.a3d-book-content button{border:1px solid #826b49;background:#44321f;color:#f2e6d0;padding:11px 14px;font:10px Arial;letter-spacing:.1em;cursor:pointer}
+      .a3d-book-controls button:disabled{opacity:.3;cursor:default}
+      .a3d-book-progress{font:9px Arial;letter-spacing:.16em;color:#7d6542}
+      @media(max-width:650px){.a3d-book-layout{grid-template-columns:1fr}.a3d-book-side{padding:12px;gap:6px}.a3d-book-side p,.a3d-book-rule{display:none}.a3d-book-cross{font-size:22px}.a3d-book-side h3{margin:2px}.a3d-book-page{padding:25px 28px;min-height:380px}.a3d-book-content{font-size:14px}.a3d-book-content h2{font-size:24px}}
+
       .a3d-top{position:absolute;left:30px;top:22px;pointer-events:none;text-shadow:0 2px 14px #000}
       .a3d-top strong{display:block;font-size:25px;letter-spacing:.12em;font-weight:400}.a3d-top small{font:9px Arial;letter-spacing:.28em;color:#c4aa7d}
       .a3d-exit{position:absolute;right:25px;top:22px;background:#171716cc;border:1px solid #9e8965;color:#eee4d2;padding:10px 15px;cursor:pointer;letter-spacing:.08em}
@@ -140,7 +170,59 @@
     root.addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(b){keys[b.dataset.k]=true;setTimeout(()=>keys[b.dataset.k]=false,180);}});
     root.addEventListener('pointerdown',e=>{if(e.target===renderer?.domElement&&renderer.domElement.requestPointerLock&&innerWidth>700)renderer.domElement.requestPointerLock();});
   }
+  const rosarySets = {
+    Joyful: [
+      ['The Annunciation','Luke 1:26–38'],['The Visitation','Luke 1:39–45'],['The Nativity','Luke 2:1–20'],['The Presentation','Luke 2:22–38'],['The Finding of Jesus in the Temple','Luke 2:41–52']
+    ],
+    Sorrowful: [
+      ['The Agony in the Garden','Matthew 26:36–46'],['The Scourging at the Pillar','John 19:1'],['The Crowning with Thorns','Matthew 27:27–31'],['The Carrying of the Cross','John 19:16–17'],['The Crucifixion','Luke 23:33–46']
+    ],
+    Glorious: [
+      ['The Resurrection','Matthew 28:1–10'],['The Ascension','Acts 1:6–11'],['The Descent of the Holy Spirit','Acts 2:1–4'],['The Assumption of Mary','Tradition of the Church'],['The Coronation of Mary','Revelation 12:1']
+    ],
+    Luminous: [
+      ['The Baptism of Jesus','Matthew 3:13–17'],['The Wedding at Cana','John 2:1–11'],['The Proclamation of the Kingdom','Mark 1:14–15'],['The Transfiguration','Luke 9:28–36'],['The Institution of the Eucharist','Luke 22:14–20']
+    ]
+  };
+  function todaysMystery() {
+    const day=new Date().getDay();
+    return day===1||day===6?'Joyful':day===2||day===5?'Sorrowful':day===4?'Luminous':'Glorious';
+  }
+  const rosaryPrayers = {
+    creed: ['Apostles’ Creed','I believe in God, the Father almighty, Creator of heaven and earth, and in Jesus Christ, his only Son, our Lord, who was conceived by the Holy Spirit, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died and was buried; he descended into hell; on the third day he rose again from the dead; he ascended into heaven, and is seated at the right hand of God the Father almighty; from there he will come to judge the living and the dead. I believe in the Holy Spirit, the holy catholic Church, the communion of saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen.'],
+    ourFather: ['Our Father','Our Father, who art in heaven, hallowed be thy name; thy kingdom come; thy will be done on earth as it is in heaven. Give us this day our daily bread, and forgive us our trespasses, as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen.'],
+    hailMary: ['Hail Mary','Hail Mary, full of grace, the Lord is with thee. Blessed art thou among women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.'],
+    glory: ['Glory Be','Glory be to the Father, and to the Son, and to the Holy Spirit. As it was in the beginning, is now, and ever shall be, world without end. Amen.'],
+    fatima: ['Fatima Prayer','O my Jesus, forgive us our sins, save us from the fires of hell; lead all souls to heaven, especially those in most need of thy mercy.'],
+    queen: ['Hail, Holy Queen','Hail, Holy Queen, Mother of Mercy, our life, our sweetness and our hope. To thee do we cry, poor banished children of Eve. To thee do we send up our sighs, mourning and weeping in this valley of tears. Turn then, most gracious Advocate, thine eyes of mercy toward us, and after this our exile, show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary. Amen.']
+  };
+  function showRosaryBook() {
+    const root=$('#aevum-3d'),panel=document.createElement('div');panel.className='a3d-panel';
+    const set=todaysMystery(),mysteries=rosarySets[set];let page=0,decade=0,bead=0;
+    const saved=JSON.parse(localStorage.getItem('aevum.rosary.progress.v1')||'{}');
+    panel.innerHTML='<div class="a3d-book"><div class="a3d-book-head"><span>AEVUM · THE HOLY ROSARY</span><button data-book-close>✕</button></div><div class="a3d-book-layout"><aside class="a3d-book-side"><div class="a3d-book-cross">✠</div><h3>THE ROSARY</h3><p>Let us contemplate the life of Christ with Mary.</p><div class="a3d-book-rule"></div><small>TODAY’S MYSTERIES</small><strong>'+set.toUpperCase()+'</strong><small>'+new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'</small></aside><main class="a3d-book-page"><div class="a3d-book-page-no">PRAYER BOOK · '+(new Date().getFullYear())+'</div><div class="a3d-book-content"></div><div class="a3d-book-controls"><button data-prev>← PREVIOUS</button><span class="a3d-book-progress"></span><button data-next>NEXT →</button></div></main></div></div>';
+    root.appendChild(panel);
+    const content=$('.a3d-book-content',panel),progress=$('.a3d-book-progress',panel);
+    function render(){
+      let title='',body='',sub='';
+      if(page===0){title='Begin the Rosary';sub='In the name of the Father, and of the Son, and of the Holy Spirit. Amen.';body='<p>Make the Sign of the Cross. Hold the crucifix and pray the Apostles’ Creed.</p><h3>'+rosaryPrayers.creed[0]+'</h3><p>'+rosaryPrayers.creed[1]+'</p><h3>Opening prayers</h3><p><b>Our Father</b><br>'+rosaryPrayers.ourFather[1]+'</p><p><b>Three Hail Marys</b><br>'+rosaryPrayers.hailMary[1]+'</p><p><b>Glory Be</b><br>'+rosaryPrayers.glory[1]+'</p>';}
+      else if(page>=1&&page<=5){decade=page-1;const m=mysteries[decade];title=(decade+1)+(decade===0?'st':decade===1?'nd':decade===2?'rd':'th')+' Mystery';sub=m[0];body='<p class="a3d-scripture">SCRIPTURE · '+m[1]+'</p><p>Pause for a moment and contemplate this mystery in the life of Jesus and Mary.</p><h3>Our Father</h3><p>'+rosaryPrayers.ourFather[1]+'</p><div class="a3d-bead-count">';for(let n=1;n<=10;n++)body+='<span class="'+(n<=bead?'done':'')+'">'+n+'</span>';body+='</div><h3>Hail Mary · '+bead+' of 10</h3><p>'+rosaryPrayers.hailMary[1]+'</p><p class="a3d-rubric">After the tenth Hail Mary, pray the Glory Be and the Fatima Prayer.</p><div class="a3d-actions"><button data-bead>'+(bead>=10?'DECADE COMPLETE':'PRAYED · NEXT BEAD')+'</button></div>';}
+      else {title='Concluding Prayers';sub='The Rosary is complete';body='<h3>Glory Be</h3><p>'+rosaryPrayers.glory[1]+'</p><h3>Fatima Prayer</h3><p>'+rosaryPrayers.fatima[1]+'</p><h3>Hail, Holy Queen</h3><p>'+rosaryPrayers.queen[1]+'</p><p><b>V.</b> Pray for us, O holy Mother of God.<br><b>R.</b> That we may be made worthy of the promises of Christ.</p><p>Let us pray: O God, whose Only Begotten Son, by his life, death and resurrection, has purchased for us the rewards of eternal life, grant, we beseech thee, that while meditating on these mysteries of the most holy Rosary of the Blessed Virgin Mary, we may imitate what they contain and obtain what they promise, through the same Christ our Lord. Amen.</p><button data-finish>FINISH TODAY’S ROSARY</button>';}
+      content.innerHTML='<div class="a3d-book-ornament">✠</div><h2>'+title+'</h2><h4>'+sub+'</h4>'+body;
+      progress.textContent=page===0?'PREPARATION':page<=5?'DECADE '+page+' OF 5':'CLOSING PRAYERS';
+      const prev=$('[data-prev]',panel),next=$('[data-next]',panel);prev.disabled=page===0;next.disabled=page===6;
+    }
+    panel.addEventListener('click',e=>{
+      if(e.target.closest('[data-book-close]')||e.target===panel){panel.remove();return;}
+      if(e.target.closest('[data-prev]')){page=Math.max(0,page-1);bead=0;render();}
+      if(e.target.closest('[data-next]')){page=Math.min(6,page+1);bead=0;render();}
+      if(e.target.closest('[data-bead]')){if(bead<10){bead++;render();}else{page=Math.min(6,page+1);bead=0;render();}}
+      if(e.target.closest('[data-finish]')){localStorage.setItem('aevum.rosary.progress.v1',JSON.stringify({date:new Date().toISOString().slice(0,10),mystery:set,completed:true}));panel.remove();const st=JSON.parse(localStorage.getItem('aevum.spiritual.progress.v1')||'{}');st.date=new Date().toISOString().slice(0,10);st.done=st.done||{};st.done.rosary=true;localStorage.setItem('aevum.spiritual.progress.v1',JSON.stringify(st));}
+    });
+    render();
+  }
   function showActivity(id) {
+    if(id==='rosary'){showRosaryBook();return;}
     const a=activities[id];if(!a)return;
     const root=$('#aevum-3d'),panel=document.createElement('div');panel.className='a3d-panel';panel.innerHTML='<div class="a3d-paper"><small>AEVUM · '+new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})+'</small><h2>'+a[0]+'</h2><p><em>'+a[1]+'</em></p><p>'+a[2]+'</p>'+(id==='journal'?'<textarea placeholder="Write your reflection…" id="a3d-note"></textarea>':'')+'<div class="a3d-actions"><button data-close>Return to church</button><button data-done>Mark complete</button></div></div>';
     root.appendChild(panel);panel.addEventListener('click',e=>{if(e.target.closest('[data-close]')||e.target===panel)panel.remove();if(e.target.closest('[data-done]')){const st=JSON.parse(localStorage.getItem('aevum.spiritual.progress.v1')||'{}');st.date=new Date().toISOString().slice(0,10);st.done=st.done||{};st.done[id]=true;if(id==='journal')localStorage.setItem('aevum.spiritual.notes.v1',$('#a3d-note',panel).value||'');localStorage.setItem('aevum.spiritual.progress.v1',JSON.stringify(st));panel.remove();}});
