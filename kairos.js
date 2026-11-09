@@ -1,50 +1,48 @@
-/* Kairos: world switching is a presentation layer; existing planner storage and features remain unchanged. */
+/* Kairos workspace entry: the common landing page is the only place to choose a space. */
 (function(){
 'use strict';
 const spiritual=new Set(['bible','rosary','spbooks','prayers','journal']);
-const worldly=new Set(['cal','daily','up','books','words','quotes','week','chat']);
+const worldly=new Set(['cal','daily','up','books','words','quotes','week','chat','dash']);
 const $=s=>document.querySelector(s);
-let mode=localStorage.getItem('kairos.world')||'spiritual';
-function setMode(next,fromNav){
- mode=next==='worldly'?'worldly':'spiritual';
- localStorage.setItem('kairos.world',mode);
- document.documentElement.dataset.kairosWorld=mode;
- document.querySelectorAll('[data-world-mode]').forEach(b=>{const active=b.dataset.worldMode===mode;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
- document.querySelectorAll('.life-label').forEach(label=>{label.hidden=mode==='spiritual'?!label.textContent.includes('SPIRITUAL'):!label.textContent.includes('WORLDLY');});
- document.querySelectorAll('#tabs button[data-t]').forEach(b=>{
-  const t=b.dataset.t;
-  b.hidden=mode==='spiritual'?!spiritual.has(t)&&t!=='dash':!worldly.has(t)&&t!=='dash';
- });
- const active=document.querySelector('#tabs button.on')?.dataset.t;
- if(!fromNav&&active&&active!=='dash'&&!(mode==='spiritual'?spiritual:worldly).has(active)){
-  const home=$('#tabs [data-t="dash"]');if(home)home.click();
- }
- const eyebrow=document.querySelector('.topbar .eyebrow');
- if(eyebrow)eyebrow.innerHTML='<span class="eyebrow-dot"></span> '+(mode==='spiritual'?'SPIRITUAL LIFE':'WORLDLY LIFE');
+let current='';
+function showHome(){
+ current='';
+ document.body.classList.add('kairos-at-home');
+ const home=$('#kairos-home');if(home)home.hidden=false;
+ const shell=$('.app-shell');if(shell)shell.hidden=true;
+}
+function enterWorld(which){
+ current=which==='worldly'?'worldly':'spiritual';
+ document.body.classList.remove('kairos-at-home');
+ const home=$('#kairos-home');if(home)home.hidden=true;
+ const shell=$('.app-shell');if(shell)shell.hidden=false;
+ document.documentElement.dataset.kairosWorld=current;
+ const allow=current==='spiritual'?spiritual:worldly;
+ document.querySelectorAll('#tabs button[data-t]').forEach(b=>{b.hidden=!allow.has(b.dataset.t);});
+ const eyebrow=$('.topbar .eyebrow');
+ if(eyebrow)eyebrow.innerHTML='<span class="eyebrow-dot"></span> '+(current==='spiritual'?'FOR HEAVEN':'FOR WORLD');
  const title=$('#page-title');
- if(title&&(!active||active==='dash'))title.textContent=mode==='spiritual'?'Overview · Spiritual':'Overview · Worldly';
+ if(title)title.textContent=current==='spiritual'?'Spiritual life':'Overview';
+ const target=current==='spiritual'?'bible':'dash';
+ const button=$('#tabs [data-t="'+target+'"]');
+ if(button)button.click();
 }
 function decorateDashboard(){
  const root=$('#v-dash');if(!root)return;
- const hubs=root.querySelector('.life-hub-grid');
- if(hubs&&!hubs.dataset.kairos){
-  hubs.dataset.kairos='1';
-  hubs.innerHTML='<a class="life-hub spiritual-hub" href="#" data-life-hub="spiritual"><span>✝</span><div><small>PRAYER · SCRIPTURE · FORMATION</small><h2>Spiritual life</h2><p>Bible, Rosary, devotions and spiritual reading</p></div><b>↗</b></a><a class="life-hub worldly-hub" href="#" data-life-hub="worldly"><span>◈</span><div><small>WORK · LEARNING · STEWARDSHIP</small><h2>Worldly life</h2><p>Planning, books, goals and personal growth</p></div><b>↗</b></a>';
- }
- if(!root.querySelector('.kairos-dashboard-title')){
-  const h=document.createElement('div');h.className='kairos-dashboard-title';h.textContent='A considered life, lived with intention';
-  root.insertBefore(h,hubs||root.firstChild);
- }
+ const hubs=root.querySelector('.life-hub-grid');if(hubs)hubs.remove();
+ const title=root.querySelector('.kairos-dashboard-title');if(title)title.remove();
 }
 document.addEventListener('click',e=>{
- const toggle=e.target.closest('[data-world-mode]');
- if(toggle){e.preventDefault();setMode(toggle.dataset.worldMode,false);return;}
+ const entry=e.target.closest('[data-enter-world]');
+ if(entry){e.preventDefault();enterWorld(entry.dataset.enterWorld);return;}
+ if(e.target.closest('[data-home-return]')){e.preventDefault();showHome();return;}
  const nav=e.target.closest('#tabs button[data-t]');
- if(nav){if(spiritual.has(nav.dataset.t))setMode('spiritual',true);else if(worldly.has(nav.dataset.t))setMode('worldly',true);}
+ if(nav&&current==='spiritual'&&!spiritual.has(nav.dataset.t)){e.preventDefault();return;}
+ if(nav&&current==='worldly'&&!worldly.has(nav.dataset.t)){e.preventDefault();return;}
 });
-document.addEventListener('DOMContentLoaded',()=>{setMode(mode,true);decorateDashboard();});
-if(document.readyState!=='loading'){setMode(mode,true);decorateDashboard();}
+document.addEventListener('DOMContentLoaded',()=>{decorateDashboard();showHome();});
+if(document.readyState!=='loading'){decorateDashboard();showHome();}
 const oldRender=window.render;
-if(typeof oldRender==='function')window.render=function(){oldRender.apply(this,arguments);decorateDashboard();setMode(mode,true);};
-window.Kairos={setWorld:setMode};
+if(typeof oldRender==='function')window.render=function(){oldRender.apply(this,arguments);decorateDashboard();};
+window.Kairos={home:showHome,enter:enterWorld};
 })();
