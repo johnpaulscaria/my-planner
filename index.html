@@ -24,25 +24,25 @@
   <link rel="stylesheet" href="ios.css">
 </head>
 <body>
-<div class="app-shell">
+<section id="kairos-home" class="kairos-home" aria-label="Choose your Kairos workspace"><header class="home-header"><a class="home-brand" href="#" aria-label="Kairos home"><span class="home-mark">κ</span><span>KAIROS</span></a><div class="home-header-actions"><button id="home-alerts" type="button" aria-label="Alerts">♧</button><span class="home-avatar">JP</span></div></header><div class="home-content"><div class="home-intro"><span class="home-overline">TWO SPACES. A BALANCED LIFE.</span><h1>Make time for what<br>truly matters.</h1><p>Choose the path you want to give your time to today.</p></div><div class="home-choices"><button type="button" class="home-choice heaven-choice" data-enter-world="spiritual"><span class="choice-symbol">✝</span><span class="choice-copy"><strong>For Heaven</strong><small>FAITH · PRAYER · SCRIPTURE · FORMATION</small></span><span class="choice-arrow">↗</span></button><button type="button" class="home-choice world-choice" data-enter-world="worldly"><span class="choice-symbol">◈</span><span class="choice-copy"><strong>For World</strong><small>WORK · LEARNING · GOALS · GROWTH</small></span><span class="choice-arrow">↗</span></button></div></div><div class="home-footer"><span>FAITH · PURPOSE · GROWTH</span><span>LIVE WITH INTENTION</span></div></section><div class="app-shell">
   <aside class="sidebar">
     <a class="brand" href="#" aria-label="Kairos home">
       <span class="brand-mark kairos-mark">κ</span>
       <span class="brand-copy"><strong>Kairos</strong><small>A LIFE OF INTENTION</small></span>
     </a>
     <nav id="tabs" aria-label="Main navigation">
-      <div class="nav-label">YOUR SPACE</div>
+      <button class="nav-home" type="button" data-home-return>← <span>Home</span></button>
       <button data-t="dash"><span class="nav-icon">◫</span><span>Overview</span></button>
       <button data-t="cal"><span class="nav-icon">▦</span><span>Calendar</span></button>
       <button data-t="daily"><span class="nav-icon">☷</span><span>Daily tasks</span></button>
       <button data-t="up"><span class="nav-icon">↗</span><span>Upcoming</span></button>
-      <div class="nav-label nav-gap life-label">✝ SPIRITUAL LIFE</div>
+      
       <button data-t="bible"><span class="nav-icon">†</span><span>Holy Bible</span></button>
       <button data-t="rosary"><span class="nav-icon">✧</span><span>Holy Rosary</span></button>
       <button data-t="spbooks"><span class="nav-icon">▤</span><span>Spiritual reading</span></button>
       <button data-t="prayers"><span class="nav-icon">♡</span><span>Prayers &amp; devotions</span></button>
       <button data-t="journal"><span class="nav-icon">▧</span><span>Spiritual journal</span><span class="nav-badge">LOCK</span></button>
-      <div class="nav-label nav-gap life-label">🌍 WORLDLY LIFE</div>
+      
       <button data-t="books"><span class="nav-icon">▤</span><span>Reading room</span></button>
       <button data-t="words"><span class="nav-icon">Aa</span><span>Vocabulary</span></button>
       <button data-t="quotes"><span class="nav-icon">❝</span><span>Quotes</span></button>
@@ -67,7 +67,7 @@
         <p id="today-label">Make room for what matters.</p>
       </div>
       <div class="top-actions">
-        <div class="world-switch" role="group" aria-label="Choose workspace"><button type="button" class="world-button active" data-world-mode="spiritual" aria-pressed="true">Spiritual</button><span class="world-divider"></span><button type="button" class="world-button" data-world-mode="worldly" aria-pressed="false">Worldly</button></div>
+        <button type="button" class="top-button home-return" data-home-return>⌂ <span class="button-label">Home</span></button>
         <button id="acct" class="top-button"><span>☁</span><span class="button-label">Sign in</span></button>
         <button id="bell" class="top-button" aria-label="Alerts"><span>♧</span><span class="button-label">Alerts</span></button>
         <button id="theme-toggle" class="top-button" type="button" aria-label="Toggle appearance"><span id="theme-icon">◐</span><span class="button-label">Appearance</span></button>
