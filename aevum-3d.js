@@ -75,7 +75,7 @@
     const gold=mat('#a58b5e'), stone=mat('#c5b99f'), darkStone=mat('#5d5141'), wood=mat('#4a2c1b'), wood2=mat('#6c4729'), floor=mat('#6c6254'), roof=mat('#38332c'), glass= new THREE.MeshStandardMaterial({color:'#546f79',emissive:'#1b3440',emissiveIntensity:.5,roughness:.3});
     // Exterior approach and cathedral shell
     box(scene,80,.3,90,floor,0,-.22,0);box(scene,18,.2,12,mat('#82745e'),0,-.05,18);
-    box(scene,20,10,3,stone,0,5,-8);box(scene,3,10,25,stone,-11,5,3);box(scene,3,10,25,stone,11,5,3);box(scene,20,10,3,stone,0,5,-20);
+    box(scene,7,10,3,stone,-6.5,5,-8);box(scene,7,10,3,stone,6.5,5,-8);box(scene,3,10,25,stone,-11,5,3);box(scene,3,10,25,stone,11,5,3);box(scene,20,10,3,stone,0,5,-20);
     // nave floor and vaulted ceiling mass
     box(scene,18,.35,25,mat('#8d806b'),0,.05,3);box(scene,18,.5,25,roof,0,10,3);
     for(let z=-7;z<=13;z+=5){for(const x of [-8.5,8.5]){cylinder(scene,.48,.62,9,stone,x,4.5,z,20);cylinder(scene,.68,.68,.28,gold,x,8.9,z,20);arch(scene,x*.72,z-.1,gold);}}
