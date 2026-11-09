@@ -1336,3 +1336,27 @@ html[data-kairos-world="worldly"] #v-words .card b,
 html[data-kairos-world="worldly"] #v-words .stat>div strong{color:#292b25!important}
 html[data-kairos-world="worldly"] #v-words .row .mute,
 html[data-kairos-world="worldly"] #v-words .mute{color:#68685f!important}
+
+
+/* Vocabulary refinement: spacious, quiet paper-and-ink cards. */
+html[data-kairos-world="worldly"] #v-words{display:flex;flex-direction:column;gap:18px}
+html[data-kairos-world="worldly"] #v-words>.card{background:#242522!important;border:1px solid #46463f!important;border-radius:16px!important;padding:22px!important;color:#f1efe8!important;box-shadow:0 12px 30px #0003!important}
+html[data-kairos-world="worldly"] #v-words>.card:first-child .stat{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important;margin-top:18px!important}
+html[data-kairos-world="worldly"] #v-words>.card:first-child .stat>div{background:#30312d!important;border:1px solid #4b4b43!important;border-radius:12px!important;padding:16px 18px!important;min-height:82px!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:6px!important}
+html[data-kairos-world="worldly"] #v-words>.card:first-child .stat>div b,html[data-kairos-world="worldly"] #v-words>.card:first-child .stat>div strong{font-size:23px!important;line-height:1.1!important;color:#dfc58e!important}
+html[data-kairos-world="worldly"] #v-words>.card:first-child .stat>div span,html[data-kairos-world="worldly"] #v-words>.card:first-child .stat>div small{font-size:10px!important;color:#c1bfb5!important}
+html[data-kairos-world="worldly"] #v-words>.card:nth-child(2) .bar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;margin-bottom:16px!important}
+html[data-kairos-world="worldly"] #v-words>.card:nth-child(2) .bar b{color:#f2efe7!important;font:500 22px Georgia,serif!important}
+html[data-kairos-world="worldly"] #v-words #wq,html[data-kairos-world="worldly"] #v-words #wf{min-height:42px!important;background:#f4f1e9!important;color:#282923!important;border:1px solid #c9c2b3!important;border-radius:9px!important;padding:10px 13px!important}
+html[data-kairos-world="worldly"] #v-words #wq{flex:1!important;min-width:0!important}
+html[data-kairos-world="worldly"] #v-words #wf{max-width:160px!important}
+html[data-kairos-world="worldly"] #v-words #wlist{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+html[data-kairos-world="worldly"] #v-words #wlist>.row{display:flex!important;align-items:flex-start!important;gap:15px!important;min-width:0!important;margin:0!important;padding:18px!important;background:#eeece4!important;border:1px solid #d1cbbd!important;border-radius:13px!important;color:#292b28!important;box-shadow:0 4px 12px #0000000c!important}
+html[data-kairos-world="worldly"] #v-words #wlist>.row .grow{flex:1!important;min-width:0!important;display:flex!important;flex-direction:column!important;gap:8px!important}
+html[data-kairos-world="worldly"] #v-words #wlist>.row .grow>b{font:600 18px/1.25 Georgia,serif!important;color:#292b28!important;letter-spacing:-.01em!important}
+html[data-kairos-world="worldly"] #v-words #wlist>.row .grow>div:nth-child(2){color:#42443e!important;font-size:13px!important;line-height:1.55!important}
+html[data-kairos-world="worldly"] #v-words #wlist>.row .grow>div.mute{color:#77766d!important;font-size:10px!important;line-height:1.45!important}
+html[data-kairos-world="worldly"] #v-words #wlist>.row .tag{display:inline-flex!important;align-self:flex-start!important;padding:4px 8px!important;border-radius:20px!important;background:#ded4bb!important;color:#554629!important;border:1px solid #c9b98f!important;font-size:9px!important}
+html[data-kairos-world="worldly"] #v-words #wlist>.row button{flex:none!important;background:#373a36!important;color:#f3f0e7!important;border:1px solid #55594f!important;border-radius:8px!important;padding:7px 11px!important;font-size:10px!important}
+html[data-kairos-world="worldly"] #v-words #wlist>.mute{grid-column:1/-1;padding:22px!important;color:#c9c5b9!important}
+@media(max-width:760px){html[data-kairos-world="worldly"] #v-words #wlist{grid-template-columns:1fr!important}html[data-kairos-world="worldly"] #v-words>.card{padding:16px!important}html[data-kairos-world="worldly"] #v-words>.card:first-child .stat{gap:7px!important}html[data-kairos-world="worldly"] #v-words>.card:first-child .stat>div{padding:12px 10px!important;min-height:70px!important}}
