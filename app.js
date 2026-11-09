@@ -230,10 +230,60 @@ function dashBar() {
 }
 function rDash() {
   const r = range(), s = stats(r);
-  $('#v-dash').innerHTML = `<div class="card">${dashBar()}</div>
-  <div class="card"><b>📚 Reading</b><div class="stat" style="margin-top:8px">${box(s.pages, 'pages read')}${box(s.days, 'reading days')}${box(s.avg, 'avg pages/day')}${box(s.best, 'best day')}${box(s.fin, 'books finished')}${box(s.started, 'books started')}</div><div style="margin-top:12px">${chart(r)}</div>${s.top.length ? '<div style="margin-top:10px">' + s.top.map(([id, n]) => `<div class="row"><span class="grow">${esc(bname(id))}</span><span class="mute">${n} pages</span></div>`).join('') + '</div>' : ''}</div>
-  <div class="card"><b>🔤 Vocabulary</b><div class="stat" style="margin-top:8px">${box(s.words, 'new words')}${box(s.mast, 'mastered')}${box(S.words.length, 'words in total')}</div></div>
-  <div class="card"><b>✅ Daily tasks and events</b><div class="stat" style="margin-top:8px">${box(s.pct + '%', 'tasks done')}${box(s.full, 'perfect days')}${box(s.miss, 'missed days')}${box(s.ev, 'events')}</div></div>`;
+  const greeting = new Date().getHours() < 12 ? 'Good morning' : new Date().getHours() < 18 ? 'Good afternoon' : 'Good evening';
+  const quick = [
+    ['cal','▦','Calendar','See your schedule and plan ahead'],
+    ['daily','☷','Daily tasks','Keep your priorities moving'],
+    ['books','▤','Reading room','Track books, pages and notes'],
+    ['words','Aa','Vocabulary','Build your personal word bank'],
+    ['week','◷','Weekly review','Review progress and reset'],
+    ['quotes','❝','Collected thoughts','Keep ideas worth returning to']
+  ];
+  $('#v-dash').innerHTML = `
+    <section class="world-welcome">
+      <div class="world-welcome-copy">
+        <div class="world-kicker">KAIROS / YOUR PERSONAL WORKSPACE</div>
+        <h2>${greeting}.</h2>
+        <p>A clear view of what you're building, learning and making time for.</p>
+      </div>
+      <div class="world-welcome-actions">
+        <button class="world-outline-action" data-t="cal">View calendar <span>↗</span></button>
+        <button class="p world-create-action" data-a="new">＋ Add an event</button>
+      </div>
+    </section>
+    <section class="world-metrics">
+      <article class="world-metric metric-gold"><span>READING</span><strong>${s.pages}</strong><small>Pages read · ${r.label}</small></article>
+      <article class="world-metric metric-olive"><span>LEARNING</span><strong>${s.words}</strong><small>Words added · ${r.label}</small></article>
+      <article class="world-metric metric-rose"><span>CONSISTENCY</span><strong>${s.pct}%</strong><small>Tasks completed</small></article>
+      <article class="world-metric metric-stone"><span>ON THE CALENDAR</span><strong>${s.ev}</strong><small>Events in this period</small></article>
+    </section>
+    <section class="world-dashboard-grid">
+      <article class="world-feature-card world-reading-card">
+        <div class="world-card-heading"><div><span class="world-card-kicker">YOUR READING LIFE</span><h3>Reading overview</h3></div><button class="world-text-link" data-t="books">Open reading room ↗</button></div>
+        <div class="world-reading-stats">
+          <div><strong>${s.days}</strong><span>Reading days</span></div>
+          <div><strong>${s.avg}</strong><span>Average pages / day</span></div>
+          <div><strong>${s.fin}</strong><span>Books completed</span></div>
+        </div>
+        <div class="world-chart-wrap">${chart(r)}</div>
+        ${s.top.length ? '<div class="world-top-books">'+s.top.slice(0,3).map(([id,n])=>'<div class="world-book-row"><span>'+esc(bname(id))+'</span><b>'+n+' pages</b></div>').join('')+'</div>' : '<p class="world-empty-note">Your reading activity will appear here as you log pages.</p>'}
+      </article>
+      <article class="world-feature-card world-focus-card">
+        <div class="world-card-heading"><div><span class="world-card-kicker">MAKE TODAY COUNT</span><h3>Your focus</h3></div><span class="world-focus-mark">✳</span></div>
+        <p class="world-focus-intro">A small set of useful places to keep your day in motion.</p>
+        <div class="world-focus-list">
+          <button data-t="daily"><span class="world-focus-icon">☷</span><span><b>Daily tasks</b><small>What needs your attention</small></span><i>↗</i></button>
+          <button data-t="cal"><span class="world-focus-icon">▦</span><span><b>Calendar</b><small>Appointments and plans</small></span><i>↗</i></button>
+          <button data-t="week"><span class="world-focus-icon">◷</span><span><b>Weekly review</b><small>Look back and plan forward</small></span><i>↗</i></button>
+        </div>
+      </article>
+    </section>
+    <section class="world-tools-section">
+      <div class="world-section-heading"><div><span class="world-card-kicker">YOUR TOOLKIT</span><h3>Pick up where you left off</h3></div><span>QUICK ACCESS</span></div>
+      <div class="world-tools-grid">${quick.map(([tab,icon,title,desc])=>'<button class="world-tool-tile" data-t="'+tab+'"><span class="world-tool-icon">'+icon+'</span><span class="world-tool-copy"><b>'+title+'</b><small>'+desc+'</small></span><span class="world-tool-arrow">↗</span></button>').join('')}</div>
+    </section>
+    <div class="world-range-footer">${dashBar()}</div>
+  `;
 }
 
 /* books */
