@@ -17,6 +17,8 @@ function enterWorld(which){
  const home=$('#kairos-home');if(home)home.hidden=true;
  const shell=$('.app-shell');if(shell)shell.hidden=false;
  document.documentElement.dataset.kairosWorld=current;
+ document.body.dataset.kairosWorld=current;
+ document.documentElement.dataset.theme=current==='worldly'?'light':'dark';
  const allow=current==='spiritual'?spiritual:worldly;
  document.querySelectorAll('#tabs button[data-t]').forEach(b=>{b.hidden=!allow.has(b.dataset.t);});
  const eyebrow=$('.topbar .eyebrow');
