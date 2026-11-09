@@ -13,13 +13,39 @@
     bible: ['Daily Scripture', 'The Bible lectern', 'Open today’s Scripture reading and spend a moment with the Word.'],
     journal: ['Spiritual Journal', 'Your prayer notebook', 'Write a private reflection or note an intention for today.']
   };
+  let GLTFLoaderClass = null;
   function loadScript() {
-    if (window.THREE) return Promise.resolve();
+    if (window.THREE && GLTFLoaderClass) return Promise.resolve();
     if (window.__aevumThreePromise) return window.__aevumThreePromise;
-    window.__aevumThreePromise = new Promise((resolve, reject) => {
-      const s = document.createElement('script'); s.src = THREE_URL; s.onload = resolve; s.onerror = reject; document.head.appendChild(s);
+    window.__aevumThreePromise = Promise.all([
+      import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js'),
+      import('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js')
+    ]).then(([three, loader]) => {
+      window.THREE = three;
+      GLTFLoaderClass = loader.GLTFLoader;
     });
     return window.__aevumThreePromise;
+  }
+  function loadCathedralAssets() {
+    if (!GLTFLoaderClass || !scene) return;
+    const loader = new GLTFLoaderClass();
+    const assets = [
+      {url:'https://cdn.3dassets.dev/assets/23045/v1/model.glb', name:'Angel statue', position:[-7.6,0.15,2], scale:1.0, rotation:[0,Math.PI,0]},
+      {url:'https://cdn.3dassets.dev/assets/23058/v1/model.glb', name:'Cathedral nave asset', position:[0,0,0], scale:1.0, rotation:[0,0,0], optional:true}
+    ];
+    // The angel is a separate CC0 carved model. The nave scene is deliberately
+    // not overlaid yet: its cutaway layout needs a dedicated navigation pass.
+    loader.load(assets[0].url, gltf => {
+      const model = gltf.scene;
+      model.name = assets[0].name;
+      model.position.set(...assets[0].position);
+      model.scale.setScalar(assets[0].scale);
+      model.rotation.y = Math.PI;
+      model.traverse(node => { if (node.isMesh) { node.castShadow = true; node.receiveShadow = true; } });
+      scene.add(model);
+      const placeholder = scene.children.find(node => node.isMesh && node.geometry && node.position.x === -7.6 && node.position.y > 1.0);
+      if (placeholder) placeholder.visible = false;
+    }, undefined, error => console.warn('Aevum statue asset could not be loaded', error));
   }
   function addStyles() {
     if ($('#aevum-3d-style')) return;
@@ -163,6 +189,7 @@
     clock=new THREE.Clock();
     renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;
     $('#aevum-3d').prepend(renderer.domElement);
+    loadCathedralAssets();
   }
   function ui() {
     const root=document.createElement('div');root.id='aevum-3d';root.innerHTML='<div class="a3d-top"><strong>AEVUM</strong><small>A QUIET PLACE TO RETURN</small></div><button class="a3d-exit">← RETURN</button><div class="a3d-prompt"><b></b><small>PRESS E TO INTERACT</small></div><div class="a3d-hint">W A S D · WALK &nbsp;&nbsp; MOUSE · LOOK &nbsp;&nbsp; E · INTERACT &nbsp;&nbsp; ESC · CLOSE</div><div class="a3d-mobile"><button data-k="KeyW">↑</button><button data-k="KeyA">←</button><button data-k="KeyS">↓</button><button data-k="KeyD">→</button></div>';
