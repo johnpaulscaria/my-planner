@@ -116,13 +116,12 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="config.js"></script>
 <script src="app.js"></script>
-<script src="personal.js"></script>
 <script src="upgrade.js"></script>
 <script src="kairos.js"></script>
 <script src="aevum-spiritual.js?v=cathedral-image-20261110-1"></script>
 <script>
 (function(){
-  const labels={spbooks:'Spiritual reading',prayers:'Prayers & devotions',cal:'Calendar',daily:'Daily tasks',books:'Reading room',words:'Word bank',quotes:'Quotes',dash:'Overview',up:'Upcoming',week:'Weekly review',chat:'Your companion',journal:'Private journal',rosary:'Daily rosary',bible:'Bible reading'};
+  const labels={cal:'Calendar',daily:'Daily tasks',books:'Reading room',words:'Word bank',quotes:'Quotes',dash:'Overview',up:'Upcoming',week:'Weekly review',chat:'Your companion',journal:'Private journal',rosary:'Daily rosary',bible:'Bible reading'};
   function update(){const b=document.querySelector('#tabs button.on');if(!b)return;const h=document.getElementById('page-title');if(h)h.textContent=labels[b.dataset.t]||'My Planner';}
   document.getElementById('tabs').addEventListener('click',()=>setTimeout(update,0));
   const d=document.getElementById('today-label');if(d)d.textContent=new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'});
