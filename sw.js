@@ -1,4 +1,4 @@
-const V = 'kairos-image-cathedral-bwg-20261110-1';
+const V = 'kairos-world-sections-palette-20261110-2';
 const SHELL = [
   './', 'index.html', 'style.css', 'ios.css', 'world-theme.css', 'world-theme.css?v=black-white-gold-20261110-1', 'app.js', 'personal.js',
   'upgrade.js', 'kairos.js', 'aevum-spiritual.js?v=cathedral-image-20261110-1', 'aevum-spiritual.css?v=cathedral-image-20261110-1', 'images/kairos-rosary.svg', 'images/kairos-bible.svg', 'images/kairos-home-landscape.svg', 'config.js', 'manifest.webmanifest',
