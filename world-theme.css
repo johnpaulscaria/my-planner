@@ -1277,3 +1277,48 @@ html[data-kairos-world="worldly"] #v-daily .routine-habit-item button{color:#d2b
  html[data-kairos-world="worldly"] #v-daily .routine-section-head{align-items:flex-start}
  html[data-kairos-world="worldly"] #v-daily .habit-streak-strip{gap:4px}
 }
+
+
+/* Vocabulary: replace the heavy green panels with warm paper and graphite. */
+html[data-kairos-world="worldly"] #v-words .card,
+html[data-kairos-world="worldly"] #v-words .word-card,
+html[data-kairos-world="worldly"] #v-words .row,
+html[data-kairos-world="worldly"] #v-words .stat>div,
+html[data-kairos-world="worldly"] #v-words .item,
+html[data-kairos-world="worldly"] #v-words #wlist>div{
+  background:#e9e5da!important;
+  border:1px solid #c9c1ae!important;
+  color:#282a27!important;
+  box-shadow:0 5px 16px #0002!important;
+}
+html[data-kairos-world="worldly"] #v-words .card .bar b,
+html[data-kairos-world="worldly"] #v-words .row b,
+html[data-kairos-world="worldly"] #v-words .stat strong,
+html[data-kairos-world="worldly"] #v-words .item strong,
+html[data-kairos-world="worldly"] #v-words #wlist b{
+  color:#282a27!important;
+}
+html[data-kairos-world="worldly"] #v-words .row .mute,
+html[data-kairos-world="worldly"] #v-words .mute,
+html[data-kairos-world="worldly"] #v-words small{
+  color:#66665e!important;
+}
+html[data-kairos-world="worldly"] #v-words .tag{
+  background:#d9c89e!important;color:#44391f!important;border:1px solid #b9a36d!important;
+}
+html[data-kairos-world="worldly"] #v-words button{
+  background:#343a38!important;color:#f4f0e6!important;border:1px solid #59625b!important;
+}
+html[data-kairos-world="worldly"] #v-words button.p{
+  background:#c9ad70!important;color:#1d1b15!important;border:1px solid #c9ad70!important;
+}
+html[data-kairos-world="worldly"] #v-words input,
+html[data-kairos-world="worldly"] #v-words select{
+  background:#fbfaf5!important;color:#282a27!important;border:1px solid #c5bdab!important;
+}
+html[data-kairos-world="worldly"] #v-words .stat>div b,
+html[data-kairos-world="worldly"] #v-words .stat>div strong{color:#8b7040!important}
+/* Exactly one workspace page is visible at a time, including after scroll or tab changes. */
+html[data-kairos-world="worldly"] .app-shell .sec:not(.on){display:none!important}
+html[data-kairos-world="worldly"] .app-shell .sec.on{display:block!important}
+html[data-kairos-world="worldly"] .app-shell .sec[hidden]{display:none!important}
