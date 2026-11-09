@@ -294,7 +294,7 @@ const bookPalette = b => {
     literary: ['#183c32','#c9a96e','#f1ecdf'], philosophy: ['#24364a','#c5a15b','#f0ede4'], leadership: ['#193d35','#c8a45e','#f2eddf'],
     history: ['#3b3428','#c8a45e','#f4eddd'], business: ['#183d3b','#c7a45f','#f2eee3'],
     fiction: ['#44304a','#c99c87','#f4e9e3'],
-    science: ['#183f4b','#81b9b1','#e8f0ec'], poetry: ['#493748','#d5ad9d','#f3ebe4']
+    science: ['#183f4b','#81b9b1','#e8f0ec'], poetry: ['#493748','#d5ad9d','#f3ebe4'], spiritual: ['#252b3d','#c8ad70','#f3efe4']
   };
   const p = palettes[mood] || palettes.literary;
   return '--book-ink:'+p[0]+';--book-accent:'+p[1]+';--book-paper:'+p[2];
@@ -624,7 +624,7 @@ function openBook(id) {
   $('#sheet').innerHTML = `<h3 style="margin:0 0 6px">${id ? 'Book' : 'New book'}</h3>
   <label>Title</label><input id="b-t" value="${esc(b.title)}">
   <div class="two"><div><label>Author</label><input id="b-a" value="${esc(b.author)}"></div><div><label>Total pages</label><input id="b-p" type="number" min="1" value="${b.pages || ''}"></div></div>
-  <div class="two"><div><label>Status</label><select id="b-s">${[['want', 'Want to read'], ['reading', 'Reading'], ['done', 'Finished']].map(([v, l]) => `<option value="${v}" ${b.status === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div><div><label>Reading atmosphere</label><select id="b-mood">${[['business','Business'],['leadership','Leadership'],['philosophy','Philosophy'],['history','History'],['science','Science'],['literary','Literary'],['fiction','Fiction'],['poetry','Poetry']].map(([v,l]) => `<option value="${v}" ${(b.mood || 'literary') === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div></div><div class="two"><div><label>My rating</label><select id="b-r">${[0, 1, 2, 3, 4, 5].map(n => `<option value="${n}" ${b.rating === n ? 'selected' : ''}>${n ? '★'.repeat(n) : 'Not rated'}</option>`).join('')}</select></div></div>
+  <div class="two"><div><label>Status</label><select id="b-s">${[['want', 'Want to read'], ['reading', 'Reading'], ['done', 'Finished']].map(([v, l]) => `<option value="${v}" ${b.status === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div><div><label>Reading atmosphere</label><select id="b-mood">${[['business','Business'],['leadership','Leadership'],['philosophy','Philosophy'],['history','History'],['science','Science'],['literary','Literary'],['fiction','Fiction'],['poetry','Poetry'],['spiritual','Spiritual']].map(([v,l]) => `<option value="${v}" ${(b.mood || 'literary') === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div></div><div class="two"><div><label>My rating</label><select id="b-r">${[0, 1, 2, 3, 4, 5].map(n => `<option value="${n}" ${b.rating === n ? 'selected' : ''}>${n ? '★'.repeat(n) : 'Not rated'}</option>`).join('')}</select></div></div>
   <div class="two"><div><label>Started</label><input id="b-st" type="date" value="${b.started || ''}"></div><div><label>Finished</label><input id="b-f" type="date" value="${b.finished || ''}"></div></div>
   <label>My thoughts and review</label><textarea id="b-th" rows="5">${esc(b.thoughts)}</textarea>
   <label>Favourite quotes and notes</label><textarea id="b-n" rows="3">${esc(b.notes)}</textarea>
