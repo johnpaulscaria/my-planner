@@ -1,4 +1,4 @@
-const V = 'aevum-3d-cathedral-v2';
+const V = 'aevum-3d-cathedral-v3';
 const SHELL = [
   './', 'index.html', 'style.css', 'ios.css', 'world-theme.css', 'world-theme.css?v=20261109b', 'app.js', 'personal.js',
   'upgrade.js', 'kairos.js', 'aevum-spiritual.css', 'aevum-spiritual.js', 'aevum-3d.js', 'images/kairos-rosary.svg', 'images/kairos-bible.svg', 'images/kairos-home-landscape.svg', 'config.js', 'manifest.webmanifest',
