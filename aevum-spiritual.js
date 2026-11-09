@@ -6,13 +6,13 @@ const JOURNAL='aevum.spiritual.notes.v1';
 const $=(s,r=document)=>r.querySelector(s);
 const today=()=>new Date().toISOString().slice(0,10);
 const load=()=>{try{const x=JSON.parse(localStorage.getItem(STORE)||'{}');return x.date===today()?x:{date:today(),done:{},mysteries:[],extras:[]};}catch(e){return {date:today(),done:{},mysteries:[],extras:[]};}};
-let state=load(), player={x:50,y:76},keys={},target=null,dialog=null,game=null;
+let state=load(), player={x:50,y:88},keys={},target=null,dialog=null,game=null;
 const zones=[
- {id:'mass',x:38,y:69,title:'Holy Mass',sub:'Take your place in the pews',hint:'Sit quietly and participate in the Holy Mass.'},
- {id:'prayer',x:53,y:38,title:'Personal Prayer',sub:'Before the altar',hint:'Spend a few quiet minutes in personal prayer.'},
- {id:'rosary',x:17,y:49,title:'Holy Rosary',sub:'At the statue of Our Lady',hint:'Pray the Rosary with the mysteries for today.'},
- {id:'bible',x:78,y:57,title:'Bible Reading',sub:'At the lectern',hint:'Read Scripture slowly and reflect on one passage.'},
- {id:'journal',x:83,y:75,title:'Spiritual Journal',sub:'A quiet place to reflect',hint:'Write down what is on your heart.'}
+ {id:'mass',x:43,y:70,title:'Holy Mass',sub:'A place in the pews',hint:'Take your place and spend a moment in the presence of God.',object:'pew',mark:'✝'},
+ {id:'prayer',x:54,y:34,title:'Personal Prayer',sub:'Before the altar',hint:'Spend a few quiet minutes in prayer before the altar.',object:'kneeler',mark:'✝'},
+ {id:'rosary',x:19,y:47,title:'Holy Rosary',sub:'At Our Lady’s statue · Rosary book',hint:'Open the Rosary book for today’s mysteries.',object:'rosary-book',mark:'✧'},
+ {id:'bible',x:77,y:55,title:'Bible Reading',sub:'The open Bible on the lectern',hint:'Open the Bible and spend time with today’s reading.',object:'bible-book',mark:'†'},
+ {id:'journal',x:83,y:76,title:'Spiritual Journal',sub:'Your quiet reflection space',hint:'Write a reflection for today.',object:'journal-book',mark:'✎'}
 ];
 const persist=()=>localStorage.setItem(STORE,JSON.stringify(state));
 const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -29,7 +29,7 @@ function ensure(){
 function render(){
  if(!game)return;
  $('.aevum-date',game).textContent=new Date().toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short',year:'numeric'});
- $('.aevum-zones',game).innerHTML=zones.map(z=>'<button class="aevum-zone" data-zone="'+z.id+'" style="left:'+z.x+'%;top:'+z.y+'%"><span class="aevum-key">'+(state.done[z.id]?'✓':'E')+'</span><span class="zone-label">'+z.title+'<small>'+z.sub+'</small></span></button>').join('');
+ $('.aevum-zones',game).innerHTML=zones.map(z=>'<button class="aevum-object '+z.object+'" data-zone="'+z.id+'" style="left:'+z.x+'%;top:'+z.y+'%" aria-label="Open '+z.title+'"><span class="object-art"><i>'+z.mark+'</i></span><span class="object-caption">'+z.title+(state.done[z.id]?' <b>✓</b>':'')+'<small>'+z.sub+'</small></span><span class="object-prompt">E · Interact</span></button>').join('');
  const items=[['mass','Holy Mass','Take a seat in the pews'],['prayer','Personal Prayer','Quiet time before the altar'],['rosary','Holy Rosary','Pray the mysteries with Mary'],['bible','Bible Reading','Spend time with Scripture'],['journal','Spiritual Journal','Write a short reflection']];
  const done=items.filter(x=>state.done[x[0]]).length;
  $('.aevum-plan-items',game).innerHTML=items.map(x=>'<div class="aevum-plan-row"><span class="aevum-check '+(state.done[x[0]]?'done':'')+'">'+(state.done[x[0]]?'✓':'')+'</span><span>'+x[1]+'<small>'+(state.done[x[0]]?'Completed today':x[2])+'</small></span></div>').join('');
@@ -48,14 +48,14 @@ function finish(id){state.done[id]=true;persist();render();closeDialog();showDia
 function interact(id){
  const z=zones.find(x=>x.id===id);if(!z)return;
  if(id==='mass'){
- showDialog('Holy Mass','<p>'+z.hint+'</p><p>Take a moment to remember the readings, the prayers and the Eucharist. When you are ready, mark your participation for today.</p>',(state.done.mass?'<button data-game="close">Close</button>':'<button class="primary" data-complete="mass">I have attended Mass</button>'));
+ showDialog('Holy Mass','<p>'+z.hint+'</p><p>Be still. Bring your intentions, listen to the Word, and unite yourself with the sacrifice of the Mass.</p>',(state.done.mass?'<button data-game="close">Close</button>':'<button class="primary" data-complete="mass">Mark Holy Mass attended</button>'));
  }else if(id==='prayer'){
  showDialog('Personal Prayer','<p>'+z.hint+'</p><textarea id="aevum-prayer-note" rows="3" placeholder="A short intention (optional)…"></textarea>',(state.done.prayer?'<button data-game="close">Close</button>':'<button class="primary" data-complete="prayer">Complete personal prayer</button>'));
  }else if(id==='rosary'){
  const mysteries=['Joyful Mysteries','Luminous Mysteries','Sorrowful Mysteries','Glorious Mysteries'];
- showDialog('Holy Rosary','<p>Choose the mysteries you prayed today. The weekday tradition can guide your choice, but you may pray any set.</p>'+mysteries.map((m,i)=>'<label><input type="checkbox" data-mystery="'+i+'" '+(state.mysteries.includes(i)?'checked':'')+'> <span>'+m+'</span></label>').join('')+'<p>'+state.mysteries.length+' of 4 mystery sets selected.</p>', '<button data-game="close">Close</button><button class="primary" data-save-rosary>Save Rosary progress</button>');
+ const weekday=new Date().getDay();const todayMystery=weekday===0||weekday===3?'Glorious Mysteries':weekday===1||weekday===6?'Joyful Mysteries':weekday===2||weekday===5?'Sorrowful Mysteries':'Luminous Mysteries';const prayers=['Sign of the Cross','Apostles’ Creed','Our Father','Three Hail Marys','Glory Be'];const decades=['The First Mystery','The Second Mystery','The Third Mystery','The Fourth Mystery','The Fifth Mystery'];showDialog('Today’s Holy Rosary','<div class="rosary-today"><div class="rosary-date">'+new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})+'</div><div class="rosary-mystery">'+todayMystery+'</div><p>Begin with the introductory prayers, then meditate on each mystery with one Our Father, ten Hail Marys and the Glory Be.</p><h3>Opening prayers</h3>'+prayers.map((p,i)=>'<div class="rosary-step"><span>'+(i+1)+'</span>'+p+'</div>').join('')+'<h3>Five decades</h3>'+decades.map((p,i)=>'<div class="rosary-step"><span>'+(i+1)+'</span>'+p+' <small>Our Father · 10 Hail Marys · Glory Be</small></div>').join('')+'<p class="rosary-closing">Conclude with the Hail Holy Queen and the Sign of the Cross.</p></div>',(state.done.rosary?'<button data-game="close">Close</button>':'<button class="primary" data-complete="rosary">I have prayed today’s Rosary</button>'));
  }else if(id==='bible'){
- showDialog('Bible Reading','<p>'+z.hint+'</p><textarea id="aevum-bible-note" rows="4" placeholder="Passage / verse and one thought to carry with you…"></textarea>',(state.done.bible?'<button data-game="close">Close</button>':'<button class="primary" data-complete="bible">Mark reading complete</button>'));
+ const readings=[['Psalm 23:1–6','The Lord is my shepherd; I shall not want.'],['Matthew 6:25–34','Do not worry about tomorrow, for tomorrow will worry about itself.'],['John 15:1–11','Remain in me, as I also remain in you.'],['Romans 12:1–12','Be joyful in hope, patient in affliction, faithful in prayer.'],['Isaiah 40:28–31','Those who hope in the Lord will renew their strength.'],['Luke 10:38–42','Mary has chosen what is better, and it will not be taken away from her.'],['Philippians 4:4–9','The peace of God, which transcends all understanding, will guard your hearts.']];const reading=readings[(new Date().getDay()+6)%7];showDialog('Today’s Bible Reading','<div class="bible-page"><div class="bible-kicker">DAILY SCRIPTURE</div><h3>'+reading[0]+'</h3><blockquote>“'+reading[1]+'”</blockquote><p>Read the full passage in your Bible. Sit with one line that speaks to you today.</p><textarea id="aevum-bible-note" rows="3" placeholder="A verse or thought to remember (optional)…"></textarea></div>',(state.done.bible?'<button data-game="close">Close</button>':'<button class="primary" data-complete="bible">Mark reading complete</button>'));
  }else if(id==='journal'){
  let note=localStorage.getItem(JOURNAL)||'';
  showDialog('Spiritual Journal','<p>A small private reflection saved in this browser. Your existing encrypted journal remains available in the main planner.</p><textarea id="aevum-journal-note" rows="6" placeholder="What are you grateful for? What would you like to bring to prayer?">'+esc(note)+'</textarea>','<button data-game="close">Close</button><button class="primary" data-save-journal>Save reflection</button>');
@@ -87,7 +87,7 @@ function onClick(e){
  const g=e.target.closest('[data-game]');if(g){const action=g.dataset.game;if(action==='close'){closeDialog();return;}if(action==='plan'){openPlan();return;}if(action==='extras'){openExtras();return;}if(action==='journal'){interact('journal');return;}if(action==='home'||action==='exit'){exit();return;}}
  if(e.target.classList.contains('aevum-modal'))closeDialog();
 }
-function enter(){ensure();state=load();game.hidden=false;document.body.style.overflow='hidden';if(movementTimer){clearInterval(movementTimer);movementTimer=null;}render();}
+function enter(){ensure();state=load();player={x:50,y:88};game.hidden=false;document.body.style.overflow='hidden';if(movementTimer){clearInterval(movementTimer);movementTimer=null;}render();}
 function exit(){if(game)game.hidden=true;document.body.style.overflow='';closeDialog();const home=$('#kairos-home');if(home)home.hidden=false;const shell=$('.app-shell');if(shell)shell.hidden=true;document.body.classList.add('kairos-at-home');}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-enter-world="spiritual"]');if(b){e.preventDefault();enter();}});
 document.addEventListener('click',e=>{if(e.target.closest('[data-home-return]')&&game&&!game.hidden){e.preventDefault();exit();}});
