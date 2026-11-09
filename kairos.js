@@ -10,6 +10,7 @@ function setMode(next,fromNav){
  localStorage.setItem('kairos.world',mode);
  document.documentElement.dataset.kairosWorld=mode;
  document.querySelectorAll('[data-world-mode]').forEach(b=>{const active=b.dataset.worldMode===mode;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
+ document.querySelectorAll('.life-label').forEach(label=>{label.hidden=mode==='spiritual'?!label.textContent.includes('SPIRITUAL'):!label.textContent.includes('WORLDLY');});
  document.querySelectorAll('#tabs button[data-t]').forEach(b=>{
   const t=b.dataset.t;
   b.hidden=mode==='spiritual'?!spiritual.has(t)&&t!=='dash':!worldly.has(t)&&t!=='dash';
