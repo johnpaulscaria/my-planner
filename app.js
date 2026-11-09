@@ -82,34 +82,40 @@ function habRows(ds) {
   return act.map(h => { const dn = hdone(h, ds), auto = !!h.auto; return `<label class="row"><input type="checkbox" data-a="hab" data-h="${h.id}" data-d="${ds}" ${dn ? 'checked' : ''} ${fut || auto ? 'disabled' : ''}><span class="grow ${dn ? 'done' : ''}">${esc(h.t)}${auto ? ' <span class="mute">(' + (h.auto === 'read' ? 'ticks when you log pages' : 'ticks when you add a word') + ')</span>' : ''}</span></label>`; }).join('');
 }
 function rCal() {
-  const y=view.getFullYear(),m=view.getMonth(),lead=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
-  const monthName=view.toLocaleString('en',{month:'long',year:'numeric'});
-  let h=`<section class="calendar-workspace">
-    <header class="calendar-heading">
-      <div><div class="calendar-kicker">YOUR SCHEDULE</div><h2>${monthName}</h2><p>Keep your plans clear and your days in view.</p></div>
-      <div class="calendar-controls"><button class="calendar-today" data-a="now">Today</button><button class="calendar-arrow" aria-label="Previous month" data-a="prev">‹</button><button class="calendar-arrow" aria-label="Next month" data-a="next">›</button></div>
-    </header>
-    <div class="calendar-month-grid">
-      <div class="calendar-weekdays">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>'<span>'+x+'</span>').join('')}</div>
-      <div class="calendar-days">`;
-  for(let i=0;i<lead;i++)h+='<div class="calendar-blank"></div>';
-  for(let d=1;d<=dim;d++){
-    const ds=y+'-'+pad(m+1)+'-'+pad(d),ev=eventsOn(ds).slice(0,2),isToday=ds===today(),isSelected=ds===sel;
-    h+=`<button class="calendar-day ${isToday?'is-today':''} ${isSelected?'is-selected':''}" data-a="sel" data-d="${ds}">
-      <span class="calendar-day-number">${d}</span>
-      <span class="calendar-event-list">${ev.map(e=>'<span class="calendar-event" style="--event-color:'+cat(e)[1]+'">'+esc(e.title)+'</span>').join('')}</span>
-      ${eventsOn(ds).length>2?'<span class="calendar-more">+'+(eventsOn(ds).length-2)+' more</span>':''}
+  const selected=parse(sel),day=selected.getDay(),monday=new Date(selected);
+  monday.setDate(selected.getDate()-(day===0?6:day-1));
+  const sunday=new Date(monday);sunday.setDate(monday.getDate()+6);
+  const fmt=d=>d.toLocaleDateString('en',{day:'numeric',month:'short'});
+  const range=monday.getMonth()===sunday.getMonth()
+    ? fmt(monday)+' – '+sunday.getDate()+' '+sunday.toLocaleDateString('en',{month:'long',year:'numeric'})
+    : fmt(monday)+' – '+fmt(sunday)+' '+sunday.getFullYear();
+  let days='';
+  for(let i=0;i<7;i++){
+    const d=new Date(monday);d.setDate(monday.getDate()+i);
+    const ds=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+    const events=eventsOn(ds),isToday=ds===today(),isSelected=ds===sel;
+    days+=`<button class="agenda-week-day ${isToday?'is-today':''} ${isSelected?'is-selected':''}" data-a="sel" data-d="${ds}">
+      <span class="agenda-week-name">${d.toLocaleDateString('en',{weekday:'short'})}</span>
+      <span class="agenda-week-number">${d.getDate()}</span>
+      <span class="agenda-week-count">${events.length?events.length+' '+(events.length===1?'event':'events'):'No events'}</span>
+      <span class="agenda-week-dots">${events.slice(0,4).map(e=>'<i style="--event-color:'+cat(e)[1]+'"></i>').join('')}</span>
     </button>`;
   }
-  h+=`</div></div>
-    <div class="calendar-legend"><span><i class="legend-today"></i>Today</span><span><i class="legend-selected"></i>Selected day</span><span><i class="legend-event"></i>Scheduled event</span></div>
-  </section>
-  <section class="calendar-agenda">
-    <header class="agenda-heading"><div><div class="calendar-kicker">DAY VIEW</div><h3>${nice(sel)}</h3><p>Your events and daily habits for this date</p></div><button class="calendar-add" data-a="new" data-d="${sel}"><span>＋</span> Add event</button></header>
-    <div class="agenda-content">${evRows(sel)}<div class="agenda-habits"><div class="agenda-subheading">Daily tasks</div>${habRows(sel)}</div>${dayExtras(sel)}</div>
-  </section>`;
-  $('#v-cal').innerHTML=h;
+  $('#v-cal').innerHTML=`
+    <section class="calendar-workspace agenda-calendar">
+      <header class="calendar-heading">
+        <div><div class="calendar-kicker">YOUR WEEK</div><h2>${range}</h2><p>A clear view of the days ahead.</p></div>
+        <div class="calendar-controls"><button class="calendar-today" data-a="now">Today</button><button class="calendar-arrow" aria-label="Previous week" data-a="prev">‹</button><button class="calendar-arrow" aria-label="Next week" data-a="next">›</button></div>
+      </header>
+      <div class="agenda-week-strip">${days}</div>
+      <div class="calendar-legend"><span><i class="legend-today"></i>Today</span><span><i class="legend-selected"></i>Selected day</span><span><i class="legend-event"></i>Scheduled items</span></div>
+    </section>
+    <section class="calendar-agenda">
+      <header class="agenda-heading"><div><div class="calendar-kicker">DAY PLAN</div><h3>${nice(sel)}</h3><p>Your schedule and daily habits</p></div><button class="calendar-add" data-a="new" data-d="${sel}"><span>＋</span> Add event</button></header>
+      <div class="agenda-content">${evRows(sel)}<div class="agenda-habits"><div class="agenda-subheading">Daily tasks</div>${habRows(sel)}</div>${dayExtras(sel)}</div>
+    </section>`;
 }
+
 function rDaily() {
   const t=today();let full=0,miss=0,strip='';
   for(let i=13;i>=0;i--){
@@ -896,7 +902,7 @@ document.addEventListener('click', ev => {
   if (!b) return;
   if (b.dataset.t) { tab = b.dataset.t; render(); return; }
   const a = b.dataset.a;
-  if (a === 'prev' || a === 'next') { view.setMonth(view.getMonth() + (a === 'next' ? 1 : -1)); render(); }
+  if (a === 'prev' || a === 'next') { sel = addDays(sel, a === 'next' ? 7 : -7); view = parse(sel); view.setDate(1); render(); }
   else if (a === 'now') { sel = today(); view = new Date(); view.setDate(1); render(); }
   else if (a === 'sel') { sel = b.dataset.d; render(); }
   else if (a === 'new') openForm(null, b.dataset.d);
