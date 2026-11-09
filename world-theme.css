@@ -872,3 +872,76 @@ html[data-kairos-world="worldly"] h1,html[data-kairos-world="worldly"] h2,html[d
 html[data-kairos-world="worldly"] button.p,html[data-kairos-world="worldly"] .p,html[data-kairos-world="worldly"] .book-add-button,html[data-kairos-world="worldly"] .book-log-submit,html[data-kairos-world="worldly"] .world-create-action{background:#d5b36b!important;color:#111!important;border:1px solid #f0d89f!important}html[data-kairos-world="worldly"] .eyebrow,html[data-kairos-world="worldly"] .world-kicker,html[data-kairos-world="worldly"] .world-card-kicker,html[data-kairos-world="worldly"] .books-overline,html[data-kairos-world="worldly"] .book-section-kicker,html[data-kairos-world="worldly"] .book-count,html[data-kairos-world="worldly"] .reading-book-kicker{color:#d5b36b!important}
 html[data-kairos-world="worldly"] input,html[data-kairos-world="worldly"] select,html[data-kairos-world="worldly"] textarea{background:#0e0e0e!important;color:#f7f5ef!important;border:1px solid #65563a!important}html[data-kairos-world="worldly"] #tabs button.on,html[data-kairos-world="worldly"] #tabs button:hover{background:#2a2419!important;border-color:#b18e50!important;color:#f7f5ef!important}
 html[data-kairos-world="worldly"] .world-metric strong,html[data-kairos-world="worldly"] .world-reading-stats strong,html[data-kairos-world="worldly"] .books-stat-row strong{color:#e0c27e!important}html[data-kairos-world="worldly"] .reading-cover{border:1px solid #b18e50}html[data-kairos-world="worldly"] .reading-book-info b{color:#f7f5ef!important}html[data-kairos-world="worldly"] .world-chart-wrap{filter:grayscale(1) sepia(.35)}html[data-kairos-world="worldly"] .world-range-footer,html[data-kairos-world="worldly"] .world-section-heading{color:#d5b36b!important}
+
+
+/* World workspace — distinct section palettes.
+   Vocabulary is the only green section; other areas use their own restrained dark tones. */
+html[data-kairos-world="worldly"] #v-dash .world-welcome,
+html[data-kairos-world="worldly"] #v-dash .world-feature-card,
+html[data-kairos-world="worldly"] #v-dash .world-metric,
+html[data-kairos-world="worldly"] #v-dash .world-tool-tile,
+html[data-kairos-world="worldly"] #v-dash .world-focus-list button{
+  background:linear-gradient(145deg,#242424,#171717)!important;border-color:#514735!important;color:#f5f2eb!important;
+}
+html[data-kairos-world="worldly"] #v-cal .card,
+html[data-kairos-world="worldly"] #v-cal .calendar,
+html[data-kairos-world="worldly"] #v-cal .cal,
+html[data-kairos-world="worldly"] #v-cal .cell{
+  background:#17232d!important;border-color:#3b5265!important;color:#f2f4f6!important;
+}
+html[data-kairos-world="worldly"] #v-cal .cell.sel{background:#31506a!important;border-color:#d1b16f!important}
+html[data-kairos-world="worldly"] #v-daily .card,
+html[data-kairos-world="worldly"] #v-daily .row,
+html[data-kairos-world="worldly"] #v-daily .task,
+html[data-kairos-world="worldly"] #v-daily .item{
+  background:#2b2022!important;border-color:#68494a!important;color:#f6eeee!important;
+}
+html[data-kairos-world="worldly"] #v-up .card,
+html[data-kairos-world="worldly"] #v-up .row,
+html[data-kairos-world="worldly"] #v-up .item{
+  background:#252333!important;border-color:#514b6c!important;color:#f1eff8!important;
+}
+html[data-kairos-world="worldly"] #v-week .card,
+html[data-kairos-world="worldly"] #v-week .row,
+html[data-kairos-world="worldly"] #v-week .stat>div{
+  background:#29251e!important;border-color:#65553b!important;color:#f5f0e5!important;
+}
+html[data-kairos-world="worldly"] #v-books .books-hero{background:linear-gradient(115deg,#25232a,#302936 72%,#40343b)!important;border-color:#756052!important}
+html[data-kairos-world="worldly"] #v-books .books-stat-row article,
+html[data-kairos-world="worldly"] #v-books .book-log-panel,
+html[data-kairos-world="worldly"] #v-books .reading-book,
+html[data-kairos-world="worldly"] #v-books .book-log-row,
+html[data-kairos-world="worldly"] #v-books .book-empty-shelf{
+  background:linear-gradient(145deg,#29252b,#1c1a20)!important;border-color:#5d4b5a!important;color:#f4eff4!important;
+}
+html[data-kairos-world="worldly"] #v-quotes .card,
+html[data-kairos-world="worldly"] #v-quotes .quote-mini,
+html[data-kairos-world="worldly"] #v-quotes blockquote{
+  background:#202a32!important;border-color:#485c6a!important;color:#f3f5f5!important;
+}
+html[data-kairos-world="worldly"] #v-chat .chat-card,
+html[data-kairos-world="worldly"] #v-chat #msgs .m.a{
+  background:#222426!important;border-color:#4b4d4c!important;color:#f4f2ec!important;
+}
+/* Vocabulary alone retains the deep green identity. */
+html[data-kairos-world="worldly"] #v-words .card,
+html[data-kairos-world="worldly"] #v-words .word-card,
+html[data-kairos-world="worldly"] #v-words .row,
+html[data-kairos-world="worldly"] #v-words .stat>div,
+html[data-kairos-world="worldly"] #v-words .item{
+  background:linear-gradient(145deg,#1b382b,#14271e)!important;border-color:#526d55!important;color:#f5f3e9!important;
+}
+html[data-kairos-world="worldly"] #v-words .tag,
+html[data-kairos-world="worldly"] #v-words button{background:#294b37!important;border-color:#688365!important;color:#fff8e9!important}
+/* High-contrast headings: no muted green headings anywhere in World. */
+html[data-kairos-world="worldly"] #v-cal h1,html[data-kairos-world="worldly"] #v-cal h2,html[data-kairos-world="worldly"] #v-cal h3,html[data-kairos-world="worldly"] #v-cal h4,
+html[data-kairos-world="worldly"] #v-daily h1,html[data-kairos-world="worldly"] #v-daily h2,html[data-kairos-world="worldly"] #v-daily h3,html[data-kairos-world="worldly"] #v-daily h4,
+html[data-kairos-world="worldly"] #v-up h1,html[data-kairos-world="worldly"] #v-up h2,html[data-kairos-world="worldly"] #v-up h3,html[data-kairos-world="worldly"] #v-up h4,
+html[data-kairos-world="worldly"] #v-week h1,html[data-kairos-world="worldly"] #v-week h2,html[data-kairos-world="worldly"] #v-week h3,html[data-kairos-world="worldly"] #v-week h4,
+html[data-kairos-world="worldly"] #v-books h1,html[data-kairos-world="worldly"] #v-books h2,html[data-kairos-world="worldly"] #v-books h3,html[data-kairos-world="worldly"] #v-books h4,
+html[data-kairos-world="worldly"] #v-quotes h1,html[data-kairos-world="worldly"] #v-quotes h2,html[data-kairos-world="worldly"] #v-quotes h3,html[data-kairos-world="worldly"] #v-quotes h4,
+html[data-kairos-world="worldly"] #v-chat h1,html[data-kairos-world="worldly"] #v-chat h2,html[data-kairos-world="worldly"] #v-chat h3,html[data-kairos-world="worldly"] #v-chat h4{
+  color:#f7f4ed!important;
+}
+html[data-kairos-world="worldly"] #v-words h1,html[data-kairos-world="worldly"] #v-words h2,html[data-kairos-world="worldly"] #v-words h3,html[data-kairos-world="worldly"] #v-words h4{color:#f2d58d!important}
+html[data-kairos-world="worldly"] #v-cal p,html[data-kairos-world="worldly"] #v-daily p,html[data-kairos-world="worldly"] #v-up p,html[data-kairos-world="worldly"] #v-week p,html[data-kairos-world="worldly"] #v-books p,html[data-kairos-world="worldly"] #v-quotes p,html[data-kairos-world="worldly"] #v-chat p{color:#d0d0cc!important}
