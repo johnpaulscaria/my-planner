@@ -30,9 +30,18 @@ function enterWorld(which){
  if(button)button.click();
 }
 function decorateDashboard(){
- const root=$('#v-dash');if(!root)return;
- const hubs=root.querySelector('.life-hub-grid');if(hubs)hubs.remove();
- const title=root.querySelector('.kairos-dashboard-title');if(title)title.remove();
+ const root=$('#v-dash');if(!root||root.querySelector('.kairos-quick-launch'))return;
+ const panel=document.createElement('section');
+ panel.className='card kairos-quick-launch';
+ panel.innerHTML='<div class="kairos-quick-head"><div><span class="kairos-quick-kicker">YOUR WORKBENCH</span><h2>Where would you like to begin?</h2><p>Jump straight into the work you want to move forward.</p></div><button class="p" data-a="new">＋ New event</button></div><div class="kairos-quick-grid">'+
+ '<button class="kairos-quick-tile" data-t="daily"><span class="quick-symbol">✓</span><strong>Daily tasks</strong><small>Build momentum, one task at a time</small></button>'+
+ '<button class="kairos-quick-tile" data-t="cal"><span class="quick-symbol">▦</span><strong>Calendar</strong><small>Plan the days ahead</small></button>'+
+ '<button class="kairos-quick-tile" data-t="books"><span class="quick-symbol">▤</span><strong>Reading room</strong><small>Track pages and ideas</small></button>'+
+ '<button class="kairos-quick-tile" data-t="words"><span class="quick-symbol">Aa</span><strong>Vocabulary</strong><small>Keep learning every day</small></button>'+
+ '<button class="kairos-quick-tile" data-t="week"><span class="quick-symbol">◷</span><strong>Weekly review</strong><small>Reflect and reset your focus</small></button>'+
+ '<button class="kairos-quick-tile" data-t="quotes"><span class="quick-symbol">❝</span><strong>Quotes</strong><small>Save thoughts worth keeping</small></button>'+
+ '</div>';
+ root.prepend(panel);
 }
 document.addEventListener('click',e=>{
  const entry=e.target.closest('[data-enter-world]');
