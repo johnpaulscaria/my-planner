@@ -16,12 +16,28 @@
   function loadScript() {
     if (window.THREE) return Promise.resolve();
     if (window.__aevumThreePromise) return window.__aevumThreePromise;
-    window.__aevumThreePromise = new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = THREE_URL;
-      script.onload = () => window.THREE ? resolve() : reject(new Error('Three.js loaded but did not expose window.THREE'));
-      script.onerror = () => reject(new Error('Could not download Three.js from jsDelivr'));
-      document.head.appendChild(script);
+    window.__aevumThreePromise = new Promise(async (resolve, reject) => {
+      const sources = [
+        THREE_URL,
+        'https://cdnjs.cloudflare.com/ajax/libs/three.js/149/three.min.js',
+        'https://unpkg.com/three@0.149.0/build/three.min.js'
+      ];
+      let lastError = null;
+      for (const src of sources) {
+        try {
+          await new Promise((ok, fail) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.crossOrigin = 'anonymous';
+            script.onload = () => window.THREE ? ok() : fail(new Error('Library loaded without THREE global'));
+            script.onerror = () => fail(new Error('Could not load ' + src));
+            document.head.appendChild(script);
+          });
+          resolve();
+          return;
+        } catch (err) { lastError = err; }
+      }
+      reject(lastError || new Error('All Three.js sources failed'));
     });
     return window.__aevumThreePromise;
   }
@@ -259,7 +275,23 @@
   function onMouse(e){if(!active||document.pointerLockElement!==renderer?.domElement)return;yaw-=e.movementX*.0025;pitch=THREE.MathUtils.clamp(pitch-e.movementY*.0015,-.1,.65);}
   function resize(){if(!renderer||!camera)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);}
   function enter() {
-    if(active)return;active=true;addStyles();ui();loadScript().then(()=>{if(!active)return;buildWorld();ready=true;window.addEventListener('resize',resize);document.addEventListener('keydown',onKey);document.addEventListener('keyup',onUp);document.addEventListener('mousemove',onMouse);animate();}).catch(()=>{const h=$('#aevum-3d');if(h)h.innerHTML='<p style="padding:40px">The 3D experience could not load. Please check your connection and try again.</p>';});
+    if(active)return;
+    active=true;addStyles();ui();
+    loadScript().then(()=>{
+      if(!active)return;
+      if(!window.THREE)throw new Error('Three.js did not initialise');
+      buildWorld();
+      ready=true;
+      window.addEventListener('resize',resize);
+      document.addEventListener('keydown',onKey);
+      document.addEventListener('keyup',onUp);
+      document.addEventListener('mousemove',onMouse);
+      animate();
+    }).catch(err=>{
+      console.error('[Aevum 3D startup]',err);
+      const h=$('#aevum-3d');
+      if(h)h.innerHTML='<div style="position:absolute;inset:0;display:grid;place-items:center;padding:28px;background:radial-gradient(ellipse at center,#29231b,#08090a);color:#eee2cd;text-align:center;font-family:Georgia,serif"><div style="max-width:520px"><div style="font-size:13px;letter-spacing:.24em;color:#c5a46b">AEVUM · 3D CHAPEL</div><h2 style="font-weight:400;font-size:30px">The cathedral could not start</h2><p style="line-height:1.7;color:#c8bda9">The browser could not initialise the 3D renderer. This may be a graphics or network restriction. Your planner data is safe.</p><p style="font:11px/1.6 monospace;color:#d7b98a;overflow-wrap:anywhere">'+String(err&&err.message||err).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))+'</p><button onclick="window.Aevum3D.exit()" style="margin-top:16px;padding:12px 22px;background:#4a3824;color:#fff;border:1px solid #a88a5d">RETURN TO PLANNER</button></div></div>';
+    });
   }
   function exit(){active=false;cancelAnimationFrame(frame);document.exitPointerLock?.();window.removeEventListener('resize',resize);document.removeEventListener('keydown',onKey);document.removeEventListener('keyup',onUp);document.removeEventListener('mousemove',onMouse);const root=$('#aevum-3d');if(root)root.remove();if(window.AevumSpiritualWalk)window.AevumSpiritualWalk.exit();}
   window.Aevum3D={enter,exit};
