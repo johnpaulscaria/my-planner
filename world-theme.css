@@ -145,3 +145,29 @@ html[data-kairos-world="worldly"] .workspace-footer b,body[data-kairos-world="wo
 html[data-kairos-world="worldly"] .profile-links a:hover,body[data-kairos-world="worldly"] .profile-links a:hover{background:#e9e3d6!important;color:#293f3d!important}
 html[data-kairos-world="worldly"] ::selection,body[data-kairos-world="worldly"] ::selection{background:#d9c9a8;color:#203334}
 @media(max-width:800px){html[data-kairos-world="worldly"] .card,body[data-kairos-world="worldly"] .card{padding:17px!important}html[data-kairos-world="worldly"] .heading-block h1,body[data-kairos-world="worldly"] .heading-block h1{font-size:28px!important}}
+
+
+/* Book-inspired Reading Room — World only */
+html[data-kairos-world="worldly"] .reading-book,body[data-kairos-world="worldly"] .reading-book{
+ --book-ink:#243b36;--book-accent:#d8c6a2;--book-paper:#f2ead9;
+ display:grid;grid-template-columns:112px minmax(0,1fr);gap:18px;padding:15px;margin:12px 0;
+ border:1px solid color-mix(in srgb,var(--book-ink) 18%,#e5dfd3);
+ border-radius:13px;background:linear-gradient(125deg,var(--book-paper),#fffdf8 78%);
+ box-shadow:0 7px 22px rgba(30,38,34,.055);overflow:hidden
+}
+html[data-kairos-world="worldly"] .reading-cover,body[data-kairos-world="worldly"] .reading-cover{
+ height:158px;border-radius:5px;overflow:hidden;background:var(--book-ink);box-shadow:5px 7px 13px #1e29252b;position:relative
+}
+html[data-kairos-world="worldly"] .reading-cover img,body[data-kairos-world="worldly"] .reading-cover img{width:100%;height:100%;object-fit:cover;display:block}
+html[data-kairos-world="worldly"] .cover-fallback,body[data-kairos-world="worldly"] .cover-fallback{height:100%;padding:13px 10px;display:flex;flex-direction:column;justify-content:space-between;text-align:center;color:var(--book-paper);background:radial-gradient(circle at 85% 12%,var(--book-accent),transparent 34%),linear-gradient(145deg,var(--book-ink),#172522)}
+html[data-kairos-world="worldly"] .cover-fallback span,body[data-kairos-world="worldly"] .cover-fallback span{font:7px Arial,sans-serif;letter-spacing:1.4px;color:var(--book-accent)}
+html[data-kairos-world="worldly"] .cover-fallback strong,body[data-kairos-world="worldly"] .cover-fallback strong{font:17px/1.12 Georgia,serif;overflow-wrap:anywhere}
+html[data-kairos-world="worldly"] .cover-fallback small,body[data-kairos-world="worldly"] .cover-fallback small{font:9px Arial,sans-serif;color:var(--book-accent)}
+html[data-kairos-world="worldly"] .reading-book-info,body[data-kairos-world="worldly"] .reading-book-info{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:5px}
+html[data-kairos-world="worldly"] .reading-book-info>b,body[data-kairos-world="worldly"] .reading-book-info>b{font:22px/1.15 Georgia,serif;color:var(--book-ink)}
+html[data-kairos-world="worldly"] .reading-book-kicker,body[data-kairos-world="worldly"] .reading-book-kicker{font:8px Arial,sans-serif;letter-spacing:1.5px;color:var(--book-ink);opacity:.7}
+html[data-kairos-world="worldly"] .reading-progress,body[data-kairos-world="worldly"] .reading-progress{height:4px;width:100%;background:#dedbd1;border-radius:5px;overflow:hidden;margin:4px 0}
+html[data-kairos-world="worldly"] .reading-progress span,body[data-kairos-world="worldly"] .reading-progress span{display:block;height:100%;background:var(--book-ink);border-radius:5px}
+html[data-kairos-world="worldly"] .reading-thought,body[data-kairos-world="worldly"] .reading-thought{font:italic 12px/1.5 Georgia,serif;color:#68675e;margin:2px 0}
+html[data-kairos-world="worldly"] .reading-actions,body[data-kairos-world="worldly"] .reading-actions{display:flex;gap:6px;margin-top:auto}
+@media(max-width:520px){html[data-kairos-world="worldly"] .reading-book,body[data-kairos-world="worldly"] .reading-book{grid-template-columns:82px minmax(0,1fr);gap:12px;padding:11px}html[data-kairos-world="worldly"] .reading-cover,body[data-kairos-world="worldly"] .reading-cover{height:124px}html[data-kairos-world="worldly"] .reading-book-info>b,body[data-kairos-world="worldly"] .reading-book-info>b{font-size:18px}}
