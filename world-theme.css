@@ -171,3 +171,25 @@ html[data-kairos-world="worldly"] .reading-progress span,body[data-kairos-world=
 html[data-kairos-world="worldly"] .reading-thought,body[data-kairos-world="worldly"] .reading-thought{font:italic 12px/1.5 Georgia,serif;color:#68675e;margin:2px 0}
 html[data-kairos-world="worldly"] .reading-actions,body[data-kairos-world="worldly"] .reading-actions{display:flex;gap:6px;margin-top:auto}
 @media(max-width:520px){html[data-kairos-world="worldly"] .reading-book,body[data-kairos-world="worldly"] .reading-book{grid-template-columns:82px minmax(0,1fr);gap:12px;padding:11px}html[data-kairos-world="worldly"] .reading-cover,body[data-kairos-world="worldly"] .reading-cover{height:124px}html[data-kairos-world="worldly"] .reading-book-info>b,body[data-kairos-world="worldly"] .reading-book-info>b{font-size:18px}}
+
+
+/* Richer, genre-led Reading Room treatment — World workspace only */
+html[data-kairos-world="worldly"] #v-books .reading-book,body[data-kairos-world="worldly"] #v-books .reading-book{
+ position:relative;isolation:isolate;grid-template-columns:132px minmax(0,1fr);gap:20px;
+ padding:16px;background:
+ radial-gradient(ellipse at 100% 0%,color-mix(in srgb,var(--book-accent) 48%,transparent),transparent 43%),
+ linear-gradient(120deg,var(--book-paper),#fffdf8 76%);
+ border:1px solid color-mix(in srgb,var(--book-ink) 28%,#e7dfd1);
+ box-shadow:0 12px 28px rgba(35,39,35,.09),inset 4px 0 0 var(--book-ink)
+}
+html[data-kairos-world="worldly"] #v-books .reading-cover,body[data-kairos-world="worldly"] #v-books .reading-cover{
+ height:184px;border-radius:4px 8px 8px 4px;box-shadow:7px 9px 17px rgba(20,30,28,.24);
+ border-left:5px solid color-mix(in srgb,var(--book-ink) 75%,black)
+}
+html[data-kairos-world="worldly"] #v-books .reading-book-info>b,body[data-kairos-world="worldly"] #v-books .reading-book-info>b{font-size:24px;color:var(--book-ink)}
+html[data-kairos-world="worldly"] #v-books .reading-book-kicker,body[data-kairos-world="worldly"] #v-books .reading-book-kicker{padding:5px 8px;border-radius:3px;background:color-mix(in srgb,var(--book-accent) 38%,white);color:var(--book-ink);font-weight:700}
+html[data-kairos-world="worldly"] #v-books .reading-progress,body[data-kairos-world="worldly"] #v-books .reading-progress{height:6px;background:color-mix(in srgb,var(--book-accent) 38%,white)}
+html[data-kairos-world="worldly"] #v-books .reading-progress span,body[data-kairos-world="worldly"] #v-books .reading-progress span{background:linear-gradient(90deg,var(--book-ink),var(--book-accent))}
+html[data-kairos-world="worldly"] #v-books .reading-actions button,body[data-kairos-world="worldly"] #v-books .reading-actions button{border-color:color-mix(in srgb,var(--book-ink) 25%,white);color:var(--book-ink);background:color-mix(in srgb,var(--book-paper) 75%,white)}
+html[data-kairos-world="worldly"] #v-books .reading-actions button:first-child,body[data-kairos-world="worldly"] #v-books .reading-actions button:first-child{background:var(--book-ink);color:white;border-color:var(--book-ink)}
+@media(max-width:520px){html[data-kairos-world="worldly"] #v-books .reading-book,body[data-kairos-world="worldly"] #v-books .reading-book{grid-template-columns:96px minmax(0,1fr);gap:13px}html[data-kairos-world="worldly"] #v-books .reading-cover,body[data-kairos-world="worldly"] #v-books .reading-cover{height:145px}}
