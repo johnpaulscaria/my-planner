@@ -1360,3 +1360,46 @@ html[data-kairos-world="worldly"] #v-words #wlist>.row .tag{display:inline-flex!
 html[data-kairos-world="worldly"] #v-words #wlist>.row button{flex:none!important;background:#373a36!important;color:#f3f0e7!important;border:1px solid #55594f!important;border-radius:8px!important;padding:7px 11px!important;font-size:10px!important}
 html[data-kairos-world="worldly"] #v-words #wlist>.mute{grid-column:1/-1;padding:22px!important;color:#c9c5b9!important}
 @media(max-width:760px){html[data-kairos-world="worldly"] #v-words #wlist{grid-template-columns:1fr!important}html[data-kairos-world="worldly"] #v-words>.card{padding:16px!important}html[data-kairos-world="worldly"] #v-words>.card:first-child .stat{gap:7px!important}html[data-kairos-world="worldly"] #v-words>.card:first-child .stat>div{padding:12px 10px!important;min-height:70px!important}}
+
+
+/* Vocabulary cards: restore generous breathing room and clear separation. */
+html[data-kairos-world="worldly"] #v-words #wlist{
+  display:flex!important;flex-direction:column!important;gap:14px!important;
+}
+html[data-kairos-world="worldly"] #v-words #wlist .row{
+  box-sizing:border-box!important;width:100%!important;min-height:118px!important;
+  display:flex!important;align-items:flex-start!important;gap:22px!important;
+  margin:0!important;padding:24px 26px!important;
+  border:1px solid #d1c8b5!important;border-radius:15px!important;
+  background:linear-gradient(135deg,#f2f0e9 0%,#e8e5dc 100%)!important;
+  box-shadow:0 5px 16px #18171012!important;
+}
+html[data-kairos-world="worldly"] #v-words #wlist .row .grow{
+  flex:1 1 auto!important;min-width:0!important;display:flex!important;
+  flex-direction:column!important;align-items:flex-start!important;gap:9px!important;
+}
+html[data-kairos-world="worldly"] #v-words #wlist .row .grow>b{
+  display:block!important;margin:0 0 2px!important;font-size:19px!important;
+  line-height:1.35!important;letter-spacing:-.015em!important;color:#292a26!important;
+}
+html[data-kairos-world="worldly"] #v-words #wlist .row .grow>div:nth-child(2){
+  font-size:14px!important;line-height:1.65!important;color:#42433e!important;
+  max-width:90ch!important;
+}
+html[data-kairos-world="worldly"] #v-words #wlist .row .grow>div.mute{
+  font-size:11px!important;line-height:1.5!important;color:#77766d!important;
+}
+html[data-kairos-world="worldly"] #v-words #wlist .row>button{
+  flex:0 0 auto!important;align-self:flex-start!important;margin:0!important;
+  padding:9px 15px!important;border-radius:9px!important;
+}
+html[data-kairos-world="worldly"] #v-words #wlist .row .tag{
+  margin-left:7px!important;vertical-align:middle!important;
+}
+html[data-kairos-world="worldly"] #v-words>.card:nth-child(2){padding:26px!important}
+html[data-kairos-world="worldly"] #v-words>.card:nth-child(2) #wlist{margin-top:14px!important}
+@media(max-width:650px){
+ html[data-kairos-world="worldly"] #v-words #wlist .row{padding:17px!important;gap:10px!important;min-height:0!important}
+ html[data-kairos-world="worldly"] #v-words #wlist .row>button{padding:7px 10px!important}
+ html[data-kairos-world="worldly"] #v-words>.card:nth-child(2){padding:16px!important}
+}
