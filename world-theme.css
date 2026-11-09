@@ -945,3 +945,26 @@ html[data-kairos-world="worldly"] #v-chat h1,html[data-kairos-world="worldly"] #
 }
 html[data-kairos-world="worldly"] #v-words h1,html[data-kairos-world="worldly"] #v-words h2,html[data-kairos-world="worldly"] #v-words h3,html[data-kairos-world="worldly"] #v-words h4{color:#f2d58d!important}
 html[data-kairos-world="worldly"] #v-cal p,html[data-kairos-world="worldly"] #v-daily p,html[data-kairos-world="worldly"] #v-up p,html[data-kairos-world="worldly"] #v-week p,html[data-kairos-world="worldly"] #v-books p,html[data-kairos-world="worldly"] #v-quotes p,html[data-kairos-world="worldly"] #v-chat p{color:#d0d0cc!important}
+
+
+/* Final heading palette pass — no green headings across the World workspace.
+   Section accents use cool blue, amber, violet, bronze and ivory; no pink tones. */
+html[data-kairos-world="worldly"] #v-dash :is(h1,h2,h3,h4,h5,h6,.title,.section-title,.world-kicker,.world-card-kicker,.eyebrow){color:#f1e7d0!important}
+html[data-kairos-world="worldly"] #v-cal :is(h1,h2,h3,h4,h5,h6,.title,.section-title,.eyebrow,.kicker,.label){color:#b8d5ec!important}
+html[data-kairos-world="worldly"] #v-daily :is(h1,h2,h3,h4,h5,h6,.title,.section-title,.eyebrow,.kicker,.label){color:#e5c27d!important}
+html[data-kairos-world="worldly"] #v-up :is(h1,h2,h3,h4,h5,h6,.title,.section-title,.eyebrow,.kicker,.label){color:#c6c4e5!important}
+html[data-kairos-world="worldly"] #v-books :is(h1,h2,h3,h4,h5,h6,.title,.section-title,.eyebrow,.kicker,.label,.books-overline,.book-section-kicker,.book-count,.reading-book-kicker){color:#e2c47e!important}
+html[data-kairos-world="worldly"] #v-words :is(h1,h2,h3,h4,h5,h6,.title,.section-title,.eyebrow,.kicker,.label){color:#e2c47e!important}
+html[data-kairos-world="worldly"] #v-quotes :is(h1,h2,h3,h4,h5,h6,.title,.section-title,.eyebrow,.kicker,.label){color:#b9d4df!important}
+html[data-kairos-world="worldly"] #v-week :is(h1,h2,h3,h4,h5,h6,.title,.section-title,.eyebrow,.kicker,.label){color:#d9bd8b!important}
+html[data-kairos-world="worldly"] #v-chat :is(h1,h2,h3,h4,h5,h6,.title,.section-title,.eyebrow,.kicker,.label){color:#e3c982!important}
+/* Keep body copy readable while preserving each section's accent headings. */
+html[data-kairos-world="worldly"] #v-dash :is(p,small,.mute),
+html[data-kairos-world="worldly"] #v-cal :is(p,small,.mute),
+html[data-kairos-world="worldly"] #v-daily :is(p,small,.mute),
+html[data-kairos-world="worldly"] #v-up :is(p,small,.mute),
+html[data-kairos-world="worldly"] #v-books :is(p,small,.mute),
+html[data-kairos-world="worldly"] #v-words :is(p,small,.mute),
+html[data-kairos-world="worldly"] #v-quotes :is(p,small,.mute),
+html[data-kairos-world="worldly"] #v-week :is(p,small,.mute),
+html[data-kairos-world="worldly"] #v-chat :is(p,small,.mute){color:#d2d0c9!important}
