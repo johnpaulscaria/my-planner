@@ -89,8 +89,8 @@ function onClick(e){
 }
 function enter(){ensure();state=load();player={x:50,y:88};game.hidden=false;document.body.style.overflow='hidden';if(movementTimer){clearInterval(movementTimer);movementTimer=null;}render();}
 function exit(){if(game)game.hidden=true;document.body.style.overflow='';closeDialog();const home=$('#kairos-home');if(home)home.hidden=false;const shell=$('.app-shell');if(shell)shell.hidden=true;document.body.classList.add('kairos-at-home');}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-enter-world="spiritual"]');if(b){e.preventDefault();enter();}});
-document.addEventListener('click',e=>{if(e.target.closest('[data-home-return]')&&game&&!game.hidden){e.preventDefault();exit();}});
+
+
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&movementTimer){clearInterval(movementTimer);movementTimer=null;keys={};}});
 window.AevumSpiritualWalk={enter,exit,interact};
 })();
