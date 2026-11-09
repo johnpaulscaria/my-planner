@@ -238,40 +238,39 @@ function rDash() {
 
 /* books */
 
-const bookRow = b => {
-  const n = pagesFor(b.id);
-  const pc = b.pages ? Math.min(100, Math.round(n / b.pages * 100)) : 0;
-
-  return `
-    <div class="row" style="align-items:flex-start">
-      <div class="grow">
-        <b>${esc(b.title)}</b>
-        ${b.author ? ' <span class="mute">by ' + esc(b.author) + '</span>' : ''}
-
-        <div class="mute">
-          ${n}${b.pages ? ' / ' + b.pages : ''} pages
-          ${b.rating ? ' · ' + '★'.repeat(b.rating) : ''}
-          ${b.finished ? ' · finished ' + esc(b.finished) : ''}
-        </div>
-
-        ${b.pages ? `
-          <div class="hb" style="width:100%;margin-top:4px">
-            <div style="height:4px;border-radius:2px;background:var(--acc);width:${pc}%"></div>
-          </div>` : ''}
-
-        ${b.thoughts ? `
-          <div class="mute" style="margin-top:4px;white-space:pre-wrap">
-            “${esc(b.thoughts.slice(0, 140))}${b.thoughts.length > 140 ? '…' : ''}”
-          </div>` : ''}
-      </div>
-
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <button class="g" data-a="viewbook" data-b="${b.id}">View</button>
-        <button class="g" data-a="editbook" data-b="${b.id}">Open</button>
-      </div>
-    </div>`;
+const bookPalette = b => {
+  const mood = (b.mood || '').toLowerCase();
+  const palettes = {
+    literary: ['#243b36','#d8c6a2','#f2ead9'], philosophy: ['#30334d','#c5b7df','#f0edf7'],
+    history: ['#603c2d','#d8a86d','#f4e4ca'], business: ['#183b58','#8bb8c9','#e5f0f4'],
+    fiction: ['#633b67','#e6a4a0','#f6e8e9'], spiritual: ['#52634a','#d7c99b','#f2edda'],
+    science: ['#174d59','#76c7c1','#e2f2f0'], poetry: ['#78465d','#e5a9bd','#f8e8ef']
+  };
+  const p = palettes[mood] || palettes.literary;
+  return '--book-ink:'+p[0]+';--book-accent:'+p[1]+';--book-paper:'+p[2];
 };
-
+const bookCoverUrl = b => 'https://covers.openlibrary.org/b/title/' + encodeURIComponent(b.title || '') + '-M.jpg?default=false';
+const bookRow = b => {
+  const n = pagesFor(b.id), pc = b.pages ? Math.min(100, Math.round(n / b.pages * 100)) : 0;
+  const palette = bookPalette(b);
+  return `
+    <article class="reading-book" style="${palette}">
+      <div class="reading-cover">
+        <img src="${bookCoverUrl(b)}" alt="Cover of ${esc(b.title)}" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.hidden=false">
+        <div class="cover-fallback" hidden><span>THE READING ROOM</span><strong>${esc(b.title)}</strong><small>${esc(b.author || 'A book in your collection')}</small></div>
+      </div>
+      <div class="reading-book-info">
+        <div class="reading-book-kicker">${b.status === 'done' ? 'COMPLETED' : b.status === 'want' ? 'ON YOUR LIST' : 'CURRENTLY READING'}</div>
+        <b>${esc(b.title)}</b>
+        ${b.author ? '<span class="mute">by ' + esc(b.author) + '</span>' : ''}
+        <div class="mute">${n}${b.pages ? ' / ' + b.pages : ''} pages ${b.rating ? ' · ' + '★'.repeat(b.rating) : ''}</div>
+        ${b.pages ? `<div class="reading-progress"><span style="width:${pc}%"></span></div>` : ''}
+        ${b.thoughts ? '<p class="reading-thought">“' + esc(b.thoughts.slice(0,100)) + (b.thoughts.length > 100 ? '…' : '') + '”</p>' : ''}
+        <div class="reading-actions"><button class="g" data-a="viewbook" data-b="${b.id}">Journal</button><button class="g" data-a="editbook" data-b="${b.id}">Edit</button></div>
+      </div>
+    </article>`;
+};
 function rBooks() {
   const r = range(), s = stats(r), opts = S.books.filter(b => b.status !== 'done');
   const entries = Object.entries(S.reads[rd] || {}).map(([id, n]) => `<div class="row"><span class="grow">${esc(bname(id))}</span><span>${n} pages</span><button class="g" data-a="unlog" data-d="${rd}" data-b="${id}">✕</button></div>`).join('');
@@ -558,7 +557,7 @@ function openBook(id) {
   $('#sheet').innerHTML = `<h3 style="margin:0 0 6px">${id ? 'Book' : 'New book'}</h3>
   <label>Title</label><input id="b-t" value="${esc(b.title)}">
   <div class="two"><div><label>Author</label><input id="b-a" value="${esc(b.author)}"></div><div><label>Total pages</label><input id="b-p" type="number" min="1" value="${b.pages || ''}"></div></div>
-  <div class="two"><div><label>Status</label><select id="b-s">${[['want', 'Want to read'], ['reading', 'Reading'], ['done', 'Finished']].map(([v, l]) => `<option value="${v}" ${b.status === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div><div><label>My rating</label><select id="b-r">${[0, 1, 2, 3, 4, 5].map(n => `<option value="${n}" ${b.rating === n ? 'selected' : ''}>${n ? '★'.repeat(n) : 'Not rated'}</option>`).join('')}</select></div></div>
+  <div class="two"><div><label>Status</label><select id="b-s">${[['want', 'Want to read'], ['reading', 'Reading'], ['done', 'Finished']].map(([v, l]) => `<option value="${v}" ${b.status === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div><div><label>Reading atmosphere</label><select id="b-mood">${[['literary','Literary'],['philosophy','Philosophy'],['history','History'],['business','Business'],['fiction','Fiction'],['spiritual','Spiritual'],['science','Science'],['poetry','Poetry']].map(([v,l]) => `<option value="${v}" ${(b.mood || 'literary') === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div></div><div class="two"><div><label>My rating</label><select id="b-r">${[0, 1, 2, 3, 4, 5].map(n => `<option value="${n}" ${b.rating === n ? 'selected' : ''}>${n ? '★'.repeat(n) : 'Not rated'}</option>`).join('')}</select></div></div>
   <div class="two"><div><label>Started</label><input id="b-st" type="date" value="${b.started || ''}"></div><div><label>Finished</label><input id="b-f" type="date" value="${b.finished || ''}"></div></div>
   <label>My thoughts and review</label><textarea id="b-th" rows="5">${esc(b.thoughts)}</textarea>
   <label>Favourite quotes and notes</label><textarea id="b-n" rows="3">${esc(b.notes)}</textarea>
@@ -570,7 +569,7 @@ function saveBook(id) {
   const title = $('#b-t').value.trim();
   if (!title) { alert('Please add a title.'); return; }
   const st = $('#b-s').value;
-  const o = { title, author: $('#b-a').value.trim(), pages: Number($('#b-p').value) || 0, status: st, rating: Number($('#b-r').value), started: $('#b-st').value, finished: $('#b-f').value, thoughts: $('#b-th').value.trim(), notes: $('#b-n').value.trim() };
+  const o = { title, author: $('#b-a').value.trim(), mood: $('#b-mood').value, pages: Number($('#b-p').value) || 0, status: st, rating: Number($('#b-r').value), started: $('#b-st').value, finished: $('#b-f').value, thoughts: $('#b-th').value.trim(), notes: $('#b-n').value.trim() };
   if (st !== 'want' && !o.started) o.started = today();
   if (st === 'done' && !o.finished) o.finished = today();
   if (st !== 'done') o.finished = '';
