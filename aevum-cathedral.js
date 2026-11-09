@@ -245,8 +245,12 @@
     player.position.x=clamp(player.position.x,-9.4,9.4);player.position.z=clamp(player.position.z,-25,25);
     doors.forEach(d=>{const target=d.open?(d.side<0?.98:-.98):0;d.pivot.rotation.y=THREE.MathUtils.damp(d.pivot.rotation.y,target,3.2,dt);});
     flames.forEach((f)=>{const v=.88+Math.sin(now*11+f.phase)*.13+Math.sin(now*19+f.phase)*.06;f.f.scale.y=1.65*v;f.f.material.opacity=.78+Math.sin(now*14+f.phase)*.12;f.light.intensity=1.0+Math.sin(now*12+f.phase)*.35;});
-    const desired=new THREE.Vector3(player.position.x+Math.sin(yaw)*6,player.position.y+3.1+pitch*3,player.position.z+Math.cos(yaw)*6);
-    camera.position.lerp(desired,1-Math.pow(.001,dt));camera.lookAt(player.position.x,player.position.y+1.1,player.position.z);
+    // First-person cathedral view: camera sits at the visitor's eye line.
+    // Yaw and pitch control the view; movement remains relative to the direction faced.
+    const eye=new THREE.Vector3(player.position.x,player.position.y+1.72,player.position.z);
+    const look=new THREE.Vector3(Math.sin(yaw)*Math.cos(pitch),Math.sin(pitch),-Math.cos(yaw)*Math.cos(pitch));
+    camera.position.copy(eye);
+    camera.lookAt(eye.clone().add(look));
     const n=nearest(),prompt=$('.ac-prompt');if(prompt){prompt.style.display=n?'block':'none';prompt.querySelector('b').textContent=n?.name||'';}
     interactives.forEach(o=>{const v=o.label.pos.clone().project(camera);o.label.el.style.left=((v.x*.5+.5)*innerWidth)+'px';o.label.el.style.top=((-v.y*.5+.5)*innerHeight)+'px';o.label.el.style.display=v.z<1?'block':'none';});
     renderer.render(scene,camera);
@@ -260,7 +264,7 @@
       THREE=await loadThree();if(!active)return;
       renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.65));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
       $('#aevum-cathedral').prepend(renderer.domElement);
-      buildChurch();camera=new THREE.PerspectiveCamera(58,innerWidth/innerHeight,.1,180);camera.position.set(0,4,30);clock=new THREE.Clock();
+      buildChurch();camera=new THREE.PerspectiveCamera(58,innerWidth/innerHeight,.1,180);camera.position.set(0,1.72,24);clock=new THREE.Clock();
       window.addEventListener('resize',resize);document.addEventListener('keydown',keydown);document.addEventListener('keyup',keyup);document.addEventListener('mousemove',mouse);animate();
     }catch(err){console.error('[Aevum Cathedral]',err);const root=$('#aevum-cathedral');if(root)root.innerHTML='<div style="position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:30px;background:#100f0d;color:#e8dcc5"><div><h2>Cathedral renderer unavailable</h2><p>'+String(err.message||err).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))+'</p><button onclick="window.AevumCathedral.exit()">Return to Kairos</button></div></div>';}
   }
