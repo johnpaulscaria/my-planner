@@ -291,10 +291,10 @@ function rDash() {
 const bookPalette = b => {
   const mood = (b.mood || '').toLowerCase();
   const palettes = {
-    literary: ['#243b36','#d8c6a2','#f2ead9'], philosophy: ['#30334d','#c5b7df','#f0edf7'],
-    history: ['#603c2d','#d8a86d','#f4e4ca'], business: ['#183b58','#8bb8c9','#e5f0f4'],
-    fiction: ['#633b67','#e6a4a0','#f6e8e9'], spiritual: ['#52634a','#d7c99b','#f2edda'],
-    science: ['#174d59','#76c7c1','#e2f2f0'], poetry: ['#78465d','#e5a9bd','#f8e8ef']
+    literary: ['#183c32','#c9a96e','#f1ecdf'], philosophy: ['#24364a','#c5a15b','#f0ede4'], leadership: ['#193d35','#c8a45e','#f2eddf'],
+    history: ['#3b3428','#c8a45e','#f4eddd'], business: ['#183d3b','#c7a45f','#f2eee3'],
+    fiction: ['#44304a','#c99c87','#f4e9e3'],
+    science: ['#183f4b','#81b9b1','#e8f0ec'], poetry: ['#493748','#d5ad9d','#f3ebe4']
   };
   const p = palettes[mood] || palettes.literary;
   return '--book-ink:'+p[0]+';--book-accent:'+p[1]+';--book-paper:'+p[2];
@@ -323,13 +323,30 @@ const bookRow = b => {
 };
 function rBooks() {
   const r = range(), s = stats(r), opts = S.books.filter(b => b.status !== 'done');
-  const entries = Object.entries(S.reads[rd] || {}).map(([id, n]) => `<div class="row"><span class="grow">${esc(bname(id))}</span><span>${n} pages</span><button class="g" data-a="unlog" data-d="${rd}" data-b="${id}">✕</button></div>`).join('');
-  const grp = (st, ttl) => { const l = S.books.filter(b => b.status === st); return l.length ? `<div class="card"><b>${ttl}</b>${l.map(bookRow).join('')}</div>` : ''; };
-  $('#v-books').innerHTML = `<div class="card">${dashBar()}<div class="stat">${box(s.pages, 'pages read')}${box(s.days, 'reading days')}${box(s.fin, 'books finished')}</div></div>
-  <div class="card"><div class="bar"><b>Log pages read</b><input id="lg-d" type="date" value="${rd}" max="${today()}" style="width:auto"></div>
-  ${opts.length ? `<div style="display:flex;gap:8px"><select id="lg-b">${opts.map(b => `<option value="${b.id}">${esc(b.title)}</option>`).join('')}</select><input id="lg-n" type="number" min="1" placeholder="Pages" style="max-width:100px"><button class="p" data-a="logpages">Add</button></div>` : '<div class="mute">Add a book first, then log your pages here.</div>'}
-  <div style="margin-top:8px">${entries}<div class="mute" style="margin-top:6px">Total on ${nice(rd)}: <b>${pagesOn(rd)}</b> pages</div></div></div>
-  <div style="margin-bottom:12px"><button class="p" data-a="newbook">+ Add book</button></div>${grp('reading', 'Currently reading')}${grp('want', 'Want to read')}${grp('done', 'Finished')}`;
+  const entries = Object.entries(S.reads[rd] || {}).map(([id, n]) => `<div class="book-log-row"><span>${esc(bname(id))}</span><b>${n} pages</b><button class="g" data-a="unlog" data-d="${rd}" data-b="${id}" aria-label="Remove reading log">×</button></div>`).join('');
+  const grp = (st, ttl, note) => {
+    const l = S.books.filter(b => b.status === st);
+    return l.length ? `<section class="book-shelf"><div class="book-shelf-heading"><div><span class="book-section-kicker">YOUR LIBRARY</span><h3>${ttl}</h3><p>${note}</p></div><span class="book-count">${l.length.toString().padStart(2,'0')} TITLES</span></div><div class="book-grid">${l.map(bookRow).join('')}</div></section>` : '';
+  };
+  $('#v-books').innerHTML = `
+    <section class="books-hero">
+      <div><span class="books-overline">THE READING ROOM</span><h2>A library of ideas.</h2><p>Keep track of what you're reading, what you've finished and the thoughts worth keeping.</p></div>
+      <button class="book-add-button" data-a="newbook">＋ Add a book</button>
+    </section>
+    <section class="books-stat-row">
+      <article><span>PAGE COUNT</span><strong>${s.pages}</strong><small>Pages read · ${r.label}</small></article>
+      <article><span>READING DAYS</span><strong>${s.days}</strong><small>Days spent reading</small></article>
+      <article><span>COMPLETED</span><strong>${s.fin}</strong><small>Books finished</small></article>
+    </section>
+    <section class="book-log-panel">
+      <div class="book-log-heading"><div><span class="book-section-kicker">DAILY PROGRESS</span><h3>Log your reading</h3><p>Record the pages you read and keep your progress moving.</p></div><label class="book-date-label">READING DATE<input id="lg-d" type="date" value="${rd}" max="${today()}"></label></div>
+      ${opts.length ? `<div class="book-log-controls"><select id="lg-b" aria-label="Choose a book">${opts.map(b => `<option value="${b.id}">${esc(b.title)}</option>`).join('')}</select><input id="lg-n" type="number" min="1" placeholder="Pages read" aria-label="Pages read"><button class="book-log-submit" data-a="logpages">Add pages <span>↗</span></button></div>` : '<p class="book-empty-inline">Add a book to your reading list to start logging pages.</p>'}
+      <div class="book-log-entries">${entries || '<span class="book-empty-inline">No pages logged for this date yet.</span>'}</div><div class="book-log-total">TOTAL FOR ${nice(rd).toUpperCase()} <strong>${pagesOn(rd)} PAGES</strong></div>
+    </section>
+    ${grp('reading','Currently reading','Books in progress, with your reading notes and progress.') || '<section class="book-empty-shelf"><span class="book-section-kicker">START HERE</span><h3>Your current read belongs here.</h3><p>Add a book and it will appear on this shelf.</p></section>'}
+    ${grp('want','On the reading list','Books you want to make time for.')}
+    ${grp('done','Finished collection','A record of the books you have completed.')}
+  `;
 }
 function logPages() {
   const id = $('#lg-b').value, n = Math.round(Number($('#lg-n').value));
@@ -607,7 +624,7 @@ function openBook(id) {
   $('#sheet').innerHTML = `<h3 style="margin:0 0 6px">${id ? 'Book' : 'New book'}</h3>
   <label>Title</label><input id="b-t" value="${esc(b.title)}">
   <div class="two"><div><label>Author</label><input id="b-a" value="${esc(b.author)}"></div><div><label>Total pages</label><input id="b-p" type="number" min="1" value="${b.pages || ''}"></div></div>
-  <div class="two"><div><label>Status</label><select id="b-s">${[['want', 'Want to read'], ['reading', 'Reading'], ['done', 'Finished']].map(([v, l]) => `<option value="${v}" ${b.status === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div><div><label>Reading atmosphere</label><select id="b-mood">${[['literary','Literary'],['philosophy','Philosophy'],['history','History'],['business','Business'],['fiction','Fiction'],['spiritual','Spiritual'],['science','Science'],['poetry','Poetry']].map(([v,l]) => `<option value="${v}" ${(b.mood || 'literary') === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div></div><div class="two"><div><label>My rating</label><select id="b-r">${[0, 1, 2, 3, 4, 5].map(n => `<option value="${n}" ${b.rating === n ? 'selected' : ''}>${n ? '★'.repeat(n) : 'Not rated'}</option>`).join('')}</select></div></div>
+  <div class="two"><div><label>Status</label><select id="b-s">${[['want', 'Want to read'], ['reading', 'Reading'], ['done', 'Finished']].map(([v, l]) => `<option value="${v}" ${b.status === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div><div><label>Reading atmosphere</label><select id="b-mood">${[['business','Business'],['leadership','Leadership'],['philosophy','Philosophy'],['history','History'],['science','Science'],['literary','Literary'],['fiction','Fiction'],['poetry','Poetry']].map(([v,l]) => `<option value="${v}" ${(b.mood || 'literary') === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div></div><div class="two"><div><label>My rating</label><select id="b-r">${[0, 1, 2, 3, 4, 5].map(n => `<option value="${n}" ${b.rating === n ? 'selected' : ''}>${n ? '★'.repeat(n) : 'Not rated'}</option>`).join('')}</select></div></div>
   <div class="two"><div><label>Started</label><input id="b-st" type="date" value="${b.started || ''}"></div><div><label>Finished</label><input id="b-f" type="date" value="${b.finished || ''}"></div></div>
   <label>My thoughts and review</label><textarea id="b-th" rows="5">${esc(b.thoughts)}</textarea>
   <label>Favourite quotes and notes</label><textarea id="b-n" rows="3">${esc(b.notes)}</textarea>
