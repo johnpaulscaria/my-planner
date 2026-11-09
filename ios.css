@@ -198,3 +198,63 @@ html[data-theme="dark"] .row{border-color:#30362d!important}
 html[data-theme="dark"] .workspace-footer{border-color:var(--line)!important}
 html[data-theme="dark"] .personal-stats>div{background:var(--raised)!important;border-color:var(--line)!important}
 @media(max-width:650px){.life-hub-grid{grid-template-columns:1fr}.life-hub{padding:16px}.form-grid{grid-template-columns:1fr}.form-grid label.full{grid-column:auto}}
+
+/* KAIROS — quiet luxury, editorial restraint */
+:root{--k-bg:#171715;--k-side:#1d1d1a;--k-panel:#22221e;--k-panel2:#292923;--k-ink:#eee9df;--k-muted:#a8a398;--k-line:#3c3a32;--k-bronze:#b39a70;--k-bronze-dim:#887657;--k-green:#788b79;--k-blue:#7d8e9a}
+html,body,.app-shell{background:var(--k-bg)!important;color:var(--k-ink)!important}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;letter-spacing:0!important}
+.sidebar{background:var(--k-side)!important;border-right:1px solid var(--k-line)!important;box-shadow:none!important}
+.brand{padding-bottom:25px!important}
+.kairos-mark{display:grid;place-items:center;border:1px solid #8d7c5b!important;border-radius:50%!important;background:transparent!important;color:#c4b18b!important;font:italic 27px Georgia,serif!important;box-shadow:none!important}
+.brand-copy strong{font:500 22px Georgia,"Times New Roman",serif!important;letter-spacing:.035em!important;color:#e9e1d2!important}
+.brand-copy small{font-size:8px!important;letter-spacing:.18em!important;color:#9d927d!important}
+.nav-label{color:#958b78!important;font-size:9px!important;letter-spacing:.16em!important}
+.sidebar nav#tabs button{color:#c1bdb3!important;border:1px solid transparent!important;border-radius:7px!important;font-size:12px!important;font-weight:450!important;min-height:37px!important}
+.sidebar nav#tabs button:hover{background:#ffffff08!important;color:#f0e8d9!important}
+.sidebar nav#tabs button.on{background:#b39a7015!important;border-color:#a18c6533!important;color:#e6d6b5!important;box-shadow:inset 2px 0 #b39a70!important}
+.nav-icon{color:#9c9689!important}
+.sidebar nav#tabs button.on .nav-icon{color:#c5ad7f!important}
+.nav-badge{border-color:#625a48!important;background:#2a2923!important;color:#c4b18b!important}
+.workspace{background:var(--k-bg)!important}
+.topbar{background:#171715f2!important;border-bottom:1px solid var(--k-line)!important;backdrop-filter:blur(18px)!important;padding:20px 30px!important}
+.eyebrow{color:#9c927f!important;letter-spacing:.17em!important;font-size:9px!important}
+.topbar h1{font:500 27px Georgia,"Times New Roman",serif!important;letter-spacing:.015em!important;color:#eee8dc!important}
+#today-label{color:#a9a397!important}
+.top-button{background:transparent!important;border:1px solid #474338!important;color:#c8c0b1!important;border-radius:7px!important;box-shadow:none!important}
+.top-button:hover{background:#ffffff08!important}
+.world-switch{display:flex;align-items:center;gap:0;padding:3px;border:1px solid #514a3d;border-radius:8px;background:#201f1b;margin-right:7px}
+.world-button{padding:8px 14px;border:0;border-radius:5px;background:transparent;color:#aaa497;font:500 11px Inter, sans-serif;letter-spacing:.025em}
+.world-button.active{background:#39352b;color:#eadbbd;box-shadow:inset 0 0 0 1px #746448}
+.world-divider{height:18px;width:1px;background:#484236}
+.card,.personal-panel{background:var(--k-panel)!important;border:1px solid var(--k-line)!important;border-radius:10px!important;box-shadow:0 8px 24px #0002!important}
+button.p{background:#a99570!important;color:#1c1b17!important;border:1px solid #b9a47c!important;box-shadow:none!important;border-radius:6px!important}
+.tag{background:#343127!important;color:#d2c09a!important;border:1px solid #5b513d!important}
+.life-hub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin:0 0 22px}
+.life-hub{min-height:176px;display:flex;align-items:flex-end;gap:15px;padding:23px;border:1px solid #4a473e;border-radius:10px;color:#e9e2d5;text-decoration:none;position:relative;overflow:hidden;background:#20201c;box-shadow:none!important}
+.life-hub:before{content:"";position:absolute;inset:0;opacity:.16;background:linear-gradient(120deg,#a99570,transparent 48%)}
+.life-hub.spiritual-hub{background:linear-gradient(115deg,#25251f,#1d211d)}
+.life-hub.worldly-hub{background:linear-gradient(115deg,#202321,#202328);border-color:#41494a}
+.life-hub>span{font:32px Georgia,serif;color:#b9a77f;position:relative}
+.life-hub h2{font:500 25px Georgia,serif;margin:7px 0;color:#eee7da;position:relative}
+.life-hub small{font-size:8px;letter-spacing:.17em;color:#aaa08c;position:relative}
+.life-hub p{margin:0;color:#b0aa9e;font-size:11px;position:relative}
+.life-hub>b{margin-left:auto;color:#b9a77f;font-size:17px;position:relative}
+.life-hub.worldly-hub>span,.life-hub.worldly-hub>b{color:#91a2a1}
+.aevum-dashboard-title{margin:0 0 13px;color:#a99a7b;font:italic 13px Georgia,serif;letter-spacing:.05em}
+#v-rosary .personal-hero,#v-bible .personal-hero{min-height:150px;display:flex;flex-direction:column;justify-content:flex-end;padding:22px 25px;border:1px solid #514a3c;border-radius:10px;background:#20201c;position:relative;overflow:hidden}
+#v-rosary .personal-hero:before,#v-bible .personal-hero:before{content:"";position:absolute;inset:0;background-repeat:no-repeat;background-position:right 48%;background-size:auto 125%;opacity:.32;pointer-events:none}
+#v-rosary .personal-hero:before{background-image:url('images/kairos-rosary.svg')}
+#v-bible .personal-hero:before{background-image:url('images/kairos-bible.svg')}
+#v-rosary .personal-hero:after,#v-bible .personal-hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#20201cf7 0%,#20201cdd 50%,#20201c30 100%);pointer-events:none}
+#v-rosary .personal-hero>* ,#v-bible .personal-hero>*{position:relative}
+#v-rosary .personal-hero h2,#v-bible .personal-hero h2{font:500 29px Georgia,serif!important;color:#e9e1d2}
+#v-rosary .personal-hero p,#v-bible .personal-hero p{color:#bcb5a8;max-width:600px;font-size:12px}
+#v-rosary .personal-panel,#v-bible .personal-panel{background:var(--k-panel)!important;border-color:var(--k-line)!important}
+#v-rosary .mystery-card{background:#292620;border:1px solid #484034;border-radius:7px}
+#v-rosary .prayer-text{border-color:#3d3a32;color:#d6d0c4}
+#v-bible .reading-card{background:#292923;border:1px solid #454238;border-radius:7px}
+#v-bible .reading-ref{color:#d3c19b;font:24px Georgia,serif}
+.reading-card,.personal-note{border-radius:7px}
+.life-label{margin-top:18px!important}
+@media(max-width:900px){.topbar{align-items:flex-start}.top-actions{flex-wrap:wrap;justify-content:flex-end}.world-switch{order:-1}}
+@media(max-width:650px){.world-switch{width:100%;justify-content:stretch;order:0;margin:0 0 5px}.world-button{flex:1}.top-actions{flex:1;flex-wrap:wrap}.life-hub-grid{grid-template-columns:1fr}.life-hub{min-height:140px;padding:17px}}
