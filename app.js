@@ -53,7 +53,7 @@ const when = k => k === 0 ? 'today' : k === 1 ? 'tomorrow' : 'in ' + k + ' days'
 /* ---------- rendering ---------- */
 function render() {
   document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === tab));
-  document.querySelectorAll('.sec').forEach(s => s.classList.toggle('on', s.id === 'v-' + tab));
+  document.querySelectorAll('.sec').forEach(s => { const active = s.id === 'v-' + tab; s.classList.toggle('on', active); s.hidden = !active; });
   $('#banner').innerHTML = alerts().map(a => `<div class="alert">⏰ <b>${esc(a.e.title)}</b> is ${when(a.k)}${a.e.time ? ' at ' + esc(a.e.time) : ''}</div>`).join('');
   if (tab === 'cal') rCal();
   if (tab === 'daily') rDaily();
@@ -900,7 +900,7 @@ badge();
 document.addEventListener('click', ev => {
   const b = ev.target.closest('[data-t],[data-a]');
   if (!b) return;
-  if (b.dataset.t) { tab = b.dataset.t; render(); return; }
+  if (b.dataset.t) { tab = b.dataset.t; render(); const main = document.querySelector('.workspace main') || document.querySelector('.workspace'); if (main) main.scrollTo({top:0,behavior:'instant'}); window.scrollTo({top:0,behavior:'instant'}); return; }
   const a = b.dataset.a;
   if (a === 'prev' || a === 'next') { sel = addDays(sel, a === 'next' ? 7 : -7); view = parse(sel); view.setDate(1); render(); }
   else if (a === 'now') { sel = today(); view = new Date(); view.setDate(1); render(); }
