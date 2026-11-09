@@ -155,3 +155,46 @@ button:focus-visible,a:focus-visible{outline:3px solid #007aff55!important;outli
  .reminder-row{grid-template-columns:1fr 100px}
  .journal-editor textarea{min-height:190px}
 }
+
+
+/* Spiritual / worldly dashboard and adaptive appearance */
+.life-hub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.life-hub{display:flex;align-items:center;gap:15px;min-width:0;padding:20px;border:1px solid var(--line);border-radius:18px;text-decoration:none;color:var(--ink)!important;background:var(--panel);transition:transform .18s ease,box-shadow .18s ease}
+.life-hub:hover{transform:translateY(-2px);box-shadow:0 8px 24px #0000000b}
+.life-hub>span{display:grid;place-items:center;width:46px;height:46px;flex:0 0 46px;border-radius:14px;background:#e8f2eb;color:#23653a;font-size:24px}
+.life-hub.worldly-hub>span{background:#edf0fa;color:#405a9a}
+.life-hub small{font-size:9px;letter-spacing:.1em;font-weight:800;color:var(--mute)}
+.life-hub h2{font-size:20px!important;margin:3px 0!important}
+.life-hub p{font-size:11px;color:var(--mute);margin:0}
+.life-hub>b{margin-left:auto;color:var(--mute)}
+.personal-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+.personal-stats>div{background:var(--raised);border:1px solid var(--line);border-radius:12px;padding:12px}
+.personal-stats b{display:block;font-size:22px;color:var(--ink)}
+.personal-stats span{font-size:11px;color:var(--mute)}
+.sp-progress{height:6px;background:var(--raised);border-radius:9px;overflow:hidden;margin:8px 0}
+.sp-progress span{display:block;height:100%;background:var(--acc);border-radius:9px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px}
+.form-grid label.full{grid-column:1/-1}
+html[data-theme="dark"]{color-scheme:dark;--bg:#11130f;--sidebar:#171a15;--panel:#1b1e19;--card:#1b1e19;--raised:#242820;--hover:#2a3027;--ink:#f0f1eb;--mute:#a4aa9d;--line:#343a30;--acc:#b9df8b;--acc2:#293b27;--accbg:#202e20}
+html[data-theme="dark"] body,html[data-theme="dark"] .app-shell{background:var(--bg)!important;color:var(--ink)!important}
+html[data-theme="dark"] .sidebar{background:#171a15f5!important;border-color:var(--line)!important}
+html[data-theme="dark"] .sidebar nav#tabs button{color:#d2d6cc!important}
+html[data-theme="dark"] .sidebar nav#tabs button:hover{background:#262c23!important;color:var(--ink)!important}
+html[data-theme="dark"] .sidebar nav#tabs button.on{background:#293b27!important;color:#d5edc3!important;box-shadow:inset 3px 0 #a8d37b!important}
+html[data-theme="dark"] .topbar{background:#11130fe8!important;border-color:var(--line)!important}
+html[data-theme="dark"] .card,html[data-theme="dark"] .chat-card,html[data-theme="dark"] .sheet,html[data-theme="dark"] .personal-panel{background:var(--panel)!important;border-color:var(--line)!important;color:var(--ink)!important}
+html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] textarea{background:#242820!important;color:var(--ink)!important;border-color:#41483b!important}
+html[data-theme="dark"] button{background:#292e26!important;color:var(--ink)!important;border-color:#41483b!important}
+html[data-theme="dark"] button.p{background:#527b3d!important;color:#fff!important;border-color:#527b3d!important}
+html[data-theme="dark"] .personal-hero{background:linear-gradient(135deg,#202e20,#191f18)!important;border-color:#354833!important}
+html[data-theme="dark"] .personal-hero h2,html[data-theme="dark"] .personal-panel h3,html[data-theme="dark"] .reading-card h4,html[data-theme="dark"] .journal-entry h4{color:var(--ink)!important}
+html[data-theme="dark"] .personal-note,html[data-theme="dark"] .reading-card,html[data-theme="dark"] .mystery-card,html[data-theme="dark"] .journal-entry,html[data-theme="dark"] .prayer-text{background:#22271f!important;border-color:var(--line)!important;color:#d4d8ce!important}
+html[data-theme="dark"] .life-hub{background:var(--panel)!important;border-color:var(--line)!important;color:var(--ink)!important}
+html[data-theme="dark"] .life-hub>span{background:#293b27!important;color:#d5edc3!important}
+html[data-theme="dark"] .life-hub.worldly-hub>span{background:#293149!important;color:#cbd7ff!important}
+html[data-theme="dark"] .cell{background:#20241e!important;border-color:var(--line)!important;color:var(--ink)!important}
+html[data-theme="dark"] .cell.sel{background:#293b27!important;border-color:#527b3d!important}
+html[data-theme="dark"] .row{border-color:#30362d!important}
+html[data-theme="dark"] .workspace-footer{border-color:var(--line)!important}
+html[data-theme="dark"] .personal-stats>div{background:var(--raised)!important;border-color:var(--line)!important}
+@media(max-width:650px){.life-hub-grid{grid-template-columns:1fr}.life-hub{padding:16px}.form-grid{grid-template-columns:1fr}.form-grid label.full{grid-column:auto}}
