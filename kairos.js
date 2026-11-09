@@ -21,7 +21,8 @@ function enterWorld(which){
  document.body.dataset.kairosWorld=current;
  if(current==='spiritual'){
    document.documentElement.dataset.theme='dark';
-   if(window.AevumCathedral&&typeof window.AevumCathedral.enter==='function')window.AevumCathedral.enter();
+   if(window.Aevum3D&&typeof window.Aevum3D.enter==='function')window.Aevum3D.enter();
+   else if(window.AevumCathedral&&typeof window.AevumCathedral.enter==='function')window.AevumCathedral.enter();
    else if(shell)shell.hidden=false;
    return;
  }
