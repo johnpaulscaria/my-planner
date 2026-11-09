@@ -271,3 +271,44 @@ html[data-kairos-world="worldly"] [hidden]{display:none!important}
   html[data-kairos-world="worldly"] .kairos-quick-tile{min-height:98px!important}
   html[data-kairos-world="worldly"] .kairos-quick-head h2{font-size:21px!important}
 }
+
+/* Layout normalization: remove nested workspace gutters from the original base theme. */
+html[data-kairos-world="worldly"] .workspace{
+  width:auto!important;min-width:0!important;margin-left:248px!important;
+  padding:0!important;display:flex!important;flex-direction:column!important;
+}
+html[data-kairos-world="worldly"] .topbar{
+  width:100%!important;max-width:1440px!important;margin:0 auto!important;
+  min-height:112px!important;padding:22px 32px!important;box-sizing:border-box!important;
+}
+html[data-kairos-world="worldly"] main{
+  width:100%!important;max-width:1440px!important;margin:0 auto!important;
+  padding:26px 32px 14px!important;box-sizing:border-box!important;
+}
+html[data-kairos-world="worldly"] .workspace-footer{
+  width:calc(100% - 64px)!important;max-width:1376px!important;margin:24px auto 0!important;
+}
+html[data-kairos-world="worldly"] #banner{width:100%;max-width:1440px;margin:0 auto}
+html[data-kairos-world="worldly"] #v-dash>.card{width:100%;min-width:0}
+html[data-kairos-world="worldly"] .bar{flex-wrap:wrap}
+html[data-kairos-world="worldly"] .row>*{min-width:0}
+html[data-kairos-world="worldly"] .top-actions{flex-wrap:wrap;justify-content:flex-end}
+@media(max-width:900px){
+  html[data-kairos-world="worldly"] .workspace{margin-left:218px!important;padding:0!important}
+  html[data-kairos-world="worldly"] .topbar{padding:20px 22px!important}
+  html[data-kairos-world="worldly"] main{padding:22px!important}
+  html[data-kairos-world="worldly"] .workspace-footer{width:calc(100% - 44px)!important}
+}
+@media(max-width:800px){
+  html[data-kairos-world="worldly"] .workspace{margin-left:0!important;padding:0!important}
+  html[data-kairos-world="worldly"] .sidebar{width:100%!important;height:auto!important;position:sticky!important;inset:0 0 auto!important}
+  html[data-kairos-world="worldly"] .topbar{padding:18px 16px!important}
+  html[data-kairos-world="worldly"] main{padding:16px!important}
+  html[data-kairos-world="worldly"] .workspace-footer{width:calc(100% - 32px)!important}
+}
+@media(max-width:520px){
+  html[data-kairos-world="worldly"] .topbar{align-items:flex-start!important;flex-direction:column!important;gap:12px!important}
+  html[data-kairos-world="worldly"] .top-actions{width:100%;justify-content:flex-start!important}
+  html[data-kairos-world="worldly"] main{padding:12px!important}
+  html[data-kairos-world="worldly"] .workspace-footer{width:calc(100% - 24px)!important}
+}
