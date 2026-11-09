@@ -234,3 +234,20 @@ html[data-kairos-world="worldly"] .cell{background:#24241f!important;color:#f5f0
 html[data-kairos-world="worldly"] .cell.sel{background:#284638!important;border-color:#4b9a72!important}
 html[data-kairos-world="worldly"] .row{border-color:#403d33!important}
 html[data-kairos-world="worldly"] button:focus-visible,html[data-kairos-world="worldly"] a:focus-visible,html[data-kairos-world="worldly"] input:focus-visible{outline:3px solid #e0b45e!important;outline-offset:2px!important}
+
+/* Interactive World dashboard controls and clear hover/focus feedback */
+html[data-kairos-world="worldly"] .kairos-quick-launch{border-top:3px solid #c49a50!important;padding:24px!important}
+html[data-kairos-world="worldly"] .kairos-quick-head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:18px}
+html[data-kairos-world="worldly"] .kairos-quick-kicker{font-size:10px;letter-spacing:.18em;font-weight:800;color:#e0b45e}
+html[data-kairos-world="worldly"] .kairos-quick-head h2{margin:6px 0 4px;color:#fff7e8!important;font-size:22px}
+html[data-kairos-world="worldly"] .kairos-quick-head p{margin:0;color:#d0c7b5!important;font-size:13px}
+html[data-kairos-world="worldly"] .kairos-quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+html[data-kairos-world="worldly"] .kairos-quick-tile{display:flex;flex-direction:column;align-items:flex-start;gap:7px;text-align:left;min-height:126px;padding:16px!important;background:#2b2b24!important;border:1px solid #514b3c!important;border-radius:14px!important;color:#fff4df!important;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease}
+html[data-kairos-world="worldly"] .kairos-quick-tile:hover{transform:translateY(-3px);background:#343328!important;border-color:#c49a50!important}
+html[data-kairos-world="worldly"] .kairos-quick-tile:active{transform:translateY(0) scale(.985)}
+html[data-kairos-world="worldly"] .kairos-quick-tile strong{font-size:14px;color:#fff5e5!important}
+html[data-kairos-world="worldly"] .kairos-quick-tile small{font-size:12px;line-height:1.45;color:#d1c8b7!important}
+html[data-kairos-world="worldly"] .quick-symbol{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:#403522;color:#edc875;font-weight:800}
+html[data-kairos-world="worldly"] .app-shell button,html[data-kairos-world="worldly"] .app-shell a{transition:background .16s ease,border-color .16s ease,transform .16s ease}
+html[data-kairos-world="worldly"] .app-shell button:focus-visible,html[data-kairos-world="worldly"] .app-shell a:focus-visible{outline:3px solid #edc875!important;outline-offset:3px!important}
+@media(max-width:720px){html[data-kairos-world="worldly"] .kairos-quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}html[data-kairos-world="worldly"] .kairos-quick-head{align-items:flex-start;flex-direction:column}}
