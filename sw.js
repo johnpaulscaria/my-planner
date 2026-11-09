@@ -1,7 +1,7 @@
-const V = 'planner-v4';
+const V = 'kairos-v2';
 const SHELL = [
   './', 'index.html', 'style.css', 'ios.css', 'app.js', 'personal.js',
-  'upgrade.js', 'config.js', 'manifest.webmanifest',
+  'upgrade.js', 'kairos.js', 'images/kairos-rosary.svg', 'images/kairos-bible.svg', 'images/kairos-home-landscape.svg', 'config.js', 'manifest.webmanifest',
   'icon-180.png', 'icon-192.png', 'icon-512.png',
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js'
 ];

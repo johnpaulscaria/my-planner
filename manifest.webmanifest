@@ -1,15 +1,28 @@
 {
-  "name": "My Planner",
-  "short_name": "Planner",
-  "description": "Dates, checklists, daily tasks and weekly review",
+  "name": "Kairos — A Life of Intention",
+  "short_name": "Kairos",
+  "description": "A considered space for prayer, planning, learning and a life of purpose.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f7f5f0",
-  "theme_color": "#3b6ef5",
+  "background_color": "#171715",
+  "theme_color": "#171715",
   "icons": [
-    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
-    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
-    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }

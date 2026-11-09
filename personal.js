@@ -63,7 +63,7 @@ async function unlockVault(password){
   journalUnlocked=true;refreshAutoLock();renderJournal();
 }
 function section(title,subtitle,content){
-  return `<div class="personal-hero"><div class="kicker">MY PLANNER · PERSONAL</div><h2>${title}</h2><p>${subtitle}</p></div>${content}`;
+  return `<div class="personal-hero"><div class="kicker">KAIROS · PERSONAL</div><h2>${title}</h2><p>${subtitle}</p></div>${content}`;
 }
 function renderJournal(){
   const root=$('#v-journal');if(!root)return;
