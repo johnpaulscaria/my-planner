@@ -67,7 +67,7 @@ function step(){let dx=0,dy=0;if(keys.w||keys.ArrowUp)dy=-.65;if(keys.s||keys.Ar
 let movementTimer=null;
 function onKeyDown(e){
  if(!game||game.hidden)return;
- if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();
+ const typing=e.target&&(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)||e.target.isContentEditable);\n if(!typing&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();
  if(e.key==='Escape'){closeDialog();return;}
  if(dialog)return;
  if(['w','a','s','d','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)){keys[e.key]=true;if(!movementTimer)movementTimer=setInterval(step,35);}
