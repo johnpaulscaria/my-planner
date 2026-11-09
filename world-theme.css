@@ -91,3 +91,57 @@ html[data-kairos-world="worldly"], body[data-kairos-world="worldly"] .life-hub.w
 html[data-kairos-world="worldly"], body[data-kairos-world="worldly"] ::selection{background:#b9d0ca;color:#172b36}
 html[data-kairos-world="worldly"], body[data-kairos-world="worldly"] *{scrollbar-color:#b9c4c0 transparent}
 @media(prefers-reduced-motion:reduce){html[data-kairos-world="worldly"], body[data-kairos-world="worldly"] *{transition:none!important}}
+
+
+
+/* WORLD — private office / old-money editorial finish.
+   All selectors are scoped to World. Heaven styling and behaviour are not changed. */
+html[data-kairos-world="worldly"],body[data-kairos-world="worldly"]{
+ --bg:#f3f0e8;--sidebar:#f7f5ef;--panel:#fbfaf6;--card:#fffdf8;--raised:#efede5;--hover:#e8e4d9;
+ --ink:#202b32;--mute:#69716f;--line:#ddd8cc;--acc:#8b7043;--acc2:#e9dfca;--accbg:#f0e9db;
+}
+html[data-kairos-world="worldly"] body,body[data-kairos-world="worldly"]{
+ background:radial-gradient(ellipse at 82% 0%,rgba(190,177,145,.18),transparent 34%),linear-gradient(180deg,#f4f1e9,#f1efe8)!important;color:#202b32!important;
+}
+html[data-kairos-world="worldly"] .sidebar,body[data-kairos-world="worldly"] .sidebar{
+ background:linear-gradient(180deg,#f8f6f0,#f2f0e8)!important;border-right:1px solid #d9d3c6!important;box-shadow:8px 0 30px rgba(37,42,40,.035)!important;
+}
+html[data-kairos-world="worldly"] .brand-mark,body[data-kairos-world="worldly"] .brand-mark{
+ background:#263b3b!important;color:#e6d8b9!important;border:1px solid #405452!important;border-radius:10px!important;box-shadow:0 5px 14px #263b3b18!important;
+}
+html[data-kairos-world="worldly"] .brand-copy strong,body[data-kairos-world="worldly"] .brand-copy strong{font-family:Georgia,"Times New Roman",serif!important;font-size:18px!important;letter-spacing:-.035em!important}
+html[data-kairos-world="worldly"] .brand-copy small,body[data-kairos-world="worldly"] .brand-copy small{letter-spacing:.2em!important;color:#817967!important}
+html[data-kairos-world="worldly"] .sidebar nav#tabs button,body[data-kairos-world="worldly"] .sidebar nav#tabs button{min-height:43px!important;border-radius:8px!important;font-size:12px!important}
+html[data-kairos-world="worldly"] .sidebar nav#tabs button.on,body[data-kairos-world="worldly"] .sidebar nav#tabs button.on{background:#e9e3d6!important;border-color:#ded4c1!important;color:#283b3a!important;box-shadow:inset 2px 0 #92784d!important}
+html[data-kairos-world="worldly"] .sidebar nav#tabs button.on .nav-icon,body[data-kairos-world="worldly"] .sidebar nav#tabs button.on .nav-icon{color:#8b7043!important}
+html[data-kairos-world="worldly"] .account-monogram,body[data-kairos-world="worldly"] .account-monogram{background:#263b3b!important;color:#e9dfca!important;border:0!important}
+html[data-kairos-world="worldly"] .topbar,body[data-kairos-world="worldly"] .topbar{background:rgba(243,240,232,.9)!important;border-bottom:1px solid #ddd8cc!important;backdrop-filter:blur(18px)!important}
+html[data-kairos-world="worldly"] .eyebrow,body[data-kairos-world="worldly"] .eyebrow{color:#897b61!important;letter-spacing:.19em!important;font-size:9px!important}
+html[data-kairos-world="worldly"] .eyebrow-dot,body[data-kairos-world="worldly"] .eyebrow-dot{background:#9b8050!important;box-shadow:0 0 0 3px #9b805018!important}
+html[data-kairos-world="worldly"] .heading-block h1,body[data-kairos-world="worldly"] .heading-block h1{font-family:Georgia,"Times New Roman",serif!important;font-size:clamp(30px,3vw,39px)!important;font-weight:500!important;letter-spacing:-.045em!important;color:#203334!important}
+html[data-kairos-world="worldly"] .heading-block p,body[data-kairos-world="worldly"] .heading-block p{font-size:12px!important;color:#73766f!important}
+html[data-kairos-world="worldly"] .top-button,body[data-kairos-world="worldly"] .top-button{background:#fbfaf6!important;border:1px solid #ded8ca!important;border-radius:8px!important;color:#344442!important;box-shadow:0 2px 5px #263b3b08!important}
+html[data-kairos-world="worldly"] .top-button:hover,body[data-kairos-world="worldly"] .top-button:hover{background:#eee9dd!important;border-color:#cfc3ac!important;color:#263b3b!important}
+html[data-kairos-world="worldly"] .card,body[data-kairos-world="worldly"] .card,html[data-kairos-world="worldly"] .chat-card,body[data-kairos-world="worldly"] .chat-card{
+ background:linear-gradient(145deg,#fffdf8,#faf8f1)!important;border:1px solid #e1dbce!important;border-radius:13px!important;
+ box-shadow:0 8px 24px rgba(37,42,40,.045),0 1px 2px rgba(37,42,40,.025)!important;padding:22px!important;
+}
+html[data-kairos-world="worldly"] .card h2,body[data-kairos-world="worldly"] .card h2,html[data-kairos-world="worldly"] .card h3,body[data-kairos-world="worldly"] .card h3{
+ color:#263b3b!important;font-family:Georgia,"Times New Roman",serif!important;font-weight:500!important;letter-spacing:-.025em!important;
+}
+html[data-kairos-world="worldly"] .stat>div,body[data-kairos-world="worldly"] .stat>div{background:#f3f0e8!important;border:1px solid #e4ded1!important;border-radius:10px!important;padding:16px!important}
+html[data-kairos-world="worldly"] .stat b,body[data-kairos-world="worldly"] .stat b{color:#304746!important;font-family:Georgia,"Times New Roman",serif!important;font-size:24px!important;font-weight:500!important}
+html[data-kairos-world="worldly"] button,body[data-kairos-world="worldly"] button{background:#f8f6f0!important;border:1px solid #ded8ca!important;border-radius:8px!important;color:#344442!important;transition:background .18s,border-color .18s,transform .18s!important}
+html[data-kairos-world="worldly"] button:hover,body[data-kairos-world="worldly"] button:hover{background:#eee9dd!important;border-color:#cfc3ac!important;color:#263b3b!important}
+html[data-kairos-world="worldly"] button.p,body[data-kairos-world="worldly"] button.p{background:#293f3d!important;border-color:#293f3d!important;color:#f8f4e9!important;box-shadow:0 5px 13px #293f3d1b!important}
+html[data-kairos-world="worldly"] button.p:hover,body[data-kairos-world="worldly"] button.p:hover{background:#1f3332!important;color:#fff!important}
+html[data-kairos-world="worldly"] input,body[data-kairos-world="worldly"] input,html[data-kairos-world="worldly"] select,body[data-kairos-world="worldly"] select,html[data-kairos-world="worldly"] textarea,body[data-kairos-world="worldly"] textarea{background:#fffefa!important;border:1px solid #d9d4c8!important;border-radius:8px!important;color:#263533!important}
+html[data-kairos-world="worldly"] input:focus,body[data-kairos-world="worldly"] input:focus,html[data-kairos-world="worldly"] textarea:focus,body[data-kairos-world="worldly"] textarea:focus{border-color:#9a845d!important;box-shadow:0 0 0 3px #9a845d1a!important}
+html[data-kairos-world="worldly"] .cell,body[data-kairos-world="worldly"] .cell{background:#faf8f2!important;border:1px solid #e7e1d6!important;border-radius:8px!important}
+html[data-kairos-world="worldly"] .cell.sel,body[data-kairos-world="worldly"] .cell.sel{background:#eae4d7!important;border-color:#cbbd9f!important;color:#304746!important}
+html[data-kairos-world="worldly"] .tag,body[data-kairos-world="worldly"] .tag{background:#eee7d8!important;border:1px solid #dfd3bc!important;color:#6c5835!important}
+html[data-kairos-world="worldly"] .workspace-footer,body[data-kairos-world="worldly"] .workspace-footer{border-color:#ddd8cc!important;color:#898477!important;letter-spacing:.18em!important}
+html[data-kairos-world="worldly"] .workspace-footer b,body[data-kairos-world="worldly"] .workspace-footer b{color:#92784d!important}
+html[data-kairos-world="worldly"] .profile-links a:hover,body[data-kairos-world="worldly"] .profile-links a:hover{background:#e9e3d6!important;color:#293f3d!important}
+html[data-kairos-world="worldly"] ::selection,body[data-kairos-world="worldly"] ::selection{background:#d9c9a8;color:#203334}
+@media(max-width:800px){html[data-kairos-world="worldly"] .card,body[data-kairos-world="worldly"] .card{padding:17px!important}html[data-kairos-world="worldly"] .heading-block h1,body[data-kairos-world="worldly"] .heading-block h1{font-size:28px!important}}
