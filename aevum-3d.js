@@ -32,7 +32,7 @@
       .a3d-exit{position:absolute;right:25px;top:22px;background:#171716cc;border:1px solid #9e8965;color:#eee4d2;padding:10px 15px;cursor:pointer;letter-spacing:.08em}
       .a3d-hint{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);background:#111c;padding:10px 16px;border:1px solid #9b835544;border-radius:3px;font:11px Arial;letter-spacing:.08em;white-space:nowrap;color:#e6d8bd}
       .a3d-prompt{position:absolute;left:50%;bottom:78px;transform:translateX(-50%);background:#171613ed;border:1px solid #b69a6b;padding:12px 20px;text-align:center;min-width:230px;display:none}
-      .a3d-prompt b{display:block;font-size:16px;font-weight:400}.a3d-prompt small{font:10px Arial;color:#c8b38f;letter-spacing:.1em}
+      .a3d-prompt b{display:block;font-size:16px;font-weight:400}.a3d-world-label{font-weight:600}.a3d-prompt small{font:10px Arial;color:#c8b38f;letter-spacing:.1em}
       .a3d-panel{position:absolute;inset:0;background:#070707b8;display:grid;place-items:center;padding:20px}
       .a3d-paper{width:min(540px,94vw);max-height:82vh;overflow:auto;background:linear-gradient(145deg,#eee5d2,#d6c6a8);color:#34291d;padding:34px;box-shadow:0 20px 80px #000;border:1px solid #b49a70}
       .a3d-paper small{font:10px Arial;letter-spacing:.2em;color:#806b4b}.a3d-paper h2{font-size:29px;font-weight:400;margin:12px 0}.a3d-paper p{font-size:16px;line-height:1.65}.a3d-paper textarea{box-sizing:border-box;width:100%;min-height:140px;background:#f7f0e2;border:1px solid #b7a487;padding:12px;font:15px Georgia;color:#34291d}
@@ -59,28 +59,56 @@
   function label(text,x,y,z) {
     const el=document.createElement('div');el.className='a3d-world-label';el.textContent=text;el.style.cssText='position:absolute;color:#ead8b6;font:10px Arial;letter-spacing:.16em;text-shadow:0 2px 6px #000;pointer-events:none;white-space:nowrap';$('#aevum-3d').appendChild(el);return {el,pos:new THREE.Vector3(x,y,z)};
   }
+
+  function makeTexture(base, accent, kind='stone') {
+    const canvas=document.createElement('canvas');canvas.width=canvas.height=512;
+    const ctx=canvas.getContext('2d');ctx.fillStyle=base;ctx.fillRect(0,0,512,512);
+    if(kind==='stone'){
+      for(let i=0;i<2600;i++){const x=Math.random()*512,y=Math.random()*512,r=Math.random()*2.4+.3;ctx.fillStyle=Math.random()>.5?accent:'rgba(255,255,255,.035)';ctx.globalAlpha=.12+Math.random()*.22;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();}
+      ctx.globalAlpha=1;ctx.strokeStyle='rgba(48,38,28,.18)';ctx.lineWidth=2;
+      for(let y=0;y<512;y+=128){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(512,y);ctx.stroke();}
+      for(let row=0;row<4;row++){const off=row%2?64:0;for(let x=off;x<512;x+=128){ctx.beginPath();ctx.moveTo(x,row*128);ctx.lineTo(x,(row+1)*128);ctx.stroke();}}
+    } else if(kind==='wood'){
+      for(let i=0;i<90;i++){ctx.strokeStyle=i%3?'rgba(24,12,6,.16)':'rgba(220,175,112,.13)';ctx.lineWidth=Math.random()*3+1;ctx.beginPath();let y=Math.random()*512;ctx.moveTo(0,y);ctx.bezierCurveTo(160,y-12,330,y+15,512,y+Math.random()*12-6);ctx.stroke();}
+    } else {
+      for(let y=0;y<512;y+=64)for(let x=0;x<512;x+=64){ctx.fillStyle=((x+y)/64)%2?'rgba(255,255,255,.035)':'rgba(0,0,0,.055)';ctx.fillRect(x,y,64,64);}
+    }
+    const tex=new THREE.CanvasTexture(canvas);tex.wrapS=tex.wrapT=THREE.RepeatWrapping;tex.repeat.set(2,2);tex.colorSpace=THREE.SRGBColorSpace;return tex;
+  }
+  function textured(color, texture, roughness=.9) {
+    return new THREE.MeshStandardMaterial({color,map:texture,roughness});
+  }
+  function makeWorldLabel(text, position) {
+    const el=document.createElement('div');el.className='a3d-world-label';el.textContent=text;
+    el.style.cssText='position:absolute;z-index:3;transform:translate(-50%,-100%);padding:7px 11px;background:rgba(20,18,15,.82);border:1px solid rgba(190,158,105,.65);color:#f2e5cb;font:10px Arial,sans-serif;letter-spacing:.13em;white-space:nowrap;pointer-events:none;text-shadow:none;box-shadow:0 3px 12px #0008';
+    $('#aevum-3d').appendChild(el);return {el,position};
+  }
+
   function makePlayer() {
-    const g=new THREE.Group(), skin=mat('#b68a68'), coat=mat('#303b3b'), trousers=mat('#242b2d'), shoes=mat('#171819');
-    sphere(g,.22,skin,0,1.62,0,1.15); cylinder(g,.18,.2,.55,coat,0,1.13,0);
-    const neck=cylinder(g,.07,.07,.12,skin,0,1.47,0);
-    const legs=[];
-    for(const x of [-.105,.105]){const leg=cylinder(g,.075,.09,.48,trousers,x,.42,0);legs.push(leg);box(g,.13,.09,.25,shoes,x,.14,.06);}
-    for(const x of [-.25,.25]){const arm=cylinder(g,.065,.08,.48,coat,x,1.14,0);arm.rotation.z=x<0?-.12:.12;}
-    g.position.set(0,0,11);scene.add(g);g.userData.legs=legs;return g;
+    const g=new THREE.Group(), skin=mat('#b98260'), coat=mat('#34434a'), trousers=mat('#252c32'), shoes=mat('#17191b'), hair=mat('#30231d');
+    sphere(g,.235,skin,0,1.62,0,1.18);sphere(g,.24,hair,0,1.76,-.035,.72);sphere(g,.045,mat('#241c18'),-.19,1.65,.17,.7);sphere(g,.045,mat('#241c18'),.19,1.65,.17,.7);
+    cylinder(g,.075,.075,.14,skin,0,1.43,0,24);cylinder(g,.25,.28,.62,coat,0,1.08,0,24);
+    const legs=[],arms=[];
+    for(const x of [-.115,.115]){const leg=cylinder(g,.09,.105,.55,trousers,x,.43,0,24);legs.push(leg);sphere(g,.095,trousers,x,.19,0,.8);box(g,.14,.1,.27,shoes,x,.08,.08);}
+    for(const x of [-.29,.29]){const arm=cylinder(g,.075,.09,.52,coat,x,1.1,0,24);arm.rotation.z=x<0?-.16:.16;arms.push(arm);sphere(g,.075,skin,x*1.04,.82,.01);}
+    g.position.set(0,0,11);scene.add(g);g.userData.legs=legs;g.userData.arms=arms;return g;
   }
   function buildWorld() {
     scene=new THREE.Scene();scene.background=new THREE.Color('#101719');scene.fog=new THREE.Fog('#101719',26,78);
-    scene.add(new THREE.HemisphereLight('#d6d4c7','#30241b',1.4));
-    const sun=new THREE.DirectionalLight('#ffe4b4',2.3);sun.position.set(-10,18,9);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);scene.add(sun);
-    const gold=mat('#a58b5e'), stone=mat('#c5b99f'), darkStone=mat('#5d5141'), wood=mat('#4a2c1b'), wood2=mat('#6c4729'), floor=mat('#6c6254'), roof=mat('#38332c'), glass= new THREE.MeshStandardMaterial({color:'#546f79',emissive:'#1b3440',emissiveIntensity:.5,roughness:.3});
+    scene.add(new THREE.HemisphereLight('#e5e4df','#34271d',1.9));
+    const sun=new THREE.DirectionalLight('#ffe8c5',3.0);sun.position.set(-10,20,12);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-24;sun.shadow.camera.right=24;sun.shadow.camera.top=24;sun.shadow.camera.bottom=-24;scene.add(sun);
+    const naveLight=new THREE.PointLight('#f4d7a2',2.2,32);naveLight.position.set(0,7,-2);scene.add(naveLight);
+    const altarLight=new THREE.PointLight('#ffcf83',2.6,16);altarLight.position.set(0,4,-15);scene.add(altarLight);
+    const stoneTex=makeTexture('#b9ad98','#827764','stone'), woodTex=makeTexture('#52331f','#24160f','wood'), floorTex=makeTexture('#766c5d','#4c443a','tile');
+    const gold=mat('#b59a68',.32,.55), stone=textured('#d0c5b1',stoneTex), darkStone=mat('#655b4c'), wood=textured('#765033',woodTex), wood2=mat('#795638'), floor=textured('#8a806e',floorTex), roof=mat('#3b3732'), glass= new THREE.MeshStandardMaterial({color:'#718e9a',emissive:'#345d70',emissiveIntensity:.8,roughness:.25,metalness:.08});
     // Exterior approach and cathedral shell
     box(scene,80,.3,90,floor,0,-.22,0);box(scene,18,.2,12,mat('#82745e'),0,-.05,18);
     box(scene,7,10,3,stone,-6.5,5,-8);box(scene,7,10,3,stone,6.5,5,-8);box(scene,3,10,25,stone,-11,5,3);box(scene,3,10,25,stone,11,5,3);box(scene,20,10,3,stone,0,5,-20);
     // nave floor and vaulted ceiling mass
     box(scene,18,.35,25,mat('#8d806b'),0,.05,3);box(scene,18,.5,25,roof,0,10,3);
-    for(let z=-7;z<=13;z+=5){for(const x of [-8.5,8.5]){cylinder(scene,.48,.62,9,stone,x,4.5,z,20);cylinder(scene,.68,.68,.28,gold,x,8.9,z,20);arch(scene,x*.72,z-.1,gold);}}
+    for(let z=-7;z<=13;z+=5){for(const x of [-8.5,8.5]){cylinder(scene,.48,.62,9,stone,x,4.5,z,40);cylinder(scene,.68,.68,.28,gold,x,8.9,z,40);cylinder(scene,.72,.72,.18,darkStone,x,.12,z,40);arch(scene,x*.72,z-.1,gold);box(scene,.22,.22,4.8,gold,x*.82,8.95,z);}}
     // stained glass windows
-    for(const x of [-10.92,10.92])for(let z=-5;z<=10;z+=5){box(scene,.12,3.2,1.6,glass,x,6,z);box(scene,.18,.12,1.8,gold,x,6,z);box(scene,.18,3.4,.12,gold,x,6,z);}
+    for(const x of [-10.92,10.92])for(let z=-5;z<=10;z+=5){box(scene,.12,3.6,1.8,glass,x,6,z);box(scene,.2,.12,2,gold,x,6,z);box(scene,.2,3.8,.12,gold,x,6,z);sphere(scene,.09,gold,x,7.8,z,1.8);}
     // altar and apse
     box(scene,10,5,1,stone,0,2.5,-19.7);box(scene,7,.55,2.2,wood2,0,1.1,-14.5);box(scene,6,.2,2.1,gold,0,1.48,-14.5);
     box(scene,.2,2.1,.2,gold,0,3.1,-15.2);box(scene,.9,.16,.18,gold,0,3.65,-15.2);
@@ -99,9 +127,11 @@
     // candles and warm pools of light
     for(let i=0;i<7;i++){const x=-8+i*2.65;cylinder(scene,.045,.05,.55,mat('#eee0b7'),x,.4,-13.4,10);const light=new THREE.PointLight('#ffbd69',.8,5);light.position.set(x,.9,-13.4);scene.add(light);}
     player=makePlayer();
-    camera=new THREE.PerspectiveCamera(62,innerWidth/innerHeight,.1,150);
+    // Clear, readable signposts hover above the real devotional stations.
+    objects.forEach(o=>{const p=o.pos.clone();p.y+=1.9;o.label=makeWorldLabel(o.name.toUpperCase(),p);});
+    camera=new THREE.PerspectiveCamera(54,innerWidth/innerHeight,.1,150);
     clock=new THREE.Clock();
-    renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.8));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;
+    renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;
     $('#aevum-3d').prepend(renderer.domElement);
   }
   function ui() {
@@ -130,11 +160,12 @@
     if(!active)return;frame=requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);
     const forward=new THREE.Vector3(Math.sin(yaw),0,Math.cos(yaw)),right=new THREE.Vector3(forward.z,0,-forward.x),move=new THREE.Vector3();
     if(keys.KeyW||keys.ArrowUp)move.add(forward.clone().negate());if(keys.KeyS||keys.ArrowDown)move.add(forward);if(keys.KeyA||keys.ArrowLeft)move.add(right.clone().negate());if(keys.KeyD||keys.ArrowRight)move.add(right);
-    if(move.lengthSq()){move.normalize().multiplyScalar(4.2*dt);player.position.add(move);player.rotation.y=Math.atan2(move.x,move.z);player.userData.legs.forEach((l,i)=>l.rotation.x=Math.sin(performance.now()*.012+i*Math.PI)*.35);}
+    if(move.lengthSq()){move.normalize().multiplyScalar(4.2*dt);player.position.add(move);player.rotation.y=Math.atan2(move.x,move.z);player.userData.legs.forEach((l,i)=>l.rotation.x=Math.sin(performance.now()*.012+i*Math.PI)*.48);player.userData.arms.forEach((a,i)=>a.rotation.x=Math.sin(performance.now()*.012+i*Math.PI)*.28);}
     player.position.x=THREE.MathUtils.clamp(player.position.x,-9.4,9.4);player.position.z=THREE.MathUtils.clamp(player.position.z,-22,20);
     const desired=new THREE.Vector3(player.position.x+Math.sin(yaw)*7,player.position.y+4.2+pitch*3,player.position.z+Math.cos(yaw)*7);
     camera.position.lerp(desired,1-Math.pow(.001,dt));camera.lookAt(player.position.x,player.position.y+1.1,player.position.z);
     nearby=nearest();const prompt=$('.a3d-prompt');if(prompt){prompt.style.display=nearby?'block':'none';prompt.querySelector('b').textContent=nearby?.name||'';}
+    objects.forEach(o=>{if(!o.label)return;const v=o.label.position.clone().project(camera);const x=(v.x*.5+.5)*innerWidth,y=(-v.y*.5+.5)*innerHeight;o.label.el.style.left=x+'px';o.label.el.style.top=y+'px';o.label.el.style.display=v.z<1?'block':'none';});
     renderer.render(scene,camera);
   }
   function onKey(e){if(!active)return;if(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code))e.preventDefault();if(e.code==='KeyE'&&!e.repeat){interact();}else if(e.code==='Escape'){const panel=$('.a3d-panel');if(panel)panel.remove();else exit();}else keys[e.code]=true;}
