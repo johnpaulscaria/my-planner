@@ -67,7 +67,8 @@ function step(){let dx=0,dy=0;if(keys.w||keys.ArrowUp)dy=-.65;if(keys.s||keys.Ar
 let movementTimer=null;
 function onKeyDown(e){
  if(!game||game.hidden)return;
- const typing=e.target&&(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)||e.target.isContentEditable);\n if(!typing&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();
+ const typing=e.target&&(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)||e.target.isContentEditable);
+ if(!typing&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();
  if(e.key==='Escape'){closeDialog();return;}
  if(dialog)return;
  if(['w','a','s','d','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)){keys[e.key]=true;if(!movementTimer)movementTimer=setInterval(step,35);}
@@ -88,7 +89,7 @@ function onClick(e){
  if(e.target.classList.contains('aevum-modal'))closeDialog();
 }
 function enter(){ensure();state=load();player={x:50,y:88};game.hidden=false;document.body.style.overflow='hidden';if(movementTimer){clearInterval(movementTimer);movementTimer=null;}render();}
-function exit(){if(game)game.hidden=true;document.body.style.overflow='';closeDialog();const home=$('#kairos-home');if(home)home.hidden=false;const shell=$('.app-shell');if(shell)shell.hidden=true;document.body.classList.add('kairos-at-home');}
+function exit(){if(game)game.hidden=true;document.body.style.overflow='';closeDialog();if(window.Kairos&&typeof window.Kairos.home==='function')window.Kairos.home();else{const home=$('#kairos-home');if(home)home.hidden=false;const shell=$('.app-shell');if(shell)shell.hidden=true;document.body.classList.add('kairos-at-home');}}
 
 
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&movementTimer){clearInterval(movementTimer);movementTimer=null;keys={};}});
