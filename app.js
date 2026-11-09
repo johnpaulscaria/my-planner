@@ -13,7 +13,7 @@ const CATS = { birthday: ['🎂 Birthday', '#e0559c'], travel: ['✈️ Travel',
 const cat = e => CATS[e.cat] || CATS.other;
 
 const BLANK = () => ({ events: [], habits: [], done: {}, books: [], reads: {}, words: [], quotes: [] });
-let S = BLANK(), tab = 'cal', sel = today(), view = new Date(), wk = 0, hist = [];
+let S = BLANK(), tab = 'dash', sel = today(), view = new Date(), wk = 0, hist = [];
 view.setDate(1);
 const cfg = () => { try { return JSON.parse(localStorage.getItem('planner.cfg') || '{}'); } catch (e) { return {}; } };
 const save = () => { S.ts = Date.now(); try { localStorage.setItem('planner.v1', JSON.stringify(S)); } catch (e) { } push(); };
