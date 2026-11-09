@@ -26,7 +26,16 @@ function enterWorld(which){
    return;
  }
  if(shell)shell.hidden=false;
- document.querySelectorAll('#tabs button[data-t]').forEach(b=>{b.hidden=!worldly.has(b.dataset.t);});
+ // Hard boundary: spiritual tools belong exclusively to Heaven, never to World.
+ document.querySelectorAll('#tabs button[data-t]').forEach(b=>{
+   const t=b.dataset.t;
+   b.hidden=!worldly.has(t);
+   if(!worldly.has(t))b.remove();
+ });
+ ['bible','rosary','spbooks','prayers','journal'].forEach(id=>{
+   document.querySelectorAll('#v-'+id).forEach(s=>s.remove());
+ });
+ document.querySelectorAll('.app-shell [data-life-hub],.app-shell .life-hub-grid,.app-shell [data-sp-action],.app-shell [data-personal]').forEach(n=>n.remove());
  document.querySelectorAll('.app-shell .sec').forEach(s=>{s.hidden=false;});
  
  const eyebrow=$('.topbar .eyebrow');
