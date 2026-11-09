@@ -13,34 +13,17 @@
     bible: ['Daily Scripture', 'The Bible lectern', 'Open today’s Scripture reading and spend a moment with the Word.'],
     journal: ['Spiritual Journal', 'Your prayer notebook', 'Write a private reflection or note an intention for today.']
   };
-  let GLTFLoaderClass = null;
   function loadScript() {
+    if (window.THREE) return Promise.resolve();
     if (window.__aevumThreePromise) return window.__aevumThreePromise;
-    window.__aevumThreePromise = Promise.all([
-      import('https://esm.sh/three@0.160.0?bundle'),
-      import('https://esm.sh/three@0.160.0/examples/jsm/loaders/GLTFLoader.js?bundle')
-    ]).then(([three, loader]) => {
-      window.THREE = three;
-      GLTFLoaderClass = loader.GLTFLoader;
+    window.__aevumThreePromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = THREE_URL;
+      script.onload = resolve;
+      script.onerror = () => reject(new Error('Could not download Three.js from jsDelivr'));
+      document.head.appendChild(script);
     });
     return window.__aevumThreePromise;
-  }
-  function loadCathedralAssets() {
-    if (!GLTFLoaderClass || !scene) return;
-    const loader = new GLTFLoaderClass();
-    loader.load('https://cdn.3dassets.dev/assets/23058/v1/model.glb', gltf => {
-      const model = gltf.scene;
-      model.name = 'CC0 Gothic cathedral nave reference';
-      model.position.set(0, 0, 0);
-      model.scale.setScalar(1);
-      model.traverse(node => {
-        if (node.isMesh) { node.castShadow = true; node.receiveShadow = true; }
-      });
-      // Keep the current interactive stations active while the modular nave
-      // asset is added as a visible architectural layer for this iteration.
-      model.position.set(13, 0, -2);
-      scene.add(model);
-    }, undefined, error => console.warn('Aevum cathedral model could not be loaded; continuing with the built-in chapel', error));
   }
   function addStyles() {
     if ($('#aevum-3d-style')) return;
@@ -184,7 +167,6 @@
     clock=new THREE.Clock();
     renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;
     $('#aevum-3d').prepend(renderer.domElement);
-    loadCathedralAssets();
   }
   function ui() {
     const root=document.createElement('div');root.id='aevum-3d';root.innerHTML='<div class="a3d-top"><strong>AEVUM</strong><small>A QUIET PLACE TO RETURN</small></div><button class="a3d-exit">← RETURN</button><div class="a3d-prompt"><b></b><small>PRESS E TO INTERACT</small></div><div class="a3d-hint">W A S D · WALK &nbsp;&nbsp; MOUSE · LOOK &nbsp;&nbsp; E · INTERACT &nbsp;&nbsp; ESC · CLOSE</div><div class="a3d-mobile"><button data-k="KeyW">↑</button><button data-k="KeyA">←</button><button data-k="KeyS">↓</button><button data-k="KeyD">→</button></div>';
