@@ -1,7 +1,7 @@
 /* Aevum 3D Cathedral — procedural Three.js vertical slice */
 (function () {
   'use strict';
-  const THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js';
+  const THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js';
   const $ = (s, r=document) => r.querySelector(s);
   let active = false, ready = false, scene, camera, renderer, player, doors = [], clock, keys = {}, nearby = null, frame = 0;
   let yaw = 0, pitch = 0.22, doorOpen = false, inside = false, lastTime = 0;
@@ -19,7 +19,7 @@
     window.__aevumThreePromise = new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.src = THREE_URL;
-      script.onload = resolve;
+      script.onload = () => window.THREE ? resolve() : reject(new Error('Three.js loaded but did not expose window.THREE'));
       script.onerror = () => reject(new Error('Could not download Three.js from jsDelivr'));
       document.head.appendChild(script);
     });
