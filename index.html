@@ -31,21 +31,22 @@
       <span class="brand-copy"><strong>my planner</strong><small>PERSONAL STUDIO</small></span>
     </a>
     <nav id="tabs" aria-label="Main navigation">
-      <div class="nav-label">WORKSPACE</div>
+      <div class="nav-label">YOUR SPACE</div>
       <button data-t="dash"><span class="nav-icon">◫</span><span>Overview</span></button>
       <button data-t="cal"><span class="nav-icon">▦</span><span>Calendar</span></button>
       <button data-t="daily"><span class="nav-icon">☷</span><span>Daily tasks</span></button>
       <button data-t="up"><span class="nav-icon">↗</span><span>Upcoming</span></button>
-      <div class="nav-label nav-gap">PERSONAL GROWTH</div>
+      <div class="nav-label nav-gap life-label">✝ SPIRITUAL LIFE</div>
+      <button data-t="bible"><span class="nav-icon">†</span><span>Holy Bible</span></button>
+      <button data-t="rosary"><span class="nav-icon">✧</span><span>Holy Rosary</span></button>
+      <button data-t="spbooks"><span class="nav-icon">▤</span><span>Spiritual reading</span></button>
+      <button data-t="prayers"><span class="nav-icon">♡</span><span>Prayers &amp; devotions</span></button>
+      <button data-t="journal"><span class="nav-icon">▧</span><span>Spiritual journal</span><span class="nav-badge">LOCK</span></button>
+      <div class="nav-label nav-gap life-label">🌍 WORLDLY LIFE</div>
       <button data-t="books"><span class="nav-icon">▤</span><span>Reading room</span></button>
-      <button data-t="words"><span class="nav-icon">Aa</span><span>Word bank</span></button>
+      <button data-t="words"><span class="nav-icon">Aa</span><span>Vocabulary</span></button>
       <button data-t="quotes"><span class="nav-icon">❝</span><span>Quotes</span></button>
       <button data-t="week"><span class="nav-icon">◷</span><span>Weekly review</span></button>
-      <button data-t="journal"><span class="nav-icon">▧</span><span>Private journal</span><span class="nav-badge">LOCK</span></button>
-      <div class="nav-label nav-gap">FAITH</div>
-      <button data-t="rosary"><span class="nav-icon">✧</span><span>Daily rosary</span></button>
-      <button data-t="bible"><span class="nav-icon">†</span><span>Bible reading</span></button>
-      <div class="nav-label nav-gap">COMPANION</div>
       <button data-t="chat"><span class="nav-icon accent-icon">✳</span><span>Ask a friend</span><span class="nav-badge">AI</span></button>
     </nav>
     <div class="sidebar-bottom">
@@ -68,6 +69,7 @@
       <div class="top-actions">
         <button id="acct" class="top-button"><span>☁</span><span class="button-label">Sign in</span></button>
         <button id="bell" class="top-button" aria-label="Alerts"><span>♧</span><span class="button-label">Alerts</span></button>
+        <button id="theme-toggle" class="top-button" type="button" aria-label="Toggle appearance"><span id="theme-icon">◐</span><span class="button-label">Appearance</span></button>
         <button id="cfg" class="top-button settings-button"><span>⚙</span><span class="button-label">Settings</span></button>
       </div>
     </header>
@@ -85,6 +87,8 @@
       <section id="v-journal" class="sec"></section>
       <section id="v-rosary" class="sec"></section>
       <section id="v-bible" class="sec"></section>
+      <section id="v-spbooks" class="sec"></section>
+      <section id="v-prayers" class="sec"></section>
     </main>
     <footer class="workspace-footer"><span>MAKE SPACE FOR WHAT MATTERS</span><span>MY PLANNER <b>✳</b></span></footer>
   </div>
@@ -94,9 +98,10 @@
 <script src="config.js"></script>
 <script src="app.js"></script>
 <script src="personal.js"></script>
+<script src="upgrade.js"></script>
 <script>
 (function(){
-  const labels={cal:'Calendar',daily:'Daily tasks',books:'Reading room',words:'Word bank',quotes:'Quotes',dash:'Overview',up:'Upcoming',week:'Weekly review',chat:'Your companion',journal:'Private journal',rosary:'Daily rosary',bible:'Bible reading'};
+  const labels={spbooks:'Spiritual reading',prayers:'Prayers & devotions',cal:'Calendar',daily:'Daily tasks',books:'Reading room',words:'Word bank',quotes:'Quotes',dash:'Overview',up:'Upcoming',week:'Weekly review',chat:'Your companion',journal:'Private journal',rosary:'Daily rosary',bible:'Bible reading'};
   function update(){const b=document.querySelector('#tabs button.on');if(!b)return;const h=document.getElementById('page-title');if(h)h.textContent=labels[b.dataset.t]||'My Planner';}
   document.getElementById('tabs').addEventListener('click',()=>setTimeout(update,0));
   const d=document.getElementById('today-label');if(d)d.textContent=new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'});
