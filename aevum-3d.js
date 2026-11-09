@@ -17,8 +17,8 @@
   function loadScript() {
     if (window.__aevumThreePromise) return window.__aevumThreePromise;
     window.__aevumThreePromise = Promise.all([
-      import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js'),
-      import('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js')
+      import('https://esm.sh/three@0.160.0?bundle'),
+      import('https://esm.sh/three@0.160.0/examples/jsm/loaders/GLTFLoader.js?bundle')
     ]).then(([three, loader]) => {
       window.THREE = three;
       GLTFLoaderClass = loader.GLTFLoader;
@@ -40,7 +40,7 @@
       // asset is added as a visible architectural layer for this iteration.
       model.position.set(13, 0, -2);
       scene.add(model);
-    }, undefined, error => console.warn('Aevum cathedral model could not be loaded', error));
+    }, undefined, error => console.warn('Aevum cathedral model could not be loaded; continuing with the built-in chapel', error));
   }
   function addStyles() {
     if ($('#aevum-3d-style')) return;
