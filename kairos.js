@@ -21,12 +21,15 @@ function enterWorld(which){
  document.body.dataset.kairosWorld=current;
  document.documentElement.dataset.theme='dark';
  if(current==='spiritual'){
-   if(window.AevumSpiritualWalk&&typeof window.AevumSpiritualWalk.enter==='function')window.AevumSpiritualWalk.enter();
+   if(window.AevumCathedral&&typeof window.AevumCathedral.enter==='function')window.AevumCathedral.enter();
    else {if(shell)shell.hidden=false;}
    return;
  }
  if(shell)shell.hidden=false;
  document.querySelectorAll('#tabs button[data-t]').forEach(b=>{b.hidden=!worldly.has(b.dataset.t);});
+ document.querySelectorAll('.app-shell .sec').forEach(s=>{s.hidden=true;});
+ document.querySelectorAll('#tabs button[data-t]').forEach(b=>{if(!worldly.has(b.dataset.t))b.hidden=true;});
+ document.querySelectorAll('#tabs button[data-t="dash"],#tabs button[data-t="cal"],#tabs button[data-t="daily"],#tabs button[data-t="up"],#tabs button[data-t="books"],#tabs button[data-t="words"],#tabs button[data-t="quotes"],#tabs button[data-t="week"],#tabs button[data-t="chat"]').forEach(b=>{b.hidden=false;});
  const eyebrow=$('.topbar .eyebrow');
  if(eyebrow)eyebrow.innerHTML='<span class="eyebrow-dot"></span> FOR WORLD';
  const title=$('#page-title');
