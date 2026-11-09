@@ -1,7 +1,7 @@
-const V = 'kairos-heaven-original-walk-20261109-1';
+const V = 'kairos-cathedral-world-20261109-2';
 const SHELL = [
   './', 'index.html', 'style.css', 'ios.css', 'world-theme.css', 'world-theme.css?v=premium-graphite-20261109-1', 'app.js', 'personal.js',
-  'upgrade.js', 'kairos.js', 'aevum-3d.js', 'aevum-spiritual.css?v=restore-walk-20261109-1','aevum-spiritual.js?v=restore-walk-20261109-1', 'images/kairos-rosary.svg', 'images/kairos-bible.svg', 'images/kairos-home-landscape.svg', 'config.js', 'manifest.webmanifest',
+  'upgrade.js', 'kairos.js', 'aevum-3d.js', 'aevum-cathedral.js?v=cathedral-world-20261109-2', 'aevum-cathedral.js?v=cathedral-world-20261109-2', 'images/kairos-rosary.svg', 'images/kairos-bible.svg', 'images/kairos-home-landscape.svg', 'config.js', 'manifest.webmanifest',
   'icon-180.png', 'icon-192.png', 'icon-512.png',
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js'
 ];
