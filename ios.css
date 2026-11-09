@@ -291,3 +291,53 @@ button.p{background:#a99570!important;color:#1c1b17!important;border:1px solid #
 .nav-home:hover{background:#ffffff09!important}
 html[data-kairos-world="spiritual"] .sidebar nav#tabs button[data-t="dash"]{display:none!important}
 @media(max-width:700px){.home-header{height:70px;padding:0 20px}.home-content{width:calc(100% - 36px);padding:44px 0}.home-intro{margin-bottom:32px}.home-intro h1{font-size:43px}.home-choices{grid-template-columns:1fr;gap:13px}.home-choice{min-height:130px!important;padding:20px!important;gap:16px}.choice-copy small{font-size:8px}.home-footer{padding:16px 20px;font-size:8px;gap:12px}.home-footer span:last-child{text-align:right}}
+
+
+
+/* Kairos home — compact workspace switcher, not a marketing landing page. */
+.kairos-home{background:#eae8e0 url('images/kairos-home-landscape.svg') center/cover no-repeat!important;color:#263b3b!important}
+.kairos-home:before{background:linear-gradient(90deg,rgba(17,29,29,.88),rgba(17,29,29,.65) 42%,rgba(17,29,29,.28)),linear-gradient(0deg,rgba(13,24,24,.72),transparent 70%)!important}
+.kairos-home .home-header{height:72px;padding:0 clamp(22px,6vw,84px);border-bottom:1px solid #eee6d322}
+.kairos-home .home-brand{font-size:16px;letter-spacing:.24em;gap:11px}
+.kairos-home .home-mark{width:32px;height:32px;font-size:21px;border-color:#c5ad7b;color:#d8c69f}
+.kairos-home .home-header-actions{gap:16px}
+.kairos-home .home-date{font-size:9px;letter-spacing:.17em;color:#d0c7b5}
+.kairos-home .home-avatar{width:31px;height:31px;font:11px Georgia;border-color:#c5ad7b}
+.kairos-home .home-content{width:min(920px,86vw);max-width:920px;padding:clamp(38px,7vh,72px) 0 26px;margin:auto}
+.kairos-home .home-intro{max-width:520px;margin:0 0 35px}
+.kairos-home .home-overline{font-size:9px;letter-spacing:.2em;color:#d0b783}
+.kairos-home .home-intro h1{font:400 clamp(40px,5vw,62px)/.99 Georgia,"Times New Roman",serif;letter-spacing:-.045em;margin:14px 0 12px;color:#f2eee4}
+.kairos-home .home-intro h1 em{font-weight:400;color:#d7c39b}
+.kairos-home .home-intro p{font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-style:normal;color:#d2d0c7;max-width:440px}
+.kairos-home .home-section-head{display:flex;justify-content:space-between;max-width:740px;padding:0 2px 10px;border-bottom:1px solid #e8dfca35;color:#d2c29f;font-size:9px;font-weight:650;letter-spacing:.18em}
+.kairos-home .home-choices{max-width:740px;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:13px}
+.kairos-home .home-choice{
+ min-height:0!important;height:174px;display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:space-between!important;
+ gap:0!important;padding:17px 19px!important;border-radius:9px!important;text-align:left!important;
+ backdrop-filter:blur(13px);box-shadow:0 12px 30px #101a1a28!important;
+ transition:transform .18s,border-color .18s,background .18s!important;
+}
+.kairos-home .home-choice:hover{transform:translateY(-2px)!important}
+.kairos-home .world-choice{background:linear-gradient(145deg,rgba(35,65,63,.94),rgba(24,43,44,.94))!important;border:1px solid #8fa99b77!important}
+.kairos-home .heaven-choice{background:linear-gradient(145deg,rgba(65,56,46,.94),rgba(36,34,31,.95))!important;border:1px solid #c5ad7b77!important}
+.kairos-home .choice-topline{display:flex;align-items:center;justify-content:space-between}
+.kairos-home .choice-symbol{width:34px;height:34px;flex:0 0 34px;border-radius:8px;font-size:19px;border:1px solid #ffffff32;color:#e5d2a9}
+.kairos-home .world-choice .choice-symbol{color:#c5d8cb;background:#ffffff0a}
+.kairos-home .choice-index{font-size:8px;letter-spacing:.16em;color:#c2c7bc}
+.kairos-home .choice-copy{gap:4px}
+.kairos-home .choice-copy strong{font:400 27px Georgia,"Times New Roman",serif;color:#f4f0e6}
+.kairos-home .choice-copy small{font-size:10px;letter-spacing:.04em;color:#d2d0c7}
+.kairos-home .choice-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:9px;border-top:1px solid #ffffff25;color:#d6c69f;font-size:8px;font-weight:700;letter-spacing:.16em}
+.kairos-home .world-choice .choice-bottom{color:#c2d4c7}
+.kairos-home .choice-arrow{margin:0;font:19px Georgia;color:inherit}
+.kairos-home .home-footnote{display:flex;justify-content:space-between;max-width:740px;margin-top:25px;color:#bcb9ad;font-size:8px;letter-spacing:.18em}
+@media(max-width:700px){
+ .kairos-home .home-header{height:64px;padding:0 18px}
+ .kairos-home .home-content{width:calc(100% - 36px);padding:45px 0 20px}
+ .kairos-home .home-intro{margin-bottom:29px}
+ .kairos-home .home-intro h1{font-size:43px}
+ .kairos-home .home-choices{grid-template-columns:1fr;gap:10px}
+ .kairos-home .home-choice{height:145px;padding:15px 17px!important}
+ .kairos-home .home-footnote{margin-top:19px;font-size:7px}
+ .kairos-home .home-date{display:none}
+}
