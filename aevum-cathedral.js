@@ -4,7 +4,7 @@
 (() => {
   'use strict';
   const THREE_CDN = 'https://esm.sh/three@0.160.0';
-  let active = false, raf = 0, renderer, scene, camera, clock, player, yaw = 0, pitch = .16;
+  let THREE, active = false, raf = 0, renderer, scene, camera, clock, player, yaw = 0, pitch = .16;
   let keys = {}, doors = [], flames = [], interactives = [], pointer = false, last = 0;
   const $ = (s, r=document) => r.querySelector(s);
   const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
@@ -99,7 +99,7 @@
     // nave side walls and apse
     box(scene,.7,12,34,stone,-11,6,-2);box(scene,.7,12,34,stone,11,6,-2);box(scene,22,12,.8,stone,0,6,-19);
     // outer façade and entrance
-    box(scene,22,11,1.0,stone,0,5.5,14.8);
+    box(scene,7.5,11,1.0,stone,-7.25,5.5,14.8);box(scene,7.5,11,1.0,stone,7.25,5.5,14.8);box(scene,7,3.2,1.0,stone,0,9.4,14.8);
     // central portal piers and archivolts
     for(const x of [-3.5,3.5]){box(scene,.9,8,1.1,paleStone,x,4,14.0);cylinder(scene,.55,.55,.25,gold,x,7.7,13.9,32);}
     for(let i=0;i<4;i++)archCurve(scene,0,13.35,3.0-i*.28,4.0-i*.28,.4+i*.12,paleStone,.13);
@@ -122,8 +122,8 @@
       sphere(scene,.22,gold,0,11.7,z);
     }
     // roof vaults and apse semi-dome approximation via curved shell
-    const vault=mesh(new THREE.SphereGeometry(12,48,32,0,Math.PI*2,0,Math.PI/2),mat('#817866',.9,{side:THREE.BackSide}),scene,0,0,-2);vault.scale.set(1,.92,1.55);vault.position.y=10.4;
-    const apse=mesh(new THREE.SphereGeometry(7,48,32,0,Math.PI*2,0,Math.PI/2),mat('#8b7d67',.9,{side:THREE.BackSide}),scene,0,3,-18.2);apse.scale.set(1,.9,.5);
+    const vault=mesh(new THREE.SphereGeometry(12,48,32,0,Math.PI*2,0,Math.PI/2),new THREE.MeshStandardMaterial({color:'#817866',roughness:.9,side:THREE.BackSide}),scene,0,0,-2);vault.scale.set(1,.92,1.55);vault.position.y=10.4;
+    const apse=mesh(new THREE.SphereGeometry(7,48,32,0,Math.PI*2,0,Math.PI/2),new THREE.MeshStandardMaterial({color:'#8b7d67',roughness:.9,side:THREE.BackSide}),scene,0,3,-18.2);apse.scale.set(1,.9,.5);
     // side altar niches and stained glass
     for(const x of [-9.8,9.8])for(const z of [-10,0,8]){
       box(scene,.18,4.7,2.2,shadowStone,x*1.04,4.8,z);archCurve(scene,x*1.04,z-1.08,1.1,1.0,6.2,paleStone,.09);
