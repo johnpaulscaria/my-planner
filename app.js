@@ -82,28 +82,61 @@ function habRows(ds) {
   return act.map(h => { const dn = hdone(h, ds), auto = !!h.auto; return `<label class="row"><input type="checkbox" data-a="hab" data-h="${h.id}" data-d="${ds}" ${dn ? 'checked' : ''} ${fut || auto ? 'disabled' : ''}><span class="grow ${dn ? 'done' : ''}">${esc(h.t)}${auto ? ' <span class="mute">(' + (h.auto === 'read' ? 'ticks when you log pages' : 'ticks when you add a word') + ')</span>' : ''}</span></label>`; }).join('');
 }
 function rCal() {
-  const y = view.getFullYear(), m = view.getMonth(), lead = new Date(y, m, 1).getDay(), dim = new Date(y, m + 1, 0).getDate();
-  let h = `<div class="card"><div class="bar"><button data-a="prev">‹</button><b>${view.toLocaleString('en', { month: 'long', year: 'numeric' })}</b><span><button data-a="now">Today</button> <button data-a="next">›</button></span></div><div class="grid">` + 'SMTWTFS'.split('').map(x => `<div class="dow">${x}</div>`).join('');
-  for (let i = 0; i < lead; i++) h += '<div></div>';
-  for (let d = 1; d <= dim; d++) {
-    const ds = y + '-' + pad(m + 1) + '-' + pad(d), ev = eventsOn(ds).slice(0, 3);
-    h += `<button class="cell ${ds === sel ? 'sel' : ''} ${ds === today() ? 'tod' : ''}" data-a="sel" data-d="${ds}"><span>${d}</span><span class="dots">${ev.map(e => `<u style="background:${cat(e)[1]}"></u>`).join('')}</span><i class="hb ${hstat(ds)}"></i></button>`;
+  const y=view.getFullYear(),m=view.getMonth(),lead=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
+  const monthName=view.toLocaleString('en',{month:'long',year:'numeric'});
+  let h=`<section class="calendar-workspace">
+    <header class="calendar-heading">
+      <div><div class="calendar-kicker">YOUR SCHEDULE</div><h2>${monthName}</h2><p>Keep your plans clear and your days in view.</p></div>
+      <div class="calendar-controls"><button class="calendar-today" data-a="now">Today</button><button class="calendar-arrow" aria-label="Previous month" data-a="prev">‹</button><button class="calendar-arrow" aria-label="Next month" data-a="next">›</button></div>
+    </header>
+    <div class="calendar-month-grid">
+      <div class="calendar-weekdays">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>'<span>'+x+'</span>').join('')}</div>
+      <div class="calendar-days">`;
+  for(let i=0;i<lead;i++)h+='<div class="calendar-blank"></div>';
+  for(let d=1;d<=dim;d++){
+    const ds=y+'-'+pad(m+1)+'-'+pad(d),ev=eventsOn(ds).slice(0,2),isToday=ds===today(),isSelected=ds===sel;
+    h+=`<button class="calendar-day ${isToday?'is-today':''} ${isSelected?'is-selected':''}" data-a="sel" data-d="${ds}">
+      <span class="calendar-day-number">${d}</span>
+      <span class="calendar-event-list">${ev.map(e=>'<span class="calendar-event" style="--event-color:'+cat(e)[1]+'">'+esc(e.title)+'</span>').join('')}</span>
+      ${eventsOn(ds).length>2?'<span class="calendar-more">+'+(eventsOn(ds).length-2)+' more</span>':''}
+    </button>`;
   }
-  h += `</div><div class="leg"><span style="--c:var(--ok)">All tasks done</span><span style="--c:var(--part)">Some done</span><span style="--c:var(--miss)">Missed</span>${Object.values(CATS).map(c => `<span style="--c:${c[1]}">${c[0].split(' ')[1]}</span>`).join('')}</div></div>`;
-  h += `<div class="card"><div class="bar"><b>${nice(sel)}</b><button class="p" data-a="new" data-d="${sel}">+ Add event</button></div>${evRows(sel)}<div style="margin-top:10px"><b>Daily tasks</b>${habRows(sel)}</div>${dayExtras(sel)}</div>`;
-  $('#v-cal').innerHTML = h;
+  h+=`</div></div>
+    <div class="calendar-legend"><span><i class="legend-today"></i>Today</span><span><i class="legend-selected"></i>Selected day</span><span><i class="legend-event"></i>Scheduled event</span></div>
+  </section>
+  <section class="calendar-agenda">
+    <header class="agenda-heading"><div><div class="calendar-kicker">DAY VIEW</div><h3>${nice(sel)}</h3><p>Your events and daily habits for this date</p></div><button class="calendar-add" data-a="new" data-d="${sel}"><span>＋</span> Add event</button></header>
+    <div class="agenda-content">${evRows(sel)}<div class="agenda-habits"><div class="agenda-subheading">Daily tasks</div>${habRows(sel)}</div>${dayExtras(sel)}</div>
+  </section>`;
+  $('#v-cal').innerHTML=h;
 }
 function rDaily() {
-  const t = today(); let full = 0, miss = 0, strip = '';
-  for (let i = 13; i >= 0; i--) {
-    const d = addDays(t, -i), s = hstat(d);
-    if (s === 'full') full++; if (s === 'miss') miss++;
-    strip += `<div style="text-align:center"><i class="hb ${s}" style="display:block;width:18px;height:18px;border-radius:5px;margin:auto"></i><div class="mute" style="font-size:10px">${parse(d).getDate()}</div></div>`;
+  const t=today();let full=0,miss=0,strip='';
+  for(let i=13;i>=0;i--){
+    const d=addDays(t,-i),st=hstat(d);
+    if(st==='full')full++;if(st==='miss')miss++;
+    strip+=`<div class="daily-history-day"><i class="hb ${st}"></i><span>${parse(d).getDate()}</span></div>`;
   }
-  $('#v-daily').innerHTML = `<div class="card"><div class="bar"><b>Today</b><span class="mute">${nice(t)}</span></div>${habRows(t)}</div>
-  <div class="card"><b>Last 14 days</b><div style="display:flex;gap:4px;justify-content:space-between;margin:10px 0">${strip}</div><div class="mute">${full} days fully done · ${miss} days missed</div></div>
-  <div class="card"><b>My daily tasks</b><div style="display:flex;gap:8px;margin:8px 0"><input id="newhab" placeholder="e.g. Drink 2L water"><button class="p" data-a="addhab">Add</button></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px"><button data-a="addauto" data-k="read">+ Reading habit</button><button data-a="addauto" data-k="vocab">+ New-word habit</button></div>${S.habits.map(h => `<div class="row"><span class="grow">${esc(h.t)}</span><button class="g" data-a="delhab" data-h="${h.id}">Remove</button></div>`).join('') || '<div class="mute">Nothing yet.</div>'}</div>`;
+  const total=S.habits.length,done=(habRows(t).match(/checked/g)||[]).length;
+  const pct=total?Math.min(100,Math.round(done/total*100)):0;
+  $('#v-daily').innerHTML=`
+    <section class="daily-overview">
+      <div class="daily-overview-top"><div><div class="daily-kicker">DAILY ROUTINE</div><h2>Today, well spent.</h2><p>${nice(t)} <span>·</span> Small actions, consistent progress.</p></div><div class="daily-progress-ring" style="--progress:${pct*3.6}deg"><div><strong>${pct}%</strong><small>complete</small></div></div></div>
+      <div class="daily-summary">
+        <div><span class="daily-summary-label">Completed days</span><strong>${full}</strong><small>in the last 14 days</small></div>
+        <div><span class="daily-summary-label">Missed days</span><strong>${miss}</strong><small>in the last 14 days</small></div>
+        <div><span class="daily-summary-label">Daily habits</span><strong>${total}</strong><small>in your routine</small></div>
+      </div>
+    </section>
+    <section class="daily-today-panel"><header class="daily-panel-heading"><div><div class="daily-kicker">CHECKLIST</div><h3>Today's tasks</h3><p>Mark each habit as you complete it.</p></div><span class="daily-date-pill">${parse(t).toLocaleDateString('en',{weekday:'short',day:'numeric',month:'short'})}</span></header>${habRows(t)}</section>
+    <section class="daily-history-panel"><header class="daily-panel-heading"><div><div class="daily-kicker">CONSISTENCY</div><h3>Last 14 days</h3><p>A simple view of your daily rhythm.</p></div></header><div class="daily-history-strip">${strip}</div><div class="daily-history-caption"><span><i class="history-full"></i>Completed</span><span><i class="history-part"></i>Partial</span><span><i class="history-miss"></i>Missed</span></div></section>
+    <section class="daily-manage-panel"><header class="daily-panel-heading"><div><div class="daily-kicker">YOUR ROUTINE</div><h3>Manage daily habits</h3><p>Add the habits you want to build.</p></div></header>
+      <div class="daily-add-row"><input id="newhab" placeholder="Add a daily habit…"><button class="daily-add-button" data-a="addhab">Add habit</button></div>
+      <div class="daily-quick-add"><button data-a="addauto" data-k="read">＋ Reading habit</button><button data-a="addauto" data-k="vocab">＋ New-word habit</button></div>
+      <div class="daily-habit-list">${S.habits.map(h=>'<div class="daily-habit-row"><span>'+esc(h.t)+'</span><button class="g" data-a="delhab" data-h="'+h.id+'">Remove</button></div>').join('')||'<div class="daily-empty">No habits added yet. Start with one small daily action.</div>'}</div>
+    </section>`;
 }
+
 function rUp() {
   const t = today(), out = [];
   for (let i = 0; i < 366; i++) { const d = addDays(t, i); eventsOn(d).forEach(e => { if (isStart(e, d)) out.push({ e, d, i }); }); }
