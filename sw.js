@@ -1,4 +1,4 @@
-const V = 'kairos-vocab-spacious-stone-20261110-11';
+const V = 'kairos-vocab-card-spacing-20261110-12';
 const SHELL = [
   './', 'index.html', 'style.css', 'ios.css', 'world-theme.css', 'world-theme.css?v=vocab-spacious-stone-20261110-11', 'app.js?v=vocab-ivory-tabs-fix-20261110-10', 'kairos.js?v=vocab-ivory-tabs-fix-20261110-10', 'world-theme.css?v=black-white-gold-20261110-1', 'app.js',
   'upgrade.js', 'kairos.js', 'aevum-spiritual.js?v=cathedral-image-20261110-1', 'aevum-spiritual.css?v=cathedral-image-20261110-1', 'images/kairos-rosary.svg', 'images/kairos-bible.svg', 'images/kairos-home-landscape.svg', 'config.js', 'manifest.webmanifest',
