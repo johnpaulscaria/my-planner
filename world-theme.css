@@ -1322,3 +1322,17 @@ html[data-kairos-world="worldly"] #v-words .stat>div strong{color:#8b7040!import
 html[data-kairos-world="worldly"] .app-shell .sec:not(.on){display:none!important}
 html[data-kairos-world="worldly"] .app-shell .sec.on{display:block!important}
 html[data-kairos-world="worldly"] .app-shell .sec[hidden]{display:none!important}
+
+/* Hard visibility guard: only the currently active World section can render. */
+html[data-kairos-world="worldly"] .app-shell main>.sec:not(.on),
+html[data-kairos-world="worldly"] .app-shell main>.sec[hidden]{display:none!important;visibility:hidden!important;pointer-events:none!important}
+html[data-kairos-world="worldly"] .app-shell main>.sec.on:not([hidden]){display:block!important;visibility:visible!important;pointer-events:auto!important}
+/* Vocabulary should read like a clear paper-and-ink workspace, not a green room. */
+html[data-kairos-world="worldly"] #v-words .row,
+html[data-kairos-world="worldly"] #v-words .card,
+html[data-kairos-world="worldly"] #v-words .stat>div{background:#f0eee6!important;color:#282923!important;border-color:#d1cbbb!important}
+html[data-kairos-world="worldly"] #v-words .row b,
+html[data-kairos-world="worldly"] #v-words .card b,
+html[data-kairos-world="worldly"] #v-words .stat>div strong{color:#292b25!important}
+html[data-kairos-world="worldly"] #v-words .row .mute,
+html[data-kairos-world="worldly"] #v-words .mute{color:#68685f!important}
