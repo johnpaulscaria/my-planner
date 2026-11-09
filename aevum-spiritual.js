@@ -63,7 +63,7 @@ function interact(id){
 }
 function nearest(){let best=null,dist=Infinity;zones.forEach(z=>{const d=Math.hypot(z.x-player.x,z.y-player.y);if(d<dist){best=z;dist=d;}});return dist<13?best:null;}
 function move(dx,dy){player.x=Math.max(7,Math.min(93,player.x+dx));player.y=Math.max(12,Math.min(91,player.y+dy));render();}
-function step(){let dx=0,dy=0;if(keys.w||keys.ArrowUp)dy=-.65;if(keys.s||keys.ArrowDown)dy=.65;if(keys.a||keys.ArrowLeft)dx=-.65;if(keys.d||keys.ArrowRight)dx=.65;if(dx||dy){player.x=Math.max(7,Math.min(93,player.x+dx));player.y=Math.max(12,Math.min(91,player.y+dy));render();}}
+function step(){let dx=0,dy=0;if(keys.w||keys.ArrowUp)dy=-.65;if(keys.s||keys.ArrowDown)dy=.65;if(keys.a||keys.ArrowLeft)dx=-.65;if(keys.d||keys.ArrowRight)dx=.65;const avatar=$('.aevum-player',game);if(dx||dy){if(avatar)avatar.classList.add('is-moving');player.x=Math.max(7,Math.min(93,player.x+dx));player.y=Math.max(12,Math.min(91,player.y+dy));render();}else if(avatar)avatar.classList.remove('is-moving');}
 let movementTimer=null;
 function onKeyDown(e){
  if(!game||game.hidden)return;
@@ -74,11 +74,11 @@ function onKeyDown(e){
  if(e.key.toLowerCase()==='e'){const z=nearest();if(z)interact(z.id);else showDialog('Walk a little closer','<p>Move closer to a place in the church, then press E to interact.</p>','<button class="primary" data-game="close">Understood</button>');}
  if(e.key.toLowerCase()==='m')openPlan();
 }
-function onKeyUp(e){keys[e.key]=false;if(!Object.values(keys).some(Boolean)&&movementTimer){clearInterval(movementTimer);movementTimer=null;}}
+function onKeyUp(e){keys[e.key]=false;if(!Object.values(keys).some(Boolean)){if(movementTimer){clearInterval(movementTimer);movementTimer=null;}const avatar=$('.aevum-player',game);if(avatar)avatar.classList.remove('is-moving');}}
 function openPlan(){showDialog('Your spiritual plan','<p>These activities are available in any order. Complete the main daily practices as you move through the church.</p>'+zones.map(z=>'<label><span>'+z.title+'</span><span style="margin-left:auto;color:'+(state.done[z.id]?'#d6b46f':'#b7a17b')+'">'+(state.done[z.id]?'✓ Complete':'Not yet')+'</span></label>').join(''),'<button class="primary" data-game="close">Return to the church</button>');}
 function openExtras(){showDialog('Anytime activities','<p>These are not tied to a location or order. Add a small act of faith whenever it fits your day.</p><div class="aevum-dialog-actions" style="justify-content:flex-start"><button data-extra="Angelus">Pray the Angelus</button><button data-extra="Divine Mercy Chaplet">Divine Mercy Chaplet</button><button data-extra="Examination of Conscience">Examination of Conscience</button><button data-extra="Spiritual reading">Spiritual reading</button><button data-extra="Visit the Blessed Sacrament">Visit the Blessed Sacrament</button></div><p style="margin-top:15px">Today: '+(state.extras.length?state.extras.map(esc).join(' · '):'No anytime activities completed yet')+'</p>','<button class="primary" data-game="close">Done</button>');}
 function onClick(e){
- const zone=e.target.closest('[data-zone]');if(zone){const id=zone.dataset.zone;const z=zones.find(x=>x.id===id);player.x=z.x;player.y=z.y+9;render();setTimeout(()=>interact(id),180);return;}
+ const zone=e.target.closest('[data-zone]');if(zone){const id=zone.dataset.zone;const z=zones.find(x=>x.id===id);const avatar=$('.aevum-player',game);if(avatar)avatar.classList.add('is-moving');player.x=z.x;player.y=z.y+9;render();setTimeout(()=>{if(avatar)avatar.classList.remove('is-moving');interact(id);},320);return;}
  const mv=e.target.closest('[data-move]');if(mv){const d=mv.dataset.move;if(d==='interact'){const z=nearest();if(z)interact(z.id);return;}const map={up:[0,-4],down:[0,4],left:[-4,0],right:[4,0]};move(...map[d]);return;}
  const complete=e.target.closest('[data-complete]');if(complete){finish(complete.dataset.complete);return;}
  if(e.target.closest('[data-save-rosary]')){state.mysteries=[...game.querySelectorAll('[data-mystery]:checked')].map(x=>Number(x.dataset.mystery));if(state.mysteries.length)state.done.rosary=true;persist();render();closeDialog();return;}
