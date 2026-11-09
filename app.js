@@ -82,64 +82,64 @@ function habRows(ds) {
   return act.map(h => { const dn = hdone(h, ds), auto = !!h.auto; return `<label class="row"><input type="checkbox" data-a="hab" data-h="${h.id}" data-d="${ds}" ${dn ? 'checked' : ''} ${fut || auto ? 'disabled' : ''}><span class="grow ${dn ? 'done' : ''}">${esc(h.t)}${auto ? ' <span class="mute">(' + (h.auto === 'read' ? 'ticks when you log pages' : 'ticks when you add a word') + ')</span>' : ''}</span></label>`; }).join('');
 }
 function rCal() {
-  const selected=parse(sel),day=selected.getDay(),monday=new Date(selected);
-  monday.setDate(selected.getDate()-(day===0?6:day-1));
+  const selected=parse(sel),monday=new Date(selected);
+  monday.setDate(selected.getDate()-(selected.getDay()===0?6:selected.getDay()-1));
   const sunday=new Date(monday);sunday.setDate(monday.getDate()+6);
   const fmt=d=>d.toLocaleDateString('en',{day:'numeric',month:'short'});
-  const range=monday.getMonth()===sunday.getMonth()
-    ? fmt(monday)+' – '+sunday.getDate()+' '+sunday.toLocaleDateString('en',{month:'long',year:'numeric'})
-    : fmt(monday)+' – '+fmt(sunday)+' '+sunday.getFullYear();
+  const range=fmt(monday)+' — '+fmt(sunday)+' '+sunday.getFullYear();
   let days='';
   for(let i=0;i<7;i++){
     const d=new Date(monday);d.setDate(monday.getDate()+i);
     const ds=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
-    const events=eventsOn(ds),isToday=ds===today(),isSelected=ds===sel;
-    days+=`<button class="agenda-week-day ${isToday?'is-today':''} ${isSelected?'is-selected':''}" data-a="sel" data-d="${ds}">
-      <span class="agenda-week-name">${d.toLocaleDateString('en',{weekday:'short'})}</span>
-      <span class="agenda-week-number">${d.getDate()}</span>
-      <span class="agenda-week-count">${events.length?events.length+' '+(events.length===1?'event':'events'):'No events'}</span>
-      <span class="agenda-week-dots">${events.slice(0,4).map(e=>'<i style="--event-color:'+cat(e)[1]+'"></i>').join('')}</span>
+    const ev=eventsOn(ds),isToday=ds===today(),isSelected=ds===sel;
+    days+=`<button class="calendar-date-tab ${isToday?'is-today':''} ${isSelected?'is-selected':''}" data-a="sel" data-d="${ds}">
+      <span>${d.toLocaleDateString('en',{weekday:'short'})}</span><b>${d.getDate()}</b><i>${ev.length?ev.length+' planned': '—'}</i>
     </button>`;
   }
+  const ev=eventsOn(sel);
   $('#v-cal').innerHTML=`
-    <section class="calendar-workspace agenda-calendar">
-      <header class="calendar-heading">
-        <div><div class="calendar-kicker">YOUR WEEK</div><h2>${range}</h2><p>A clear view of the days ahead.</p></div>
-        <div class="calendar-controls"><button class="calendar-today" data-a="now">Today</button><button class="calendar-arrow" aria-label="Previous week" data-a="prev">‹</button><button class="calendar-arrow" aria-label="Next week" data-a="next">›</button></div>
+    <section class="calendar-planner">
+      <header class="calendar-planner-head">
+        <div><span class="calendar-overline">PLANNER / WEEKLY</span><h2>${range}</h2><p>Make space for what matters.</p></div>
+        <div class="calendar-planner-actions"><button data-a="now" class="calendar-today">Today</button><button data-a="prev" aria-label="Previous week">‹</button><button data-a="next" aria-label="Next week">›</button></div>
       </header>
-      <div class="agenda-week-strip">${days}</div>
-      <div class="calendar-legend"><span><i class="legend-today"></i>Today</span><span><i class="legend-selected"></i>Selected day</span><span><i class="legend-event"></i>Scheduled items</span></div>
-    </section>
-    <section class="calendar-agenda">
-      <header class="agenda-heading"><div><div class="calendar-kicker">DAY PLAN</div><h3>${nice(sel)}</h3><p>Your schedule and daily habits</p></div><button class="calendar-add" data-a="new" data-d="${sel}"><span>＋</span> Add event</button></header>
-      <div class="agenda-content">${evRows(sel)}<div class="agenda-habits"><div class="agenda-subheading">Daily tasks</div>${habRows(sel)}</div>${dayExtras(sel)}</div>
+      <nav class="calendar-date-rail">${days}</nav>
+      <div class="calendar-day-agenda">
+        <div class="calendar-agenda-title"><div><span class="calendar-overline">YOUR DAY</span><h3>${nice(sel)}</h3><p>${ev.length?ev.length+' scheduled '+(ev.length===1?'item':'items'):'A little room to plan your day'}</p></div><button class="calendar-add" data-a="new" data-d="${sel}">＋ Add event</button></div>
+        <div class="calendar-agenda-items">${evRows(sel)}</div>
+        <div class="calendar-habits-block"><div class="calendar-overline">DAILY RHYTHM</div><h4>Daily tasks</h4>${habRows(sel)}</div>
+        ${dayExtras(sel)}
+      </div>
     </section>`;
 }
-
 function rDaily() {
   const t=today();let full=0,miss=0,strip='';
   for(let i=13;i>=0;i--){
     const d=addDays(t,-i),st=hstat(d);
     if(st==='full')full++;if(st==='miss')miss++;
-    strip+=`<div class="daily-history-day"><i class="hb ${st}"></i><span>${parse(d).getDate()}</span></div>`;
+    strip+=`<div class="habit-streak-day"><i class="hb ${st}"></i><span>${parse(d).getDate()}</span></div>`;
   }
   const total=S.habits.length,done=(habRows(t).match(/checked/g)||[]).length;
   const pct=total?Math.min(100,Math.round(done/total*100)):0;
   $('#v-daily').innerHTML=`
-    <section class="daily-overview">
-      <div class="daily-overview-top"><div><div class="daily-kicker">DAILY ROUTINE</div><h2>Today, well spent.</h2><p>${nice(t)} <span>·</span> Small actions, consistent progress.</p></div><div class="daily-progress-ring" style="--progress:${pct*3.6}deg"><div><strong>${pct}%</strong><small>complete</small></div></div></div>
-      <div class="daily-summary">
-        <div><span class="daily-summary-label">Completed days</span><strong>${full}</strong><small>in the last 14 days</small></div>
-        <div><span class="daily-summary-label">Missed days</span><strong>${miss}</strong><small>in the last 14 days</small></div>
-        <div><span class="daily-summary-label">Daily habits</span><strong>${total}</strong><small>in your routine</small></div>
-      </div>
+    <section class="routine-hero">
+      <div class="routine-hero-copy"><span class="routine-overline">YOUR DAILY RHYTHM</span><h2>Make today count.</h2><p>${nice(t)} <span>·</span> Progress is built one small promise at a time.</p></div>
+      <div class="routine-progress"><div class="routine-progress-label"><strong>${pct}%</strong><span>of today's habits complete</span></div><div class="routine-progress-track"><i style="width:${pct}%"></i></div><small>${done} of ${total} habits completed</small></div>
     </section>
-    <section class="daily-today-panel"><header class="daily-panel-heading"><div><div class="daily-kicker">CHECKLIST</div><h3>Today's tasks</h3><p>Mark each habit as you complete it.</p></div><span class="daily-date-pill">${parse(t).toLocaleDateString('en',{weekday:'short',day:'numeric',month:'short'})}</span></header>${habRows(t)}</section>
-    <section class="daily-history-panel"><header class="daily-panel-heading"><div><div class="daily-kicker">CONSISTENCY</div><h3>Last 14 days</h3><p>A simple view of your daily rhythm.</p></div></header><div class="daily-history-strip">${strip}</div><div class="daily-history-caption"><span><i class="history-full"></i>Completed</span><span><i class="history-part"></i>Partial</span><span><i class="history-miss"></i>Missed</span></div></section>
-    <section class="daily-manage-panel"><header class="daily-panel-heading"><div><div class="daily-kicker">YOUR ROUTINE</div><h3>Manage daily habits</h3><p>Add the habits you want to build.</p></div></header>
-      <div class="daily-add-row"><input id="newhab" placeholder="Add a daily habit…"><button class="daily-add-button" data-a="addhab">Add habit</button></div>
-      <div class="daily-quick-add"><button data-a="addauto" data-k="read">＋ Reading habit</button><button data-a="addauto" data-k="vocab">＋ New-word habit</button></div>
-      <div class="daily-habit-list">${S.habits.map(h=>'<div class="daily-habit-row"><span>'+esc(h.t)+'</span><button class="g" data-a="delhab" data-h="'+h.id+'">Remove</button></div>').join('')||'<div class="daily-empty">No habits added yet. Start with one small daily action.</div>'}</div>
+    <section class="routine-checklist">
+      <header class="routine-section-head"><div><span class="routine-overline">THE IMPORTANT THINGS</span><h3>Today's checklist</h3><p>Check things off as you go. Keep it simple.</p></div><span class="routine-date">${parse(t).toLocaleDateString('en',{weekday:'short',day:'numeric',month:'short'})}</span></header>
+      <div class="routine-task-list">${habRows(t)}</div>
+      ${total===0?'<p class="routine-empty">Start with one small habit. You can build the rest over time.</p>':''}
+    </section>
+    <section class="routine-streak">
+      <header class="routine-section-head"><div><span class="routine-overline">CONSISTENCY OVER PERFECTION</span><h3>Your last 14 days</h3><p>A quiet view of the effort you've put in.</p></div><div class="routine-streak-stats"><b>${full}</b><span>complete days</span><b>${miss}</b><span>missed days</span></div></header>
+      <div class="habit-streak-strip">${strip}</div><div class="routine-streak-legend"><span><i class="streak-complete"></i>Complete</span><span><i class="streak-partial"></i>In progress</span><span><i class="streak-empty"></i>No activity</span></div>
+    </section>
+    <section class="routine-manage">
+      <header class="routine-section-head"><div><span class="routine-overline">DESIGN YOUR ROUTINE</span><h3>Your habits</h3><p>Add or remove the small actions you want to repeat.</p></div></header>
+      <div class="routine-add-row"><input id="newhab" placeholder="e.g. Read for 20 minutes"><button data-a="addhab">＋ Add habit</button></div>
+      <div class="routine-suggestions"><button data-a="addauto" data-k="read">＋ Reading</button><button data-a="addauto" data-k="vocab">＋ Vocabulary</button></div>
+      <div class="routine-habit-list">${S.habits.map(h=>'<div class="routine-habit-item"><span>'+esc(h.t)+'</span><button class="g" data-a="delhab" data-h="'+h.id+'">Remove</button></div>').join('')}</div>
     </section>`;
 }
 
