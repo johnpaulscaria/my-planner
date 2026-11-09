@@ -1,4 +1,4 @@
-const V = 'aevum-realism-world-theme-v3';
+const V = 'aevum-realistic-church-objects-v3';
 const SHELL = [
   './', 'index.html', 'style.css', 'ios.css', 'world-theme.css', 'world-theme.css?v=20261109b', 'app.js', 'personal.js',
   'upgrade.js', 'kairos.js', 'aevum-spiritual.css', 'aevum-spiritual.js', 'images/kairos-rosary.svg', 'images/kairos-bible.svg', 'images/kairos-home-landscape.svg', 'config.js', 'manifest.webmanifest',
