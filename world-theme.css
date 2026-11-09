@@ -968,3 +968,53 @@ html[data-kairos-world="worldly"] #v-words :is(p,small,.mute),
 html[data-kairos-world="worldly"] #v-quotes :is(p,small,.mute),
 html[data-kairos-world="worldly"] #v-week :is(p,small,.mute),
 html[data-kairos-world="worldly"] #v-chat :is(p,small,.mute){color:#d2d0c9!important}
+
+
+/* Refined tones for Calendar, Daily Tasks and Upcoming — no rose or pink. */
+html[data-kairos-world="worldly"] #v-cal>.card{
+ background:linear-gradient(145deg,#172b3d,#111e2b)!important;
+ border:1px solid #3c5870!important;color:#f2f5f8!important;
+}
+html[data-kairos-world="worldly"] #v-cal .bar b{color:#c4d9ec!important}
+html[data-kairos-world="worldly"] #v-cal .dow{color:#a9c2d9!important}
+html[data-kairos-world="worldly"] #v-cal .cell{
+ background:#1d3448!important;border:1px solid #38556c!important;color:#eef4f8!important;
+}
+html[data-kairos-world="worldly"] #v-cal .cell:hover,
+html[data-kairos-world="worldly"] #v-cal .cell.sel{
+ background:#34536c!important;border-color:#d0b477!important;color:#fff!important;
+}
+html[data-kairos-world="worldly"] #v-cal .cell.tod{box-shadow:inset 0 0 0 1px #b89b60!important}
+html[data-kairos-world="worldly"] #v-cal .leg{color:#b9cadd!important}
+html[data-kairos-world="worldly"] #v-daily>.card{
+ background:linear-gradient(145deg,#29271f,#1c1b17)!important;
+ border:1px solid #62563c!important;color:#f5f1e8!important;
+}
+html[data-kairos-world="worldly"] #v-daily .bar b,
+html[data-kairos-world="worldly"] #v-daily>.card>b{color:#e1c681!important}
+html[data-kairos-world="worldly"] #v-daily .row{
+ background:#24231e!important;border-color:#5b513d!important;color:#f4f0e7!important;
+}
+html[data-kairos-world="worldly"] #v-daily .mute{color:#d0c9b8!important}
+html[data-kairos-world="worldly"] #v-daily input{background:#111!important;color:#f7f4ed!important;border-color:#796844!important}
+html[data-kairos-world="worldly"] #v-up>.card{
+ background:linear-gradient(145deg,#202b35,#151d25)!important;
+ border:1px solid #4a5c6c!important;color:#f2f5f7!important;
+}
+html[data-kairos-world="worldly"] #v-up .bar b{color:#c5d5df!important}
+html[data-kairos-world="worldly"] #v-up .row{
+ background:#202a33!important;border-color:#485966!important;color:#f3f5f4!important;
+}
+html[data-kairos-world="worldly"] #v-up .row b{color:#e4e8e7!important}
+html[data-kairos-world="worldly"] #v-up .mute{color:#c3cdd1!important}
+html[data-kairos-world="worldly"] #v-up .tag{color:#111!important;border:1px solid #b99b61!important}
+html[data-kairos-world="worldly"] #v-cal :is(h1,h2,h3,h4,h5,h6){color:#c4d9ec!important}
+html[data-kairos-world="worldly"] #v-daily :is(h1,h2,h3,h4,h5,h6){color:#e1c681!important}
+html[data-kairos-world="worldly"] #v-up :is(h1,h2,h3,h4,h5,h6){color:#c5d5df!important}
+
+/* Spiritual reading atmosphere: cathedral midnight, stone and antique gold. */
+html[data-kairos-world="worldly"] .reading-book[style*="#252b3d"]{
+ background:linear-gradient(145deg,#252b3d,#171c29)!important;border-color:#796b4a!important;
+}
+html[data-kairos-world="worldly"] .reading-book[style*="#252b3d"] .reading-book-kicker,
+html[data-kairos-world="worldly"] .reading-book[style*="#252b3d"] .reading-book-info b{color:#eee5cf!important}
