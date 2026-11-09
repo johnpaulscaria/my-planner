@@ -1135,3 +1135,43 @@ html[data-kairos-world="worldly"] #v-daily .daily-empty{padding:17px;color:#aeb2
  html[data-kairos-world="worldly"] #v-daily .daily-summary{grid-template-columns:1fr}
  html[data-kairos-world="worldly"] #v-daily .daily-history-strip{gap:4px}
 }
+
+
+/* Switch Calendar from a month grid to an elegant weekly agenda strip.
+   Warm graphite, parchment and antique brass replace the blue palette. */
+html[data-kairos-world="worldly"] #v-cal .calendar-workspace,
+html[data-kairos-world="worldly"] #v-cal .calendar-agenda{background:#171715;border-color:#454137}
+html[data-kairos-world="worldly"] #v-cal .calendar-heading h2,
+html[data-kairos-world="worldly"] #v-cal .agenda-heading h3{color:#f1eee5}
+html[data-kairos-world="worldly"] #v-cal .calendar-heading p,
+html[data-kairos-world="worldly"] #v-cal .agenda-heading p{color:#bdb8aa}
+html[data-kairos-world="worldly"] #v-cal .calendar-kicker{color:#d3b878}
+html[data-kairos-world="worldly"] #v-cal .calendar-controls button{background:#292823;border-color:#5b5547;color:#eee9dc}
+html[data-kairos-world="worldly"] #v-cal .calendar-controls .calendar-today{background:#d2b574;color:#191814;border-color:#d2b574}
+html[data-kairos-world="worldly"] #v-cal .agenda-week-strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:9px;margin-top:25px}
+html[data-kairos-world="worldly"] #v-cal .agenda-week-day{min-height:148px;display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px 8px;background:#22221f;border:1px solid #454237;border-radius:13px;color:#f0ede4;cursor:pointer;transition:background .16s,border-color .16s,transform .16s}
+html[data-kairos-world="worldly"] #v-cal .agenda-week-day:hover{background:#2d2b24;border-color:#88734a;transform:translateY(-2px)}
+html[data-kairos-world="worldly"] #v-cal .agenda-week-name{font-size:11px;font-weight:650;letter-spacing:.04em;color:#bdb8aa}
+html[data-kairos-world="worldly"] #v-cal .agenda-week-number{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;font-size:19px;font-weight:600;color:#f4f0e6}
+html[data-kairos-world="worldly"] #v-cal .agenda-week-day.is-today .agenda-week-number{background:#d2b574;color:#191814}
+html[data-kairos-world="worldly"] #v-cal .agenda-week-day.is-selected{background:#302c21;border-color:#c5a968;box-shadow:inset 0 0 0 1px #8b7549}
+html[data-kairos-world="worldly"] #v-cal .agenda-week-day.is-selected .agenda-week-number{color:#f0d89d}
+html[data-kairos-world="worldly"] #v-cal .agenda-week-count{font-size:10px;color:#b8b3a6}
+html[data-kairos-world="worldly"] #v-cal .agenda-week-dots{display:flex;gap:5px;min-height:7px}
+html[data-kairos-world="worldly"] #v-cal .agenda-week-dots i{width:6px;height:6px;border-radius:50%;background:#c5a968}
+html[data-kairos-world="worldly"] #v-cal .calendar-legend{color:#bdb8aa}
+html[data-kairos-world="worldly"] #v-cal .legend-today{background:#d2b574}
+html[data-kairos-world="worldly"] #v-cal .legend-selected{border-color:#c5a968}
+html[data-kairos-world="worldly"] #v-cal .legend-event{background:#a99b78}
+html[data-kairos-world="worldly"] #v-cal .calendar-add{background:#d2b574;color:#191814;border-color:#d2b574}
+html[data-kairos-world="worldly"] #v-cal .agenda-subheading{color:#d8c28f}
+html[data-kairos-world="worldly"] #v-cal .agenda-content .row{background:#24231f;border-color:#484437;color:#f0ede4}
+html[data-kairos-world="worldly"] #v-cal .agenda-content .mute{color:#c1bbad}
+html[data-kairos-world="worldly"] #v-cal .agenda-content .p{background:#d2b574;color:#191814}
+@media(max-width:700px){
+ html[data-kairos-world="worldly"] #v-cal .agenda-week-strip{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+ html[data-kairos-world="worldly"] #v-cal .agenda-week-day{min-height:116px;padding:12px 5px}
+}
+@media(max-width:420px){
+ html[data-kairos-world="worldly"] #v-cal .agenda-week-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
