@@ -1,6 +1,6 @@
-const V = 'kairos-world-sections-palette-20261110-2';
+const V = 'kairos-work-spiritual-cleanup-20261110-3';
 const SHELL = [
-  './', 'index.html', 'style.css', 'ios.css', 'world-theme.css', 'world-theme.css?v=black-white-gold-20261110-1', 'app.js', 'personal.js',
+  './', 'index.html', 'style.css', 'ios.css', 'world-theme.css', 'world-theme.css?v=black-white-gold-20261110-1', 'app.js',
   'upgrade.js', 'kairos.js', 'aevum-spiritual.js?v=cathedral-image-20261110-1', 'aevum-spiritual.css?v=cathedral-image-20261110-1', 'images/kairos-rosary.svg', 'images/kairos-bible.svg', 'images/kairos-home-landscape.svg', 'config.js', 'manifest.webmanifest',
   'icon-180.png', 'icon-192.png', 'icon-512.png',
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js'
