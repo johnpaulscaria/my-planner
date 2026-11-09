@@ -1,6 +1,6 @@
-const V = 'kairos-vocab-tabs-exclusive-20261110-9';
+const V = 'kairos-vocab-ivory-tabs-fix-20261110-10';
 const SHELL = [
-  './', 'index.html', 'style.css', 'ios.css', 'world-theme.css', 'world-theme.css?v=black-white-gold-20261110-1', 'app.js',
+  './', 'index.html', 'style.css', 'ios.css', 'world-theme.css', 'world-theme.css?v=vocab-ivory-tabs-fix-20261110-10', 'app.js?v=vocab-ivory-tabs-fix-20261110-10', 'kairos.js?v=vocab-ivory-tabs-fix-20261110-10', 'world-theme.css?v=black-white-gold-20261110-1', 'app.js',
   'upgrade.js', 'kairos.js', 'aevum-spiritual.js?v=cathedral-image-20261110-1', 'aevum-spiritual.css?v=cathedral-image-20261110-1', 'images/kairos-rosary.svg', 'images/kairos-bible.svg', 'images/kairos-home-landscape.svg', 'config.js', 'manifest.webmanifest',
   'icon-180.png', 'icon-192.png', 'icon-512.png',
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js'
