@@ -15,7 +15,6 @@
   };
   let GLTFLoaderClass = null;
   function loadScript() {
-    if (window.THREE && GLTFLoaderClass) return Promise.resolve();
     if (window.__aevumThreePromise) return window.__aevumThreePromise;
     window.__aevumThreePromise = Promise.all([
       import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js'),
@@ -29,23 +28,19 @@
   function loadCathedralAssets() {
     if (!GLTFLoaderClass || !scene) return;
     const loader = new GLTFLoaderClass();
-    const assets = [
-      {url:'https://cdn.3dassets.dev/assets/23045/v1/model.glb', name:'Angel statue', position:[-7.6,0.15,2], scale:1.0, rotation:[0,Math.PI,0]},
-      {url:'https://cdn.3dassets.dev/assets/23058/v1/model.glb', name:'Cathedral nave asset', position:[0,0,0], scale:1.0, rotation:[0,0,0], optional:true}
-    ];
-    // The angel is a separate CC0 carved model. The nave scene is deliberately
-    // not overlaid yet: its cutaway layout needs a dedicated navigation pass.
-    loader.load(assets[0].url, gltf => {
+    loader.load('https://cdn.3dassets.dev/assets/23058/v1/model.glb', gltf => {
       const model = gltf.scene;
-      model.name = assets[0].name;
-      model.position.set(...assets[0].position);
-      model.scale.setScalar(assets[0].scale);
-      model.rotation.y = Math.PI;
-      model.traverse(node => { if (node.isMesh) { node.castShadow = true; node.receiveShadow = true; } });
+      model.name = 'CC0 Gothic cathedral nave reference';
+      model.position.set(0, 0, 0);
+      model.scale.setScalar(1);
+      model.traverse(node => {
+        if (node.isMesh) { node.castShadow = true; node.receiveShadow = true; }
+      });
+      // Keep the current interactive stations active while the modular nave
+      // asset is added as a visible architectural layer for this iteration.
+      model.position.set(13, 0, -2);
       scene.add(model);
-      const placeholder = scene.children.find(node => node.isMesh && node.geometry && node.position.x === -7.6 && node.position.y > 1.0);
-      if (placeholder) placeholder.visible = false;
-    }, undefined, error => console.warn('Aevum statue asset could not be loaded', error));
+    }, undefined, error => console.warn('Aevum cathedral model could not be loaded', error));
   }
   function addStyles() {
     if ($('#aevum-3d-style')) return;
