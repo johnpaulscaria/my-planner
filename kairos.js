@@ -1,13 +1,14 @@
 /* Kairos workspace entry: the common landing page is the only place to choose a space. */
 (function(){
 'use strict';
-const spiritual=new Set(['bible','rosary','spbooks','prayers','journal']);
 const worldly=new Set(['cal','daily','up','books','words','quotes','week','chat','dash']);
 const $=s=>document.querySelector(s);
 let current='';
 function showHome(){
  current='';
  document.body.classList.add('kairos-at-home');
+ document.documentElement.removeAttribute('data-kairos-world');
+ document.body.removeAttribute('data-kairos-world');
  const home=$('#kairos-home');if(home)home.hidden=false;
  const shell=$('.app-shell');if(shell)shell.hidden=true;
 }
@@ -15,18 +16,22 @@ function enterWorld(which){
  current=which==='worldly'?'worldly':'spiritual';
  document.body.classList.remove('kairos-at-home');
  const home=$('#kairos-home');if(home)home.hidden=true;
- const shell=$('.app-shell');if(shell)shell.hidden=false;
+ const shell=$('.app-shell');if(shell)shell.hidden=current==='spiritual';
  document.documentElement.dataset.kairosWorld=current;
  document.body.dataset.kairosWorld=current;
- document.documentElement.dataset.theme=current==='worldly'?'light':'dark';
- const allow=current==='spiritual'?spiritual:worldly;
- document.querySelectorAll('#tabs button[data-t]').forEach(b=>{b.hidden=!allow.has(b.dataset.t);});
+ document.documentElement.dataset.theme='dark';
+ if(current==='spiritual'){
+   if(window.AevumCathedral&&typeof window.AevumCathedral.enter==='function')window.AevumCathedral.enter();
+   else {if(shell)shell.hidden=false;}
+   return;
+ }
+ if(shell)shell.hidden=false;
+ document.querySelectorAll('#tabs button[data-t]').forEach(b=>{b.hidden=!worldly.has(b.dataset.t);});
  const eyebrow=$('.topbar .eyebrow');
- if(eyebrow)eyebrow.innerHTML='<span class="eyebrow-dot"></span> '+(current==='spiritual'?'FOR HEAVEN':'FOR WORLD');
+ if(eyebrow)eyebrow.innerHTML='<span class="eyebrow-dot"></span> FOR WORLD';
  const title=$('#page-title');
- if(title)title.textContent=current==='spiritual'?'Spiritual life':'Overview';
- const target=current==='spiritual'?'bible':'dash';
- const button=$('#tabs [data-t="'+target+'"]');
+ if(title)title.textContent='Overview';
+ const button=$('#tabs [data-t="dash"]');
  if(button)button.click();
 }
 function decorateDashboard(){
@@ -48,7 +53,6 @@ document.addEventListener('click',e=>{
  if(entry){e.preventDefault();enterWorld(entry.dataset.enterWorld);return;}
  if(e.target.closest('[data-home-return]')){e.preventDefault();showHome();return;}
  const nav=e.target.closest('#tabs button[data-t]');
- if(nav&&current==='spiritual'&&!spiritual.has(nav.dataset.t)){e.preventDefault();return;}
  if(nav&&current==='worldly'&&!worldly.has(nav.dataset.t)){e.preventDefault();return;}
 });
 document.addEventListener('DOMContentLoaded',()=>{decorateDashboard();showHome();});
