@@ -1,0 +1,96 @@
+/* Aevum Spiritual Walk: keyboard movement, proximity interactions, daily progress */
+(function(){
+'use strict';
+const STORE='aevum.spiritual.progress.v1';
+const JOURNAL='aevum.spiritual.notes.v1';
+const $=(s,r=document)=>r.querySelector(s);
+const today=()=>new Date().toISOString().slice(0,10);
+const load=()=>{try{const x=JSON.parse(localStorage.getItem(STORE)||'{}');return x.date===today()?x:{date:today(),done:{},mysteries:[],extras:[]};}catch(e){return {date:today(),done:{},mysteries:[],extras:[]};}};
+let state=load(), player={x:50,y:76},keys={},target=null,dialog=null,game=null;
+const zones=[
+ {id:'mass',x:38,y:69,title:'Holy Mass',sub:'Take your place in the pews',hint:'Sit quietly and participate in the Holy Mass.'},
+ {id:'prayer',x:53,y:38,title:'Personal Prayer',sub:'Before the altar',hint:'Spend a few quiet minutes in personal prayer.'},
+ {id:'rosary',x:17,y:49,title:'Holy Rosary',sub:'At the statue of Our Lady',hint:'Pray the Rosary with the mysteries for today.'},
+ {id:'bible',x:78,y:57,title:'Bible Reading',sub:'At the lectern',hint:'Read Scripture slowly and reflect on one passage.'},
+ {id:'journal',x:83,y:75,title:'Spiritual Journal',sub:'A quiet place to reflect',hint:'Write down what is on your heart.'}
+];
+const persist=()=>localStorage.setItem(STORE,JSON.stringify(state));
+const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function ensure(){
+ if($('#aevum-spiritual-game'))return;
+ game=document.createElement('div');game.id='aevum-spiritual-game';game.hidden=true;
+ game.innerHTML='<div class="aevum-scene"></div><aside class="aevum-sidebar"><div class="aevum-brand">Aevum<small>THE SPIRITUAL WALK</small></div><nav class="aevum-side-nav"><button data-game="home">⌂ <span>Home</span></button><button data-game="plan">▤ <span>Spiritual plan</span></button><button data-game="journal">✎ <span>Journal</span></button><button data-game="exit">↩ <span>Return to Aevum</span></button></nav><div class="aevum-verse">“Be still, and know that I am God.”<br><small>— Psalm 46:10</small></div></aside><div class="aevum-title"><h1>The Church</h1><p>YOUR DAILY SPIRITUAL JOURNEY</p></div><div class="aevum-date"></div><section class="aevum-plan"><h3>Today’s Spiritual Plan</h3><div class="aevum-plan-items"></div><div class="aevum-progress"><span></span></div><div class="aevum-plan-count" style="text-align:right;font:10px Arial;color:#cbb58d;margin-top:7px"></div></section><div class="aevum-zones"></div><div class="aevum-player"><i class="head"></i><i class="body"></i><i class="pack"></i><i class="legs"></i></div><div class="aevum-hint"><kbd>W A S D</kbd> Move <kbd>E</kbd> Interact <kbd>M</kbd> Plan <kbd>ESC</kbd> Close</div><div class="aevum-minimap"><div class="aevum-map-inner"><span class="aevum-map-player"></span></div></div><div class="aevum-quick"><button data-game="plan">☷ Today’s plan</button><button data-game="extras">＋ Anytime activities</button></div><div class="aevum-mobile-controls"><button data-move="up">↑</button><button data-move="left">←</button><button data-move="down">↓</button><button data-move="right">→</button><button data-move="interact">E</button></div><div class="aevum-modal" hidden><div class="aevum-dialog"></div></div>';
+ document.body.appendChild(game);
+ game.addEventListener('click',onClick);
+ document.addEventListener('keydown',onKeyDown);
+ document.addEventListener('keyup',onKeyUp);
+ render();
+}
+function render(){
+ if(!game)return;
+ $('.aevum-date',game).textContent=new Date().toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+ $('.aevum-zones',game).innerHTML=zones.map(z=>'<button class="aevum-zone" data-zone="'+z.id+'" style="left:'+z.x+'%;top:'+z.y+'%"><span class="aevum-key">'+(state.done[z.id]?'✓':'E')+'</span><span class="zone-label">'+z.title+'<small>'+z.sub+'</small></span></button>').join('');
+ const items=[['mass','Holy Mass','Take a seat in the pews'],['prayer','Personal Prayer','Quiet time before the altar'],['rosary','Holy Rosary','Pray the mysteries with Mary'],['bible','Bible Reading','Spend time with Scripture'],['journal','Spiritual Journal','Write a short reflection']];
+ const done=items.filter(x=>state.done[x[0]]).length;
+ $('.aevum-plan-items',game).innerHTML=items.map(x=>'<div class="aevum-plan-row"><span class="aevum-check '+(state.done[x[0]]?'done':'')+'">'+(state.done[x[0]]?'✓':'')+'</span><span>'+x[1]+'<small>'+(state.done[x[0]]?'Completed today':x[2])+'</small></span></div>').join('');
+ $('.aevum-progress span',game).style.width=(done/items.length*100)+'%';
+ $('.aevum-plan-count',game).textContent=done+' / '+items.length+' completed';
+ $('.aevum-player',game).style.left=player.x+'%';$('.aevum-player',game).style.top=player.y+'%';
+ $('.aevum-map-player',game).style.left=player.x+'%';$('.aevum-map-player',game).style.top=player.y+'%';
+}
+function showDialog(title,body,actions){
+ const modal=$('.aevum-modal',game),box=$('.aevum-dialog',game);
+ box.innerHTML='<div class="eyebrow">AEVUM · SPIRITUAL WALK</div><h2>'+title+'</h2>'+body+'<div class="aevum-dialog-actions">'+actions+'</div>';
+ modal.hidden=false;dialog=title;
+}
+function closeDialog(){$('.aevum-modal',game).hidden=true;dialog=null;}
+function finish(id){state.done[id]=true;persist();render();closeDialog();showDialog('A moment well spent','<p>This activity has been marked complete for today. You can return to any place or repeat a prayer whenever you wish.</p>','<button class="primary" data-game="close">Continue</button>');}
+function interact(id){
+ const z=zones.find(x=>x.id===id);if(!z)return;
+ if(id==='mass'){
+ showDialog('Holy Mass','<p>'+z.hint+'</p><p>Take a moment to remember the readings, the prayers and the Eucharist. When you are ready, mark your participation for today.</p>',(state.done.mass?'<button data-game="close">Close</button>':'<button class="primary" data-complete="mass">I have attended Mass</button>'));
+ }else if(id==='prayer'){
+ showDialog('Personal Prayer','<p>'+z.hint+'</p><textarea id="aevum-prayer-note" rows="3" placeholder="A short intention (optional)…"></textarea>',(state.done.prayer?'<button data-game="close">Close</button>':'<button class="primary" data-complete="prayer">Complete personal prayer</button>'));
+ }else if(id==='rosary'){
+ const mysteries=['Joyful Mysteries','Luminous Mysteries','Sorrowful Mysteries','Glorious Mysteries'];
+ showDialog('Holy Rosary','<p>Choose the mysteries you prayed today. The weekday tradition can guide your choice, but you may pray any set.</p>'+mysteries.map((m,i)=>'<label><input type="checkbox" data-mystery="'+i+'" '+(state.mysteries.includes(i)?'checked':'')+'> <span>'+m+'</span></label>').join('')+'<p>'+state.mysteries.length+' of 4 mystery sets selected.</p>', '<button data-game="close">Close</button><button class="primary" data-save-rosary>Save Rosary progress</button>');
+ }else if(id==='bible'){
+ showDialog('Bible Reading','<p>'+z.hint+'</p><textarea id="aevum-bible-note" rows="4" placeholder="Passage / verse and one thought to carry with you…"></textarea>',(state.done.bible?'<button data-game="close">Close</button>':'<button class="primary" data-complete="bible">Mark reading complete</button>'));
+ }else if(id==='journal'){
+ let note=localStorage.getItem(JOURNAL)||'';
+ showDialog('Spiritual Journal','<p>A small private reflection saved in this browser. Your existing encrypted journal remains available in the main planner.</p><textarea id="aevum-journal-note" rows="6" placeholder="What are you grateful for? What would you like to bring to prayer?">'+esc(note)+'</textarea>','<button data-game="close">Close</button><button class="primary" data-save-journal>Save reflection</button>');
+ }
+}
+function nearest(){let best=null,dist=Infinity;zones.forEach(z=>{const d=Math.hypot(z.x-player.x,z.y-player.y);if(d<dist){best=z;dist=d;}});return dist<13?best:null;}
+function move(dx,dy){player.x=Math.max(7,Math.min(93,player.x+dx));player.y=Math.max(12,Math.min(91,player.y+dy));render();}
+function step(){let dx=0,dy=0;if(keys.w||keys.ArrowUp)dy=-.65;if(keys.s||keys.ArrowDown)dy=.65;if(keys.a||keys.ArrowLeft)dx=-.65;if(keys.d||keys.ArrowRight)dx=.65;if(dx||dy){player.x=Math.max(7,Math.min(93,player.x+dx));player.y=Math.max(12,Math.min(91,player.y+dy));render();}}
+let movementTimer=null;
+function onKeyDown(e){
+ if(!game||game.hidden)return;
+ if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();
+ if(e.key==='Escape'){closeDialog();return;}
+ if(dialog)return;
+ if(['w','a','s','d','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)){keys[e.key]=true;if(!movementTimer)movementTimer=setInterval(step,35);}
+ if(e.key.toLowerCase()==='e'){const z=nearest();if(z)interact(z.id);else showDialog('Walk a little closer','<p>Move closer to a place in the church, then press E to interact.</p>','<button class="primary" data-game="close">Understood</button>');}
+ if(e.key.toLowerCase()==='m')openPlan();
+}
+function onKeyUp(e){keys[e.key]=false;if(!Object.values(keys).some(Boolean)&&movementTimer){clearInterval(movementTimer);movementTimer=null;}}
+function openPlan(){showDialog('Your spiritual plan','<p>These activities are available in any order. Complete the main daily practices as you move through the church.</p>'+zones.map(z=>'<label><span>'+z.title+'</span><span style="margin-left:auto;color:'+(state.done[z.id]?'#d6b46f':'#b7a17b')+'">'+(state.done[z.id]?'✓ Complete':'Not yet')+'</span></label>').join(''),'<button class="primary" data-game="close">Return to the church</button>');}
+function openExtras(){showDialog('Anytime activities','<p>These are not tied to a location or order. Add a small act of faith whenever it fits your day.</p><div class="aevum-dialog-actions" style="justify-content:flex-start"><button data-extra="Angelus">Pray the Angelus</button><button data-extra="Divine Mercy Chaplet">Divine Mercy Chaplet</button><button data-extra="Examination of Conscience">Examination of Conscience</button><button data-extra="Spiritual reading">Spiritual reading</button><button data-extra="Visit the Blessed Sacrament">Visit the Blessed Sacrament</button></div><p style="margin-top:15px">Today: '+(state.extras.length?state.extras.map(esc).join(' · '):'No anytime activities completed yet')+'</p>','<button class="primary" data-game="close">Done</button>');}
+function onClick(e){
+ const zone=e.target.closest('[data-zone]');if(zone){const id=zone.dataset.zone;const z=zones.find(x=>x.id===id);player.x=z.x;player.y=z.y+9;render();setTimeout(()=>interact(id),180);return;}
+ const mv=e.target.closest('[data-move]');if(mv){const d=mv.dataset.move;if(d==='interact'){const z=nearest();if(z)interact(z.id);return;}const map={up:[0,-4],down:[0,4],left:[-4,0],right:[4,0]};move(...map[d]);return;}
+ const complete=e.target.closest('[data-complete]');if(complete){finish(complete.dataset.complete);return;}
+ if(e.target.closest('[data-save-rosary]')){state.mysteries=[...game.querySelectorAll('[data-mystery]:checked')].map(x=>Number(x.dataset.mystery));if(state.mysteries.length)state.done.rosary=true;persist();render();closeDialog();return;}
+ if(e.target.closest('[data-save-journal]')){localStorage.setItem(JOURNAL,$('#aevum-journal-note',game).value);state.done.journal=true;persist();render();closeDialog();return;}
+ if(e.target.closest('[data-extra]')){const x=e.target.closest('[data-extra]').dataset.extra;if(!state.extras.includes(x))state.extras.push(x);persist();openExtras();return;}
+ const g=e.target.closest('[data-game]');if(g){const action=g.dataset.game;if(action==='close'){closeDialog();return;}if(action==='plan'){openPlan();return;}if(action==='extras'){openExtras();return;}if(action==='journal'){interact('journal');return;}if(action==='home'||action==='exit'){exit();return;}}
+ if(e.target.classList.contains('aevum-modal'))closeDialog();
+}
+function enter(){ensure();state=load();game.hidden=false;document.body.style.overflow='hidden';if(movementTimer){clearInterval(movementTimer);movementTimer=null;}render();}
+function exit(){if(game)game.hidden=true;document.body.style.overflow='';closeDialog();const home=$('#kairos-home');if(home)home.hidden=false;const shell=$('.app-shell');if(shell)shell.hidden=true;document.body.classList.add('kairos-at-home');}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-enter-world="spiritual"]');if(b){e.preventDefault();enter();}});
+document.addEventListener('click',e=>{if(e.target.closest('[data-home-return]')&&game&&!game.hidden){e.preventDefault();exit();}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&movementTimer){clearInterval(movementTimer);movementTimer=null;keys={};}});
+window.AevumSpiritualWalk={enter,exit,interact};
+})();
