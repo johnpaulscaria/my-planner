@@ -900,7 +900,7 @@ badge();
 document.addEventListener('click', ev => {
   const b = ev.target.closest('[data-t],[data-a]');
   if (!b) return;
-  if (b.dataset.t) { tab = b.dataset.t; render(); const main = document.querySelector('.workspace main') || document.querySelector('.workspace'); if (main) main.scrollTo({top:0,behavior:'instant'}); window.scrollTo({top:0,behavior:'instant'}); return; }
+  if (b.dataset.t) { tab = b.dataset.t; render(); document.querySelectorAll('.sec').forEach(s => { const active = s.id === 'v-' + tab; s.hidden = !active; s.classList.toggle('on', active); }); const main = document.querySelector('.workspace main') || document.querySelector('.workspace'); if (main) main.scrollTo({top:0,behavior:'instant'}); window.scrollTo({top:0,behavior:'instant'}); return; }
   const a = b.dataset.a;
   if (a === 'prev' || a === 'next') { sel = addDays(sel, a === 'next' ? 7 : -7); view = parse(sel); view.setDate(1); render(); }
   else if (a === 'now') { sel = today(); view = new Date(); view.setDate(1); render(); }
