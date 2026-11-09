@@ -1,4 +1,4 @@
-const V = 'kairos-world-heading-accents-20261110-4';
+const V = 'kairos-section-tones-spiritual-reading-20261110-5';
 const SHELL = [
   './', 'index.html', 'style.css', 'ios.css', 'world-theme.css', 'world-theme.css?v=black-white-gold-20261110-1', 'app.js',
   'upgrade.js', 'kairos.js', 'aevum-spiritual.js?v=cathedral-image-20261110-1', 'aevum-spiritual.css?v=cathedral-image-20261110-1', 'images/kairos-rosary.svg', 'images/kairos-bible.svg', 'images/kairos-home-landscape.svg', 'config.js', 'manifest.webmanifest',
