@@ -194,34 +194,43 @@ html[data-kairos-world="worldly"] #v-books .reading-actions button,body[data-kai
 html[data-kairos-world="worldly"] #v-books .reading-actions button:first-child,body[data-kairos-world="worldly"] #v-books .reading-actions button:first-child{background:var(--book-ink);color:white;border-color:var(--book-ink)}
 @media(max-width:520px){html[data-kairos-world="worldly"] #v-books .reading-book,body[data-kairos-world="worldly"] #v-books .reading-book{grid-template-columns:96px minmax(0,1fr);gap:13px}html[data-kairos-world="worldly"] #v-books .reading-cover,body[data-kairos-world="worldly"] #v-books .reading-cover{height:145px}}
 
-/* World-only charcoal interface. Spiritual mode is deliberately excluded. */
-html[data-kairos-world="worldly"],body[data-kairos-world="worldly"]{color-scheme:dark!important;--bg:#171715;--sidebar:#111210;--panel:#24241f;--card:#24241f;--raised:#2d2c26;--hover:#38372f;--ink:#f5f0e5;--mute:#c0b9aa;--line:#484538;--acc:#c49a50}
-html[data-kairos-world="worldly"] .app-shell,body[data-kairos-world="worldly"] .app-shell,html[data-kairos-world="worldly"] .workspace,body[data-kairos-world="worldly"] .workspace{background:#171715!important;color:#f5f0e5!important}
-html[data-kairos-world="worldly"] .sidebar,body[data-kairos-world="worldly"] .sidebar{background:#111210!important;border-color:#403d32!important;color:#eee8da!important}
-html[data-kairos-world="worldly"] .topbar,body[data-kairos-world="worldly"] .topbar{background:rgba(23,23,21,.97)!important;border-color:#403d32!important}
-html[data-kairos-world="worldly"] .heading-block h1,html[data-kairos-world="worldly"] .card h2,html[data-kairos-world="worldly"] .card h3,html[data-kairos-world="worldly"] .card b,html[data-kairos-world="worldly"] .card strong{color:#f5f0e5!important}
-html[data-kairos-world="worldly"] .heading-block p,html[data-kairos-world="worldly"] .mute,html[data-kairos-world="worldly"] .small-muted,html[data-kairos-world="worldly"] .card p{color:#c0b9aa!important}
-html[data-kairos-world="worldly"] .card,html[data-kairos-world="worldly"] .chat-card,html[data-kairos-world="worldly"] .personal-panel{background:#24241f!important;color:#f5f0e5!important;border:1px solid #4a473a!important;box-shadow:0 8px 24px #0005!important}
+/* KAIROS WORLD — legible charcoal workspace, scoped away from Heaven */
+html[data-kairos-world="worldly"],body[data-kairos-world="worldly"]{color-scheme:dark!important;--bg:#171715;--sidebar:#111210;--panel:#24241f;--card:#24241f;--raised:#302f28;--hover:#39372f;--ink:#f5f0e5;--mute:#c5bdad;--line:#4a4639;--acc:#c49a50;--acc2:#403522;--accbg:#30291e}
+html[data-kairos-world="worldly"] body,body[data-kairos-world="worldly"]{background:#171715!important;color:#f5f0e5!important}
+html[data-kairos-world="worldly"] .app-shell,html[data-kairos-world="worldly"] .workspace{background:#171715!important;color:#f5f0e5!important}
+html[data-kairos-world="worldly"] .sidebar{background:#111210!important;border-color:#464235!important;color:#f0eadc!important}
+html[data-kairos-world="worldly"] .brand-copy strong,html[data-kairos-world="worldly"] .heading-block h1,html[data-kairos-world="worldly"] .card h2,html[data-kairos-world="worldly"] .card h3,html[data-kairos-world="worldly"] .card b,html[data-kairos-world="worldly"] .card strong,html[data-kairos-world="worldly"] label{color:#f5f0e5!important}
+html[data-kairos-world="worldly"] .heading-block p,html[data-kairos-world="worldly"] .mute,html[data-kairos-world="worldly"] .card p,html[data-kairos-world="worldly"] .small-muted,html[data-kairos-world="worldly"] .sidebar-status,html[data-kairos-world="worldly"] .sidebar-account small{color:#c5bdad!important}
+html[data-kairos-world="worldly"] .topbar{background:rgba(23,23,21,.97)!important;border-color:#464235!important}
+html[data-kairos-world="worldly"] .card,html[data-kairos-world="worldly"] .chat-card,html[data-kairos-world="worldly"] .personal-panel{background:#24241f!important;color:#f5f0e5!important;border:1px solid #4a4639!important;box-shadow:0 8px 24px #0005!important}
 html[data-kairos-world="worldly"] input,html[data-kairos-world="worldly"] textarea,html[data-kairos-world="worldly"] select{background:#191a17!important;color:#fff8eb!important;border:1px solid #625a45!important}
-html[data-kairos-world="worldly"] input::placeholder,html[data-kairos-world="worldly"] textarea::placeholder{color:#a9a18f!important}
-html[data-kairos-world="worldly"] #tabs button{color:#d5cebf!important}
-html[data-kairos-world="worldly"] #tabs button.on{background:#342d20!important;color:#f0c978!important;box-shadow:inset 3px 0 #c49a50!important}
-html[data-kairos-world="worldly"] .top-button{background:#24241f!important;color:#eee8da!important;border-color:#514b3b!important}
-html[data-kairos-world="worldly"] .workspace-footer{color:#aaa18e!important;border-color:#403d32!important}
+html[data-kairos-world="worldly"] input::placeholder,html[data-kairos-world="worldly"] textarea::placeholder{color:#b2a995!important}
+html[data-kairos-world="worldly"] .top-button{background:#24241f!important;color:#f0eadc!important;border-color:#514b3b!important}
+html[data-kairos-world="worldly"] #tabs button{color:#d8d0c0!important}
+html[data-kairos-world="worldly"] #tabs button.on{background:#39301f!important;color:#f2cd7b!important;box-shadow:inset 3px 0 #c49a50!important}
+html[data-kairos-world="worldly"] .brand-mark{background:#c49a50!important;color:#171715!important}
 html[data-kairos-world="worldly"] .tag{background:#39362b!important;color:#f0d08b!important;border-color:#66583a!important}
+html[data-kairos-world="worldly"] .workspace-footer{color:#b0a792!important;border-color:#464235!important}
 html[data-kairos-world="worldly"] #v-dash .card{border-top:3px solid #43ad82!important}
 html[data-kairos-world="worldly"] #v-daily .card{border-top:3px solid #a7c85d!important}
 html[data-kairos-world="worldly"] #v-cal .card{border-top:3px solid #70a9ed!important}
-html[data-kairos-world="worldly"] #v-books .card{border-top:3px solid #d59a52!important}
+html[data-kairos-world="worldly"] #v-books .card{border-top:3px solid #d5a052!important}
 html[data-kairos-world="worldly"] #v-words .card{border-top:3px solid #a58be0!important}
 html[data-kairos-world="worldly"] #v-quotes .card{border-top:3px solid #d6aa4d!important}
 html[data-kairos-world="worldly"] #v-week .card{border-top:3px solid #8f9ee8!important}
 html[data-kairos-world="worldly"] #v-up .card{border-top:3px solid #e18b5d!important}
-html[data-kairos-world="worldly"] #v-dash button.p{background:#238565!important;color:#fff!important}
-html[data-kairos-world="worldly"] #v-daily button.p{background:#789b43!important;color:#fff!important}
-html[data-kairos-world="worldly"] #v-cal button.p{background:#477fbd!important;color:#fff!important}
-html[data-kairos-world="worldly"] #v-books button.p{background:#a87932!important;color:#fff!important}
-html[data-kairos-world="worldly"] #v-words button.p{background:#805bb5!important;color:#fff!important}
-html[data-kairos-world="worldly"] #v-quotes button.p{background:#a77a2b!important;color:#fff!important}
-html[data-kairos-world="worldly"] #v-week button.p{background:#7069b7!important;color:#fff!important}
-html[data-kairos-world="worldly"] #v-up button.p{background:#b9673f!important;color:#fff!important}
+html[data-kairos-world="worldly"] #v-dash button.p{background:#238565!important;color:white!important}
+html[data-kairos-world="worldly"] #v-daily button.p{background:#789b43!important;color:white!important}
+html[data-kairos-world="worldly"] #v-cal button.p{background:#477fbd!important;color:white!important}
+html[data-kairos-world="worldly"] #v-books button.p{background:#a87932!important;color:white!important}
+html[data-kairos-world="worldly"] #v-words button.p{background:#805bb5!important;color:white!important}
+html[data-kairos-world="worldly"] #v-quotes button.p{background:#a77a2b!important;color:white!important}
+html[data-kairos-world="worldly"] #v-week button.p{background:#7069b7!important;color:white!important}
+html[data-kairos-world="worldly"] #v-up button.p{background:#b9673f!important;color:white!important}
+html[data-kairos-world="worldly"] #v-books .reading-book,html[data-kairos-world="worldly"] .reading-book{background:#29271f!important;border-color:#514b3b!important;color:#f5f0e5!important}
+html[data-kairos-world="worldly"] .reading-book *{color:#f5f0e5!important}
+html[data-kairos-world="worldly"] .reading-book .mute,html[data-kairos-world="worldly"] .reading-book p{color:#c5bdad!important}
+html[data-kairos-world="worldly"] .cell{background:#24241f!important;color:#f5f0e5!important;border-color:#4a4639!important}
+html[data-kairos-world="worldly"] .cell.sel{background:#284638!important;border-color:#4b9a72!important}
+html[data-kairos-world="worldly"] .row{border-color:#403d33!important}
+html[data-kairos-world="worldly"] button:focus-visible,html[data-kairos-world="worldly"] a:focus-visible,html[data-kairos-world="worldly"] input:focus-visible{outline:3px solid #e0b45e!important;outline-offset:2px!important}
