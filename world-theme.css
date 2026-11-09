@@ -745,3 +745,122 @@ html[data-kairos-world="worldly"] .world-range-footer button.p{background:#344b3
  html[data-kairos-world="worldly"] .world-reading-stats div{padding:9px}
  html[data-kairos-world="worldly"] .world-tools-section,.world-feature-card{padding:15px}
 }
+
+
+/* FINAL WORLD SYSTEM — deep heritage green, ink and antique gold. No beige/brown UI. */
+html[data-kairos-world="worldly"]{color-scheme:dark;--w-bg:#101a16;--w-panel:#17251f;--w-card:#1b2b23;--w-raised:#22362c;--w-ink:#f4f0e6;--w-muted:#b7b9aa;--w-line:#35483b;--w-gold:#c6a15b;--w-green:#64836a}
+html[data-kairos-world="worldly"] body,
+html[data-kairos-world="worldly"] .app-shell{background:radial-gradient(ellipse at 82% 0%,#344b3633,transparent 34%),linear-gradient(135deg,#101a16,#14221b 58%,#101914)!important;color:#f4f0e6!important}
+html[data-kairos-world="worldly"] .sidebar{background:linear-gradient(180deg,#101b16,#0b1511)!important;border-right:1px solid #3d4d3d!important;box-shadow:8px 0 32px #0005!important}
+html[data-kairos-world="worldly"] .topbar{background:#14221def!important;border-bottom:1px solid #34483a!important}
+html[data-kairos-world="worldly"] .heading-block h1,html[data-kairos-world="worldly"] .card h2,html[data-kairos-world="worldly"] .card h3{color:#f5f0e5!important}
+html[data-kairos-world="worldly"] .heading-block p,html[data-kairos-world="worldly"] .mute{color:#b8c0b5!important}
+html[data-kairos-world="worldly"] .eyebrow{color:#c6a15b!important}
+html[data-kairos-world="worldly"] .eyebrow-dot{background:#c6a15b!important}
+html[data-kairos-world="worldly"] .top-button{background:#1c2d24!important;color:#e9e5d9!important;border-color:#405443!important}
+html[data-kairos-world="worldly"] .top-button:hover{background:#294033!important;border-color:#c6a15b!important}
+html[data-kairos-world="worldly"] .card,html[data-kairos-world="worldly"] .chat-card{background:linear-gradient(145deg,#1c2d24,#16231d)!important;border:1px solid #3b5142!important;border-radius:14px!important;box-shadow:0 12px 30px #0003!important;color:#f4f0e6!important}
+html[data-kairos-world="worldly"] button{background:#23372b!important;color:#eae8dc!important;border-color:#465b49!important}
+html[data-kairos-world="worldly"] button:hover{background:#2e4938!important;border-color:#c6a15b!important}
+html[data-kairos-world="worldly"] button.p{background:linear-gradient(135deg,#d2b16d,#ad8848)!important;color:#182019!important;border-color:#dfc17d!important}
+html[data-kairos-world="worldly"] button.p:hover{background:#e0c27e!important}
+html[data-kairos-world="worldly"] input,html[data-kairos-world="worldly"] select,html[data-kairos-world="worldly"] textarea{background:#101b16!important;color:#f5f0e5!important;border-color:#465b4b!important}
+html[data-kairos-world="worldly"] input::placeholder,html[data-kairos-world="worldly"] textarea::placeholder{color:#9da99c!important}
+html[data-kairos-world="worldly"] .row{border-color:#35483b!important}
+html[data-kairos-world="worldly"] .stat>div{background:#203329!important;border-color:#3c5142!important}
+html[data-kairos-world="worldly"] .stat b{color:#d3b36e!important}
+html[data-kairos-world="worldly"] .tag{background:#344d3b!important;color:#f2e8d0!important;border:1px solid #6d805e!important}
+html[data-kairos-world="worldly"] .workspace-footer{color:#aeb9aa!important;border-color:#35483b!important}
+html[data-kairos-world="worldly"] .workspace-footer b{color:#d2b16d!important}
+html[data-kairos-world="worldly"] .world-welcome{background:radial-gradient(ellipse at 95% 0%,#c6a15b33,transparent 34%),linear-gradient(115deg,#1a382b,#244633 65%,#354b36)!important;border-color:#8f7546!important}
+html[data-kairos-world="worldly"] .world-metric,html[data-kairos-world="worldly"] .world-feature-card,html[data-kairos-world="worldly"] .world-tools-section{background:linear-gradient(145deg,#1d3026,#17261f)!important;border-color:#405644!important;color:#f4f0e6!important}
+html[data-kairos-world="worldly"] .world-metric span,html[data-kairos-world="worldly"] .world-metric small,html[data-kairos-world="worldly"] .world-reading-stats span,html[data-kairos-world="worldly"] .world-section-heading>span{color:#b8c0b5!important}
+html[data-kairos-world="worldly"] .world-metric strong,html[data-kairos-world="worldly"] .world-reading-stats strong{color:#d4b46f!important}
+html[data-kairos-world="worldly"] .world-card-heading h3,html[data-kairos-world="worldly"] .world-section-heading h3{color:#f3eddf!important}
+html[data-kairos-world="worldly"] .world-reading-stats div{background:#101c16!important;border-color:#3a5041!important}
+html[data-kairos-world="worldly"] .world-focus-list button,html[data-kairos-world="worldly"] .world-tool-tile{background:#20352a!important;border-color:#455d49!important}
+html[data-kairos-world="worldly"] .world-focus-list button b,html[data-kairos-world="worldly"] .world-tool-copy b{color:#f4f0e6!important}
+html[data-kairos-world="worldly"] .world-focus-list button small,html[data-kairos-world="worldly"] .world-tool-copy small{color:#bac3b7!important}
+html[data-kairos-world="worldly"] .world-focus-icon,html[data-kairos-world="worldly"] .world-tool-icon{background:#3b5941!important;color:#e4c47d!important}
+html[data-kairos-world="worldly"] .world-range-footer{background:#1a2a21!important;border-color:#405644!important}
+html[data-kairos-world="worldly"] .cell{background:#1d3026!important;color:#f4f0e6!important;border-color:#354a3b!important}
+html[data-kairos-world="worldly"] .cell.sel{background:#526e4e!important;color:#fff!important;border-color:#d0ad65!important}
+html[data-kairos-world="worldly"] .cell.tod{box-shadow:inset 0 0 0 2px #c6a15b!important}
+html[data-kairos-world="worldly"] .dow,html[data-kairos-world="worldly"] .leg{color:#b9c2b5!important}
+html[data-kairos-world="worldly"] .reading-book{background:linear-gradient(145deg,#1d382d,#14271f)!important;border-color:#8e7546!important;color:#f5f0e5!important}
+html[data-kairos-world="worldly"] .reading-book-info b{color:#fff8e9!important}
+html[data-kairos-world="worldly"] .reading-book-kicker{color:#e0c27e!important}
+html[data-kairos-world="worldly"] .reading-progress{background:#0d1812!important}
+html[data-kairos-world="worldly"] .reading-progress span{background:linear-gradient(90deg,#718c5e,#d1ae67)!important}
+html[data-kairos-world="worldly"] .reading-thought{color:#d5d5c8!important}
+html[data-kairos-world="worldly"] .quote-mini{background:#20352a!important;border-color:#526a50!important;color:#f5f0e5!important}
+html[data-kairos-world="worldly"] .quote-mini blockquote{color:#f5f0e5!important}
+html[data-kairos-world="worldly"] .alert{background:#3b2b20!important;border-color:#a67d43!important;color:#f7e7c3!important}
+html[data-kairos-world="worldly"] #modal{background:#050b08dd!important}
+html[data-kairos-world="worldly"] #modal .sheet{background:#19291f!important;color:#f5f0e5!important;border-color:#8d7445!important}
+html[data-kairos-world="worldly"] #modal .sheet h3,html[data-kairos-world="worldly"] #modal .sheet b,html[data-kairos-world="worldly"] #modal .sheet label{color:#f0e8d7!important}
+html[data-kairos-world="worldly"] #msgs .m.a{background:#263b2e!important;color:#f5f0e5!important;border-color:#425a48!important}
+html[data-kairos-world="worldly"] #msgs .m.u{background:#d0ae69!important;color:#172019!important}
+
+/* Reading room — editorial library, restrained gold, legible ink-on-green surfaces. */
+html[data-kairos-world="worldly"] #v-books{display:none;width:100%;min-width:0}
+html[data-kairos-world="worldly"] #v-books.on{display:block}
+html[data-kairos-world="worldly"] .books-hero{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px 32px;margin:0 0 18px;border:1px solid #826c42;border-radius:14px;background:radial-gradient(ellipse at 95% 0%,#c6a15b2c,transparent 36%),linear-gradient(110deg,#1b392b,#284834 70%,#344b36)}
+html[data-kairos-world="worldly"] .books-overline,.book-section-kicker{font-size:9px;font-weight:800;letter-spacing:.17em;color:#d5b66e}
+html[data-kairos-world="worldly"] .books-hero h2{margin:8px 0 6px;font:400 clamp(27px,3vw,36px)/1.15 Georgia,serif!important;color:#fff7e7!important}
+html[data-kairos-world="worldly"] .books-hero p{max-width:620px;margin:0;color:#d6dfd2;font-size:13px}
+html[data-kairos-world="worldly"] .book-add-button{background:linear-gradient(135deg,#d6b66e,#ae8744)!important;color:#172019!important;border:1px solid #e4cb8c!important;white-space:nowrap}
+html[data-kairos-world="worldly"] .books-stat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:18px}
+html[data-kairos-world="worldly"] .books-stat-row article{display:flex;flex-direction:column;gap:6px;padding:17px 19px;border:1px solid #3c5544;border-radius:11px;background:linear-gradient(145deg,#1d3026,#17251e)}
+html[data-kairos-world="worldly"] .books-stat-row span{font-size:9px;font-weight:800;letter-spacing:.13em;color:#b7c2b4}
+html[data-kairos-world="worldly"] .books-stat-row strong{font:500 28px Georgia,serif;color:#d6b66e}
+html[data-kairos-world="worldly"] .books-stat-row small{font-size:11px;color:#b6c0b3}
+html[data-kairos-world="worldly"] .book-log-panel{padding:22px;margin-bottom:22px;border:1px solid #455c49;border-radius:13px;background:linear-gradient(145deg,#1b2d23,#15231c);box-shadow:0 10px 28px #0003}
+html[data-kairos-world="worldly"] .book-log-heading{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:17px}
+html[data-kairos-world="worldly"] .book-log-heading h3,.book-shelf-heading h3,.book-empty-shelf h3{margin:5px 0 4px;font:400 22px Georgia,serif!important;color:#f5f0e5!important}
+html[data-kairos-world="worldly"] .book-log-heading p,.book-shelf-heading p,.book-empty-shelf p{margin:0;color:#b7c2b5;font-size:12px}
+html[data-kairos-world="worldly"] .book-date-label{display:grid;gap:6px;min-width:170px;font-size:9px!important;letter-spacing:.12em;color:#d2b36d!important}
+html[data-kairos-world="worldly"] .book-date-label input{width:100%!important}
+html[data-kairos-world="worldly"] .book-log-controls{display:grid;grid-template-columns:minmax(0,1fr) 140px auto;gap:9px;align-items:center}
+html[data-kairos-world="worldly"] .book-log-controls input,html[data-kairos-world="worldly"] .book-log-controls select{min-height:43px}
+html[data-kairos-world="worldly"] .book-log-submit{min-height:43px;background:linear-gradient(135deg,#d6b66e,#ae8744)!important;color:#172019!important;border-color:#e4cb8c!important;white-space:nowrap}
+html[data-kairos-world="worldly"] .book-log-entries{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+html[data-kairos-world="worldly"] .book-log-row{display:flex;align-items:center;gap:12px;padding:8px 10px;border:1px solid #435a47;border-radius:8px;background:#20362a;color:#e8eadf;font-size:11px}
+html[data-kairos-world="worldly"] .book-log-row b{color:#d6b66e}
+html[data-kairos-world="worldly"] .book-log-row button{padding:2px 7px!important}
+html[data-kairos-world="worldly"] .book-log-total{display:flex;justify-content:space-between;gap:10px;margin-top:13px;padding-top:12px;border-top:1px solid #3d5142;color:#b7c2b5;font-size:9px;letter-spacing:.12em}
+html[data-kairos-world="worldly"] .book-log-total strong{color:#e0c27e}
+html[data-kairos-world="worldly"] .book-empty-inline{color:#b7c2b5;font-size:12px}
+html[data-kairos-world="worldly"] .book-shelf{margin:23px 0 28px}
+html[data-kairos-world="worldly"] .book-shelf-heading{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:13px;padding-bottom:12px;border-bottom:1px solid #3a4f40}
+html[data-kairos-world="worldly"] .book-shelf-heading h3{font-size:23px!important}
+html[data-kairos-world="worldly"] .book-count{font-size:9px;letter-spacing:.13em;color:#d3b36e}
+html[data-kairos-world="worldly"] .book-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+html[data-kairos-world="worldly"] .reading-book{display:grid;grid-template-columns:112px minmax(0,1fr);gap:16px;align-items:stretch;min-width:0;min-height:174px;padding:14px!important;border:1px solid #465d49!important;border-radius:12px!important;background:linear-gradient(145deg,#20372a,#18291f)!important;box-shadow:0 8px 20px #0003!important}
+html[data-kairos-world="worldly"] .reading-cover{width:112px;height:145px;overflow:hidden;border-radius:5px;background:#0f1b14;box-shadow:0 6px 16px #0006}
+html[data-kairos-world="worldly"] .reading-cover img{display:block;width:100%;height:100%;object-fit:cover}
+html[data-kairos-world="worldly"] .cover-fallback{display:flex;flex-direction:column;justify-content:space-between;width:100%;height:100%;padding:10px;background:linear-gradient(150deg,var(--book-ink),#101a16);border:1px solid var(--book-accent);color:var(--book-paper)}
+html[data-kairos-world="worldly"] .cover-fallback span{font-size:7px;letter-spacing:.13em;color:var(--book-accent)}
+html[data-kairos-world="worldly"] .cover-fallback strong{font:500 15px/1.2 Georgia,serif;color:var(--book-paper);overflow-wrap:anywhere}
+html[data-kairos-world="worldly"] .cover-fallback small{font-size:8px;color:var(--book-paper)}
+html[data-kairos-world="worldly"] .reading-book-info{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0}
+html[data-kairos-world="worldly"] .reading-book-info b{font:500 18px/1.25 Georgia,serif!important;color:#f6f0e4!important;overflow-wrap:anywhere}
+html[data-kairos-world="worldly"] .reading-book-info .mute{font-size:11px;color:#bdc6b9!important}
+html[data-kairos-world="worldly"] .reading-book-kicker{font-size:8px;font-weight:800;letter-spacing:.14em;color:#d7b76d!important}
+html[data-kairos-world="worldly"] .reading-progress{width:100%;height:5px;margin:4px 0;background:#0e1913!important;border-radius:10px;overflow:hidden}
+html[data-kairos-world="worldly"] .reading-progress span{display:block;height:100%;border-radius:10px;background:linear-gradient(90deg,#728e62,#d6b66e)!important}
+html[data-kairos-world="worldly"] .reading-thought{margin:2px 0;color:#d1d8cb;font:italic 12px/1.55 Georgia,serif}
+html[data-kairos-world="worldly"] .reading-actions{display:flex;gap:7px;margin-top:auto}
+html[data-kairos-world="worldly"] .reading-actions button{padding:6px 9px!important;font-size:10px!important}
+html[data-kairos-world="worldly"] .book-empty-shelf{padding:26px;border:1px dashed #647453;border-radius:12px;background:#19291f}
+@media(max-width:900px){html[data-kairos-world="worldly"] .book-grid{grid-template-columns:1fr}}
+@media(max-width:620px){
+ html[data-kairos-world="worldly"] .books-hero{align-items:flex-start;flex-direction:column;padding:23px}
+ html[data-kairos-world="worldly"] .book-log-heading{align-items:stretch;flex-direction:column}
+ html[data-kairos-world="worldly"] .book-log-controls{grid-template-columns:1fr 112px}
+ html[data-kairos-world="worldly"] .book-log-submit{grid-column:1/-1}
+ html[data-kairos-world="worldly"] .books-stat-row{gap:7px}
+ html[data-kairos-world="worldly"] .books-stat-row article{padding:13px}
+ html[data-kairos-world="worldly"] .reading-book{grid-template-columns:88px minmax(0,1fr);gap:12px;padding:11px!important}
+ html[data-kairos-world="worldly"] .reading-cover{width:88px;height:126px}
+}
