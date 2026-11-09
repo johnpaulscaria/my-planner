@@ -21,15 +21,14 @@ function enterWorld(which){
  document.body.dataset.kairosWorld=current;
  if(current==='spiritual'){
    document.documentElement.dataset.theme='dark';
-   if(window.Aevum3D&&typeof window.Aevum3D.enter==='function')window.Aevum3D.enter();
-   else if(window.AevumCathedral&&typeof window.AevumCathedral.enter==='function')window.AevumCathedral.enter();
+   if(window.AevumSpiritualWalk&&typeof window.AevumSpiritualWalk.enter==='function')window.AevumSpiritualWalk.enter();
    else if(shell)shell.hidden=false;
    return;
  }
  if(shell)shell.hidden=false;
  document.querySelectorAll('#tabs button[data-t]').forEach(b=>{b.hidden=!worldly.has(b.dataset.t);});
  document.querySelectorAll('.app-shell .sec').forEach(s=>{s.hidden=false;});
- ['bible','rosary','spbooks','prayers','journal'].forEach(id=>{const section=$('#v-'+id);if(section)section.hidden=true;});
+ 
  const eyebrow=$('.topbar .eyebrow');
  if(eyebrow)eyebrow.innerHTML='<span class="eyebrow-dot"></span> WORLD / WORKSPACE';
  const title=$('#page-title');if(title)title.textContent='Overview';
