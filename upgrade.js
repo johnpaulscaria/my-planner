@@ -1,4 +1,4 @@
-/* My Planner: Spiritual Life / Worldly Life enhancements. */
+/* My Planner: personal workspace enhancements. */
 (function () {
   'use strict';
   const $ = s => document.querySelector(s);
@@ -30,14 +30,7 @@
       if (mq.addEventListener) mq.addEventListener('change', () => { if (localStorage.getItem('myplanner.theme') === 'system') theme('system'); });
     }
   }
-  function dashboard() {
-    const root = $('#v-dash');
-    if (!root || root.querySelector('.life-hub-grid')) return;
-    const wrap = document.createElement('div');
-    wrap.className = 'life-hub-grid';
-    wrap.innerHTML = '<a class="life-hub spiritual-hub" href="#" data-life-hub="spiritual"><span>✝</span><div><small>FAITH · PRAYER · SCRIPTURE</small><h2>Spiritual life</h2><p>Bible · Rosary · Devotions · Spiritual reading</p></div><b>↗</b></a><a class="life-hub worldly-hub" href="#" data-life-hub="worldly"><span>◈</span><div><small>CAREER · LEARNING · PERSONAL GROWTH</small><h2>Worldly life</h2><p>Goals · Books · Vocabulary · Projects</p></div><b>↗</b></a>';
-    root.prepend(wrap);
-  }
+  function dashboard() { /* The old Spiritual life / Worldly life hub cards were removed. */ }
   function renderBooks() {
     const root = $('#v-spbooks'); if (!root) return;
     const books = readBooks();
@@ -88,14 +81,6 @@
       e.preventDefault(); e.stopImmediatePropagation();
       activate(nav.dataset.t);
       if (nav.dataset.t === 'spbooks') renderBooks(); else prayers();
-      return;
-    }
-    const hub = e.target.closest('[data-life-hub]');
-    if (hub) {
-      e.preventDefault();
-      const dest = hub.dataset.lifeHub === 'spiritual' ? 'bible' : 'books';
-      const b = document.querySelector('#tabs button[data-t="' + dest + '"]');
-      if (b) b.click();
       return;
     }
     const btn = e.target.closest('[data-sp-action]');
