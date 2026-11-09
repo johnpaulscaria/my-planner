@@ -637,3 +637,111 @@ html[data-kairos-world="worldly"] #modal .sheet h3,
 html[data-kairos-world="worldly"] #modal .sheet b,
 html[data-kairos-world="worldly"] #modal .sheet label{color:#2e3d2d!important}
 html[data-kairos-world="worldly"] [hidden]{display:none!important}
+
+
+/* WORLD workspace layout — one consistent grid, no inherited stacked redesigns. */
+html[data-kairos-world="worldly"] body{background:#e9e1d1!important;color:#292b22!important}
+html[data-kairos-world="worldly"] .app-shell{min-height:100vh;background:transparent!important}
+html[data-kairos-world="worldly"] .sidebar{position:fixed!important;inset:0 auto 0 0!important;width:252px!important;height:100vh!important;padding:27px 17px 18px!important;display:flex!important;flex-direction:column!important;overflow-y:auto!important;z-index:40!important}
+html[data-kairos-world="worldly"] .brand{padding:0 8px 28px!important;flex:none!important}
+html[data-kairos-world="worldly"] .sidebar nav#tabs{display:flex!important;flex:1 1 auto!important;min-height:0!important;flex-direction:column!important;align-items:stretch!important;gap:5px!important;overflow-y:auto!important;overflow-x:hidden!important}
+html[data-kairos-world="worldly"] .sidebar nav#tabs button{width:100%!important;min-height:43px!important;flex:0 0 auto!important;padding:10px 12px!important;border-radius:9px!important}
+html[data-kairos-world="worldly"] .sidebar-bottom{margin-top:auto!important;flex:none!important}
+html[data-kairos-world="worldly"] .workspace{display:flex!important;flex-direction:column!important;width:calc(100% - 252px)!important;min-width:0!important;min-height:100vh!important;margin:0 0 0 252px!important;padding:0!important}
+html[data-kairos-world="worldly"] .topbar{position:relative!important;top:auto!important;z-index:2!important;width:100%!important;max-width:none!important;min-height:112px!important;margin:0!important;padding:22px clamp(24px,4vw,58px)!important;box-sizing:border-box!important;background:#f2ecdfed!important}
+html[data-kairos-world="worldly"] #banner{width:100%!important;max-width:none!important;margin:14px 0 0!important;padding:0 clamp(24px,4vw,58px)!important;box-sizing:border-box!important}
+html[data-kairos-world="worldly"] .workspace main{display:block!important;flex:1 0 auto!important;width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;padding:26px clamp(24px,4vw,58px) 34px!important;box-sizing:border-box!important}
+html[data-kairos-world="worldly"] .workspace-footer{width:auto!important;max-width:none!important;margin:0!important;padding:20px clamp(24px,4vw,58px)!important}
+html[data-kairos-world="worldly"] .sec{width:100%!important;min-width:0!important}
+html[data-kairos-world="worldly"] .card{min-width:0!important}
+html[data-kairos-world="worldly"] .world-welcome{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:30px 34px;margin:0 0 19px;border:1px solid #a88a53;border-radius:15px;background:radial-gradient(ellipse at 100% 0%,#bda56b45,transparent 34%),linear-gradient(115deg,#293d2d,#40513a 65%,#5a5137);box-shadow:0 14px 32px #46361d20}
+html[data-kairos-world="worldly"] .world-kicker,.world-card-kicker{font-size:9px;font-weight:800;letter-spacing:.18em;color:#9b7c45}
+html[data-kairos-world="worldly"] .world-welcome .world-kicker{color:#dfc98f}
+html[data-kairos-world="worldly"] .world-welcome h2{margin:8px 0 5px;font:400 clamp(28px,3vw,39px)/1.1 Georgia,serif!important;letter-spacing:-.035em;color:#fff8e9!important}
+html[data-kairos-world="worldly"] .world-welcome p{margin:0;color:#e3ddcc;font-size:13px}
+html[data-kairos-world="worldly"] .world-welcome-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+html[data-kairos-world="worldly"] .world-welcome-actions button{white-space:nowrap}
+html[data-kairos-world="worldly"] .world-outline-action{background:#ffffff12!important;color:#fff5df!important;border-color:#c8b17b!important}
+html[data-kairos-world="worldly"] .world-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:19px}
+html[data-kairos-world="worldly"] .world-metric{display:flex;flex-direction:column;gap:7px;min-width:0;padding:18px 19px;border:1px solid #cbbd9f;border-radius:12px;background:linear-gradient(145deg,#faf6ed,#e9e1d1);box-shadow:0 7px 20px #493a2110}
+html[data-kairos-world="worldly"] .world-metric span{font-size:9px;font-weight:800;letter-spacing:.13em;color:#77705e}
+html[data-kairos-world="worldly"] .world-metric strong{font:500 29px/1 Georgia,serif;color:#344a35}
+html[data-kairos-world="worldly"] .world-metric small{font-size:11px;color:#77705e}
+html[data-kairos-world="worldly"] .metric-gold{border-top:3px solid #b08b4d}
+html[data-kairos-world="worldly"] .metric-olive{border-top:3px solid #6c8057}
+html[data-kairos-world="worldly"] .metric-rose{border-top:3px solid #a66f5b}
+html[data-kairos-world="worldly"] .metric-stone{border-top:3px solid #8d8878}
+html[data-kairos-world="worldly"] .world-dashboard-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.85fr);gap:16px;margin-bottom:19px;align-items:stretch}
+html[data-kairos-world="worldly"] .world-feature-card{min-width:0;padding:22px;border:1px solid #cbbd9f;border-radius:13px;background:linear-gradient(145deg,#faf6ed,#eee6d7);box-shadow:0 8px 24px #493a2110}
+html[data-kairos-world="worldly"] .world-card-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}
+html[data-kairos-world="worldly"] .world-card-heading h3,.world-section-heading h3{margin:5px 0 0;font:400 22px Georgia,serif!important;color:#304331!important}
+html[data-kairos-world="worldly"] .world-text-link{background:transparent!important;border:0!important;color:#876a3e!important;padding:5px!important;font-size:11px!important}
+html[data-kairos-world="worldly"] .world-reading-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+html[data-kairos-world="worldly"] .world-reading-stats div{display:flex;flex-direction:column;gap:4px;padding:12px;background:#e9e1d1;border:1px solid #d2c4a9;border-radius:9px}
+html[data-kairos-world="worldly"] .world-reading-stats strong{font:500 22px Georgia,serif;color:#80623a}
+html[data-kairos-world="worldly"] .world-reading-stats span{font-size:10px;color:#706a5a}
+html[data-kairos-world="worldly"] .world-chart-wrap{margin:17px 0 10px;min-width:0;overflow:hidden}
+html[data-kairos-world="worldly"] .world-top-books{border-top:1px solid #d7cbb5;padding-top:6px}
+html[data-kairos-world="worldly"] .world-book-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #e5dccb;color:#555444;font-size:11px}
+html[data-kairos-world="worldly"] .world-book-row b{color:#765b35}
+html[data-kairos-world="worldly"] .world-empty-note,.world-focus-intro{font-size:12px;line-height:1.6;color:#77705e}
+html[data-kairos-world="worldly"] .world-focus-mark{display:grid;place-items:center;width:35px;height:35px;border-radius:50%;background:#e8dfca;color:#9c7a42}
+html[data-kairos-world="worldly"] .world-focus-list{display:grid;gap:8px;margin-top:14px}
+html[data-kairos-world="worldly"] .world-focus-list button{display:flex;align-items:center;gap:11px;width:100%;padding:11px 12px!important;text-align:left;background:#f5efe3!important;border:1px solid #d5c8ae!important;border-radius:10px!important}
+html[data-kairos-world="worldly"] .world-focus-list button:hover{background:#ece3d2!important;border-color:#b69a60!important}
+html[data-kairos-world="worldly"] .world-focus-icon{display:grid;place-items:center;width:33px;height:33px;flex:none;border-radius:9px;background:#344b36;color:#e8d5a7;font-size:16px}
+html[data-kairos-world="worldly"] .world-focus-list button>span:nth-child(2){display:grid;gap:2px;flex:1;min-width:0}
+html[data-kairos-world="worldly"] .world-focus-list button b{font-size:12px;color:#344332}
+html[data-kairos-world="worldly"] .world-focus-list button small{font-size:10px;color:#77705e}
+html[data-kairos-world="worldly"] .world-focus-list button i{font-style:normal;color:#927647}
+html[data-kairos-world="worldly"] .world-tools-section{padding:22px;border:1px solid #cbbd9f;border-radius:13px;background:#f3ecdf;box-shadow:0 8px 24px #493a2110}
+html[data-kairos-world="worldly"] .world-section-heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:14px}
+html[data-kairos-world="worldly"] .world-section-heading>span{font-size:9px;letter-spacing:.15em;color:#93866c}
+html[data-kairos-world="worldly"] .world-tools-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+html[data-kairos-world="worldly"] .world-tool-tile{display:flex;align-items:center;gap:11px;min-width:0;padding:14px!important;text-align:left;background:#faf6ed!important;border:1px solid #d5c8ae!important;border-radius:10px!important}
+html[data-kairos-world="worldly"] .world-tool-tile:hover{background:#eee5d4!important;border-color:#b49a6a!important;transform:translateY(-2px)}
+html[data-kairos-world="worldly"] .world-tool-icon{display:grid;place-items:center;width:36px;height:36px;flex:none;border-radius:10px;background:#344b36;color:#e8d5a7;font-size:17px}
+html[data-kairos-world="worldly"] .world-tool-copy{display:grid;gap:3px;flex:1;min-width:0}
+html[data-kairos-world="worldly"] .world-tool-copy b{font-size:12px;color:#344332}
+html[data-kairos-world="worldly"] .world-tool-copy small{font-size:10px;color:#77705e;line-height:1.4}
+html[data-kairos-world="worldly"] .world-tool-arrow{color:#9a7a47}
+html[data-kairos-world="worldly"] .world-range-footer{margin-top:18px;padding:12px 15px;border:1px solid #d2c5ac;border-radius:10px;background:#f4eddf}
+html[data-kairos-world="worldly"] .world-range-footer .bar{margin:0}
+html[data-kairos-world="worldly"] .world-range-footer button{padding:7px 11px!important}
+html[data-kairos-world="worldly"] .world-range-footer button.p{background:#344b36!important;color:#fff7e5!important}
+@media(max-width:1150px){
+ html[data-kairos-world="worldly"] .world-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html[data-kairos-world="worldly"] .world-tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:900px){
+ html[data-kairos-world="worldly"] .sidebar{width:220px!important}
+ html[data-kairos-world="worldly"] .workspace{width:calc(100% - 220px)!important;margin-left:220px!important}
+ html[data-kairos-world="worldly"] .topbar{padding:18px 22px!important}
+ html[data-kairos-world="worldly"] .workspace main{padding:20px 22px 28px!important}
+ html[data-kairos-world="worldly"] #banner{padding:0 22px!important}
+}
+@media(max-width:760px){
+ html[data-kairos-world="worldly"] .sidebar{position:sticky!important;inset:0 0 auto!important;width:100%!important;height:auto!important;max-height:none!important;padding:10px 12px!important}
+ html[data-kairos-world="worldly"] .brand{padding:2px 5px 9px!important}
+ html[data-kairos-world="worldly"] .sidebar nav#tabs{flex-direction:row!important;overflow-x:auto!important;overflow-y:hidden!important;padding-bottom:4px!important}
+ html[data-kairos-world="worldly"] .sidebar nav#tabs button{width:auto!important;min-width:max-content!important;min-height:37px!important;padding:8px 10px!important}
+ html[data-kairos-world="worldly"] .sidebar nav#tabs button .nav-icon{width:auto!important;flex:0 0 auto!important}
+ html[data-kairos-world="worldly"] .sidebar-bottom{display:none!important}
+ html[data-kairos-world="worldly"] .workspace{width:100%!important;margin:0!important}
+ html[data-kairos-world="worldly"] .topbar{min-height:0!important;align-items:flex-start!important;flex-direction:column!important;gap:12px!important;padding:16px!important}
+ html[data-kairos-world="worldly"] .top-actions{flex-wrap:wrap}
+ html[data-kairos-world="worldly"] .workspace main{padding:16px!important}
+ html[data-kairos-world="worldly"] #banner{padding:0 16px!important}
+ html[data-kairos-world="worldly"] .workspace-footer{padding:16px!important}
+ html[data-kairos-world="worldly"] .world-welcome{align-items:flex-start;flex-direction:column;padding:23px}
+ html[data-kairos-world="worldly"] .world-dashboard-grid{grid-template-columns:1fr}
+ html[data-kairos-world="worldly"] .world-tools-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+ html[data-kairos-world="worldly"] .world-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ html[data-kairos-world="worldly"] .world-metric{padding:13px}
+ html[data-kairos-world="worldly"] .world-metric strong{font-size:24px}
+ html[data-kairos-world="worldly"] .world-reading-stats{gap:5px}
+ html[data-kairos-world="worldly"] .world-reading-stats div{padding:9px}
+ html[data-kairos-world="worldly"] .world-tools-section,.world-feature-card{padding:15px}
+}
