@@ -1018,3 +1018,120 @@ html[data-kairos-world="worldly"] .reading-book[style*="#252b3d"]{
 }
 html[data-kairos-world="worldly"] .reading-book[style*="#252b3d"] .reading-book-kicker,
 html[data-kairos-world="worldly"] .reading-book[style*="#252b3d"] .reading-book-info b{color:#eee5cf!important}
+
+
+/* Premium productivity calendar — clean month grid, event chips and day agenda */
+html[data-kairos-world="worldly"] #v-cal{display:grid;gap:18px}
+html[data-kairos-world="worldly"] #v-cal .calendar-workspace,
+html[data-kairos-world="worldly"] #v-cal .calendar-agenda,
+html[data-kairos-world="worldly"] #v-daily .daily-overview,
+html[data-kairos-world="worldly"] #v-daily .daily-today-panel,
+html[data-kairos-world="worldly"] #v-daily .daily-history-panel,
+html[data-kairos-world="worldly"] #v-daily .daily-manage-panel{
+ background:#151719;border:1px solid #34383a;border-radius:18px;padding:22px;color:#f4f3ef;
+ box-shadow:0 14px 38px #0003;
+}
+html[data-kairos-world="worldly"] #v-cal .calendar-heading,
+html[data-kairos-world="worldly"] #v-cal .agenda-heading,
+html[data-kairos-world="worldly"] #v-daily .daily-overview-top,
+html[data-kairos-world="worldly"] #v-daily .daily-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:18px}
+html[data-kairos-world="worldly"] #v-cal .calendar-kicker,
+html[data-kairos-world="worldly"] #v-daily .daily-kicker{font-size:10px;letter-spacing:.17em;font-weight:750;color:#c7a968;margin-bottom:8px}
+html[data-kairos-world="worldly"] #v-cal .calendar-heading h2,
+html[data-kairos-world="worldly"] #v-cal .agenda-heading h3,
+html[data-kairos-world="worldly"] #v-daily h2,
+html[data-kairos-world="worldly"] #v-daily h3{margin:0;color:#f4f2ec;font-size:clamp(21px,2.4vw,29px);font-weight:620;letter-spacing:-.04em}
+html[data-kairos-world="worldly"] #v-cal .calendar-heading p,
+html[data-kairos-world="worldly"] #v-cal .agenda-heading p,
+html[data-kairos-world="worldly"] #v-daily .daily-overview p,
+html[data-kairos-world="worldly"] #v-daily .daily-panel-heading p{margin:7px 0 0;color:#aeb2b3;font-size:13px}
+html[data-kairos-world="worldly"] #v-cal .calendar-controls{display:flex;align-items:center;gap:8px}
+html[data-kairos-world="worldly"] #v-cal .calendar-controls button,
+html[data-kairos-world="worldly"] #v-cal .calendar-add,
+html[data-kairos-world="worldly"] #v-daily .daily-add-button{
+ border:1px solid #4b4b46;background:#202224;color:#f2f0e9;border-radius:9px;padding:9px 13px;font-size:12px;font-weight:650;cursor:pointer;
+}
+html[data-kairos-world="worldly"] #v-cal .calendar-controls .calendar-today{color:#e1c787;border-color:#8a754d;background:#28251e}
+html[data-kairos-world="worldly"] #v-cal .calendar-controls .calendar-arrow{font-size:20px;line-height:16px;width:36px;height:36px;padding:0}
+html[data-kairos-world="worldly"] #v-cal .calendar-month-grid{margin-top:22px}
+html[data-kairos-world="worldly"] #v-cal .calendar-weekdays,
+html[data-kairos-world="worldly"] #v-cal .calendar-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+html[data-kairos-world="worldly"] #v-cal .calendar-weekdays{border-bottom:1px solid #34383a;padding-bottom:10px}
+html[data-kairos-world="worldly"] #v-cal .calendar-weekdays span{text-align:center;color:#92999c;font-size:11px;font-weight:650;padding:7px 0}
+html[data-kairos-world="worldly"] #v-cal .calendar-days{grid-auto-rows:minmax(88px,auto)}
+html[data-kairos-world="worldly"] #v-cal .calendar-day,
+html[data-kairos-world="worldly"] #v-cal .calendar-blank{min-width:0;border:0;border-right:1px solid #2b3032;border-bottom:1px solid #2b3032;background:transparent;border-radius:0;padding:8px 7px;text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:6px;color:#e9e9e6;cursor:pointer}
+html[data-kairos-world="worldly"] #v-cal .calendar-day:nth-child(7n){border-right:0}
+html[data-kairos-world="worldly"] #v-cal .calendar-day:hover{background:#202528}
+html[data-kairos-world="worldly"] #v-cal .calendar-day-number{width:27px;height:27px;display:grid;place-items:center;border-radius:50%;font-size:12px;color:#d9ddde}
+html[data-kairos-world="worldly"] #v-cal .calendar-day.is-today .calendar-day-number{background:#d0b273;color:#151515;font-weight:800}
+html[data-kairos-world="worldly"] #v-cal .calendar-day.is-selected{background:#24282a;box-shadow:inset 0 0 0 1px #8e7951}
+html[data-kairos-world="worldly"] #v-cal .calendar-day.is-selected .calendar-day-number{outline:1px solid #d0b273}
+html[data-kairos-world="worldly"] #v-cal .calendar-event-list{width:100%;display:grid;gap:3px}
+html[data-kairos-world="worldly"] #v-cal .calendar-event{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:3px 5px;border-left:2px solid var(--event-color,#bda36c);border-radius:3px;background:#292d2e;color:#e3e5e3;font-size:10px}
+html[data-kairos-world="worldly"] #v-cal .calendar-more{font-size:9px;color:#aeb2b3}
+html[data-kairos-world="worldly"] #v-cal .calendar-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;color:#aeb2b3;font-size:11px}
+html[data-kairos-world="worldly"] #v-cal .calendar-legend span{display:flex;align-items:center;gap:7px}
+html[data-kairos-world="worldly"] #v-cal .calendar-legend i{display:inline-block;width:8px;height:8px;border-radius:50%}
+html[data-kairos-world="worldly"] #v-cal .legend-today{background:#d0b273}
+html[data-kairos-world="worldly"] #v-cal .legend-selected{border:1px solid #d0b273}
+html[data-kairos-world="worldly"] #v-cal .legend-event{background:#8299a4}
+html[data-kairos-world="worldly"] #v-cal .calendar-add{background:#d0b273;color:#171717;border-color:#d0b273}
+html[data-kairos-world="worldly"] #v-cal .calendar-add span{font-size:15px;margin-right:4px}
+html[data-kairos-world="worldly"] #v-cal .agenda-content{margin-top:18px}
+html[data-kairos-world="worldly"] #v-cal .agenda-habits{margin-top:22px;padding-top:17px;border-top:1px solid #34383a}
+html[data-kairos-world="worldly"] #v-cal .agenda-subheading{font-size:12px;font-weight:700;color:#d4bd87;letter-spacing:.04em;margin-bottom:10px}
+html[data-kairos-world="worldly"] #v-cal .agenda-content .row{background:#202426;border:1px solid #353b3d;border-radius:9px;padding:10px 12px;margin:7px 0}
+html[data-kairos-world="worldly"] #v-cal .agenda-content .mute{color:#adb4b5}
+html[data-kairos-world="worldly"] #v-cal .agenda-content .p{background:#d0b273;color:#171717}
+
+/* Daily tasks — restrained command-centre layout, strong hierarchy and useful progress */
+html[data-kairos-world="worldly"] #v-daily{display:grid;gap:16px}
+html[data-kairos-world="worldly"] #v-daily .daily-overview-top{align-items:center}
+html[data-kairos-world="worldly"] #v-daily .daily-overview h2{font-size:27px}
+html[data-kairos-world="worldly"] #v-daily .daily-overview p span{color:#d0b273;padding:0 4px}
+html[data-kairos-world="worldly"] #v-daily .daily-progress-ring{width:86px;height:86px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#c9aa6b var(--progress),#35393a 0);position:relative;flex:none}
+html[data-kairos-world="worldly"] #v-daily .daily-progress-ring:before{content:"";position:absolute;inset:6px;border-radius:50%;background:#151719}
+html[data-kairos-world="worldly"] #v-daily .daily-progress-ring>div{position:relative;display:grid;text-align:center}
+html[data-kairos-world="worldly"] #v-daily .daily-progress-ring strong{font-size:19px;color:#f2e7ca}
+html[data-kairos-world="worldly"] #v-daily .daily-progress-ring small{font-size:9px;color:#aeb2b3}
+html[data-kairos-world="worldly"] #v-daily .daily-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:20px}
+html[data-kairos-world="worldly"] #v-daily .daily-summary>div{padding:13px 15px;background:#202325;border:1px solid #373c3e;border-radius:11px;display:grid;gap:5px}
+html[data-kairos-world="worldly"] #v-daily .daily-summary-label{font-size:10px;color:#aeb2b3}
+html[data-kairos-world="worldly"] #v-daily .daily-summary strong{font-size:23px;color:#e0c27e}
+html[data-kairos-world="worldly"] #v-daily .daily-summary small{font-size:10px;color:#92999b}
+html[data-kairos-world="worldly"] #v-daily .daily-date-pill{border:1px solid #66583b;border-radius:30px;padding:7px 11px;color:#e2cb94;font-size:11px}
+html[data-kairos-world="worldly"] #v-daily .daily-today-panel .daily-panel-heading,
+html[data-kairos-world="worldly"] #v-daily .daily-history-panel .daily-panel-heading,
+html[data-kairos-world="worldly"] #v-daily .daily-manage-panel .daily-panel-heading{margin-bottom:17px}
+html[data-kairos-world="worldly"] #v-daily .daily-today-panel .row,
+html[data-kairos-world="worldly"] #v-daily .daily-habit-row{background:#202426;border:1px solid #373d3f;border-radius:10px;padding:11px 13px;margin:7px 0;color:#f0f0ec}
+html[data-kairos-world="worldly"] #v-daily .daily-history-strip{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:8px;margin:18px 0 12px}
+html[data-kairos-world="worldly"] #v-daily .daily-history-day{display:grid;justify-items:center;gap:7px;color:#9ea5a6;font-size:10px}
+html[data-kairos-world="worldly"] #v-daily .daily-history-day .hb{width:100%;height:8px;border-radius:4px;background:#3b4041}
+html[data-kairos-world="worldly"] #v-daily .daily-history-day .hb.full{background:#8fa58b}
+html[data-kairos-world="worldly"] #v-daily .daily-history-day .hb.part{background:#c6a967}
+html[data-kairos-world="worldly"] #v-daily .daily-history-day .hb.miss{background:#59646c}
+html[data-kairos-world="worldly"] #v-daily .daily-history-caption{display:flex;gap:16px;flex-wrap:wrap;color:#aeb2b3;font-size:10px}
+html[data-kairos-world="worldly"] #v-daily .daily-history-caption span{display:flex;align-items:center;gap:6px}
+html[data-kairos-world="worldly"] #v-daily .daily-history-caption i{width:7px;height:7px;border-radius:50%;display:inline-block}
+html[data-kairos-world="worldly"] #v-daily .history-full{background:#8fa58b}
+html[data-kairos-world="worldly"] #v-daily .history-part{background:#c6a967}
+html[data-kairos-world="worldly"] #v-daily .history-miss{background:#59646c}
+html[data-kairos-world="worldly"] #v-daily .daily-add-row{display:flex;gap:9px;margin:15px 0 10px}
+html[data-kairos-world="worldly"] #v-daily .daily-add-row input{flex:1;min-width:0;background:#101214;color:#f5f3ec;border:1px solid #45494a;border-radius:9px;padding:11px 12px}
+html[data-kairos-world="worldly"] #v-daily .daily-add-button{background:#d0b273;color:#161616;border-color:#d0b273}
+html[data-kairos-world="worldly"] #v-daily .daily-quick-add{display:flex;gap:8px;flex-wrap:wrap}
+html[data-kairos-world="worldly"] #v-daily .daily-quick-add button{background:#25292a;border:1px solid #454a4b;border-radius:8px;color:#d9d5ca;padding:8px 10px;font-size:11px}
+html[data-kairos-world="worldly"] #v-daily .daily-habit-list{margin-top:12px}
+html[data-kairos-world="worldly"] #v-daily .daily-habit-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+html[data-kairos-world="worldly"] #v-daily .daily-empty{padding:17px;color:#aeb2b3;font-size:12px}
+@media(max-width:700px){
+ html[data-kairos-world="worldly"] #v-cal .calendar-workspace,html[data-kairos-world="worldly"] #v-cal .calendar-agenda,html[data-kairos-world="worldly"] #v-daily .daily-overview,html[data-kairos-world="worldly"] #v-daily .daily-today-panel,html[data-kairos-world="worldly"] #v-daily .daily-history-panel,html[data-kairos-world="worldly"] #v-daily .daily-manage-panel{padding:15px;border-radius:13px}
+ html[data-kairos-world="worldly"] #v-cal .calendar-days{grid-auto-rows:minmax(62px,auto)}
+ html[data-kairos-world="worldly"] #v-cal .calendar-day{padding:5px 3px;gap:4px}
+ html[data-kairos-world="worldly"] #v-cal .calendar-event{font-size:8px;padding:2px 3px}
+ html[data-kairos-world="worldly"] #v-cal .calendar-weekdays span{font-size:9px}
+ html[data-kairos-world="worldly"] #v-daily .daily-summary{grid-template-columns:1fr}
+ html[data-kairos-world="worldly"] #v-daily .daily-history-strip{gap:4px}
+}
