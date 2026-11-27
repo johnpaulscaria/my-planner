@@ -59,7 +59,7 @@ function render() {
   if (tab === 'daily') rDaily();
   if (tab === 'up') rUp();
   if (tab === 'week') rWeek();
-  if (tab === 'books') rBooks();
+  if (tab === 'books') { rBooks(); window.KairosReadingRoom?.renderLibrary(); }
   if (tab === 'words') rWords();
   if (tab === 'quotes') rQuotes();
   if (tab === 'dash') rDash();
