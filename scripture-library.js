@@ -6,9 +6,31 @@ const BOOKS=[["Genesis","genesis",50],["Exodus","exodus",40],["Leviticus","levit
 const KEY='kairos.scripture.saved.v1';
 const $=(s,r=document)=>r.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let root=null,mode='themes',theme='spirit',book='john',chapter=1,cache={};
+const LANG_KEY='kairos.scripture.language.v1';
+let language=localStorage.getItem(LANG_KEY)||'ml',malBiblePromise=null;
+const MAL_BOOK_ALIASES={'josue':'Joshua','1-kings':'1 Samuel','2-kings':'2 Samuel','3-kings':'1 Kings','4-kings':'2 Kings','1-paralipomenon':'1 Chronicles','2-paralipomenon':'2 Chronicles','1-esdras':'Ezra','2-esdras':'Nehemiah','tobias':'Tobit','1-machabees':'1 Maccabees','2-machabees':'2 Maccabees','psalms':'Psalms','canticle-of-canticles':'Song of Solomon','ecclesiasticus':'Sirach','isaie':'Isaiah','jeremie':'Jeremiah','ezechiel':'Ezekiel','osee':'Hosea','abdias':'Obadiah','jonas':'Jonah','micheas':'Micah','habacuc':'Habakkuk','sophonias':'Zephaniah','aggeus':'Haggai','zacharias':'Zechariah','malachie':'Malachi','apocalypse':'Revelation'};
+function normBook(s){return String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'');}
+async function loadMalayalamBible(){
+ if(!malBiblePromise)malBiblePromise=fetch('https://api.getbible.net/v2/mal1910.json',{headers:{Accept:'application/json'}}).then(r=>{if(!r.ok)throw Error('Malayalam Bible source returned HTTP '+r.status);return r.json();}).then(d=>{const books=Array.isArray(d)?d:(d.books||[]);if(!books.length)throw Error('Malayalam Bible data was empty or had an unexpected format.');return books;}).catch(e=>{malBiblePromise=null;throw e;});
+ return malBiblePromise;
+}
+async function malChapter(slug,ch){
+ const key='ml/'+slug+'/'+ch;if(cache[key])return cache[key];
+ const books=await loadMalayalamBible();
+ const wanted=MAL_BOOK_ALIASES[slug]||((BOOKS.find(b=>b[1]===slug)||[])[0]||slug).replace(/\\s*\\([^)]*\\)/g,'');
+ const found=books.find(b=>normBook(b.name||b.book_name||b.long_name)===normBook(wanted));
+ if(!found)throw Error('ഈ 1910-ലെ മലയാളം സത്യവേദപുസ്തകത്തിൽ ഈ പുസ്തകം ലഭ്യമല്ല. ദ്വിതീയപ്രമാണ ഗ്രന്ഥങ്ങൾ ഈ പതിപ്പിൽ ഉൾപ്പെട്ടിട്ടില്ല.');
+ const chapters=found.chapters||[];
+ const item=chapters.find(x=>Number(x.chapter||x.chapter_number)===Number(ch))||chapters[Number(ch)-1];
+ if(!item||!Array.isArray(item.verses))throw Error('ഈ അധ്യായം മലയാളം പതിപ്പിൽ കണ്ടെത്താനായില്ല.');
+ const data={book_title:found.name||wanted,verses:item.verses.map(v=>({verse:Number(v.verse||v.verse_number),text:v.text||v.verse_text||''})).filter(v=>v.text)};
+ if(!data.verses.length)throw Error('ഈ അധ്യായത്തിലെ വചനങ്ങൾ ലഭ്യമല്ല.');
+ cache[key]=data;return data;
+}
+
 const saved=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return []}};
 const persist=x=>localStorage.setItem(KEY,JSON.stringify(x));
-function shell(){if(root)return;root=document.createElement('div');root.className='ksl';root.innerHTML='<div class="ksl-head"><div><div class="ksl-kicker">KAIROS · FOR HEAVEN</div><h2>Scripture Library</h2><p>Let the Word meet you where you are.</p></div><button class="ksl-close" aria-label="Close">×</button></div><div class="ksl-tabs"><button data-mode="themes" class="active">Themes</button><button data-mode="books">All 73 Books</button><button data-mode="saved">Saved verses</button><button data-mode="search">Search Bible</button></div><div class="ksl-body"></div><div class="ksl-credit">Original Douay-Rheims Bible · Catholic canon · Public-domain text (CC0)</div>';document.body.appendChild(root);root.addEventListener('click',click);root.addEventListener('change',change);root.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('[data-search]'))search(e.target.value)});}
+function shell(){if(root)return;root=document.createElement('div');root.className='ksl';root.innerHTML='<div class="ksl-head"><div><div class="ksl-kicker">KAIROS · FOR HEAVEN</div><h2>Scripture Library</h2><p>Let the Word meet you where you are.</p></div><div class="ksl-head-actions"><label class="ksl-language-label">ഭാഷ / Language <select data-language aria-label="Bible language"><option value="ml" '+(language==='ml'?'selected':'')+'>മലയാളം</option><option value="en" '+(language==='en'?'selected':'')+'>English</option></select></label><button class="ksl-close" aria-label="Close">×</button></div></div><div class="ksl-tabs"><button data-mode="themes" class="active">Themes</button><button data-mode="books">All 73 Books</button><button data-mode="saved">Saved verses</button><button data-mode="search">Search Bible</button></div><div class="ksl-body"></div><div class="ksl-credit">Original Douay-Rheims Bible · Catholic canon · Public-domain text (CC0)</div>';document.body.appendChild(root);root.addEventListener('click',click);root.addEventListener('change',change);root.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('[data-search]'))search(e.target.value)});}
 function open(){shell();root.classList.add('open');document.body.style.overflow='hidden';render();}
 function close(){if(root)root.classList.remove('open');document.body.style.overflow='';}
 function render(){if(!root)return;root.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));const body=$('.ksl-body',root);if(mode==='themes')body.innerHTML='<div class="ksl-intro">Choose a spiritual focus. Every collection includes references from both Testaments where the Bible speaks to that theme.</div><div class="ksl-grid">'+THEMES.map(t=>'<button class="ksl-theme" data-theme="'+t.id+'"><strong>'+esc(t.name)+'</strong><span>'+esc(t.desc)+'</span><small>'+t.refs.length+' passages · Old & New Testament</small></button>').join('')+'</div>';
@@ -45,7 +67,7 @@ async function chapterLoad(slug,ch){
  }
  throw Error('Kairos could not connect to either Bible text source. '+errors.join(' · ')+'. Check your internet connection or try again later.');
 }
-async function readChapter(slug,ch,focus){const target=$('[data-verses]',root);target.innerHTML='<p class="ksl-muted">Opening Scripture…</p>';try{const d=await chapterLoad(slug,ch);const bookName=d.book_title||slug;target.innerHTML='<div class="ksl-chapter-head"><h3>'+esc(bookName)+'</h3><span>Chapter '+ch+'</span></div>'+d.verses.map(v=>'<article class="ksl-verse" id="ksl-v-'+v.verse+'"><sup>'+v.verse+'</sup><span>'+esc(v.text)+'</span><button data-save-verse data-ref="'+esc(bookName+' '+ch+':'+v.verse)+'" data-text="'+esc(v.text)+'" title="Save verse">☆</button></article>').join('');if(focus){const el=$('#ksl-v-'+focus,root);if(el)el.scrollIntoView({block:'center'});}}catch(e){target.innerHTML='<p class="ksl-error">'+esc(e.message)+'</p>';}}
+async function readChapter(slug,ch,focus){const target=$('[data-verses]',root);target.innerHTML='<p class="ksl-muted">'+(language==='ml'?'തിരുവചനം തുറക്കുന്നു…':'Opening Scripture…')+'</p>';try{const d=language==='ml'?await malChapter(slug,ch):await chapterLoad(slug,ch);const bookName=d.book_title||slug;target.innerHTML='<div class="ksl-chapter-head"><h3>'+esc(bookName)+'</h3><span>Chapter '+ch+'</span></div>'+d.verses.map(v=>'<article class="ksl-verse" id="ksl-v-'+v.verse+'"><sup>'+v.verse+'</sup><span>'+esc(v.text)+'</span><button data-save-verse data-ref="'+esc(bookName+' '+ch+':'+v.verse)+'" data-text="'+esc(v.text)+'" title="Save verse">☆</button></article>').join('');if(focus){const el=$('#ksl-v-'+focus,root);if(el)el.scrollIntoView({block:'center'});}}catch(e){target.innerHTML='<p class="ksl-error">'+esc(e.message)+'</p>';}}
 async function openRef(ref){const p=parseRef(ref);if(!p)return;mode='books';book=p.slug;chapter=p.chapter;render();await readChapter(book,chapter,p.verse);}
 async function search(q){
  const target=$('[data-results]',root);if(!q.trim())return;
@@ -63,6 +85,6 @@ async function search(q){
 }
 function saveVerse(ref,text){const all=saved();if(all.some(x=>x.ref===ref))return;all.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),ref,text});persist(all);render();}
 function click(e){const b=e.target.closest('button');if(!b)return;if(b.classList.contains('ksl-close')){close();return;}if(b.dataset.mode){mode=b.dataset.mode;render();return;}if(b.dataset.theme){themeView(b.dataset.theme);return;}if(b.hasAttribute('data-back')){mode='themes';render();return;}if(b.dataset.load){book=$('[data-book]',root).value;chapter=Number($('[data-chapter]',root).value);readChapter(book,chapter);return;}if(b.dataset.openRef){openRef(b.dataset.openRef);return;}if(b.dataset.saveRef){const ref=b.dataset.saveRef;saveVerse(ref,'Saved passage reference — open to read the full text.');b.textContent='Saved ✓';return;}if(b.hasAttribute('data-save-verse')){saveVerse(b.dataset.ref,b.dataset.text);b.textContent='★';return;}if(b.dataset.remove){persist(saved().filter(x=>x.id!==b.dataset.remove));render();return;}if(b.hasAttribute('data-search-go'))search($('[data-search]',root).value);}
-function change(e){if(e.target.matches('[data-book]')){book=e.target.value;const b=BOOKS.find(x=>x[1]===book);$('[data-chapter]',root).innerHTML=Array.from({length:b[2]},(_,i)=>'<option value="'+(i+1)+'">Chapter '+(i+1)+'</option>').join('');chapter=1;}}
+function change(e){if(e.target.matches('[data-language]')){language=e.target.value;localStorage.setItem(LANG_KEY,language);render();if(mode==='books')readChapter(book,chapter);return;}if(e.target.matches('[data-book]')){book=e.target.value;const b=BOOKS.find(x=>x[1]===book);$('[data-chapter]',root).innerHTML=Array.from({length:b[2]},(_,i)=>'<option value="'+(i+1)+'">Chapter '+(i+1)+'</option>').join('');chapter=1;}}
 window.KairosScripture={open,close};
 })();
