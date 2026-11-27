@@ -4,16 +4,16 @@ const clean=s=>String(s==null?'':s);
 function addBook(meta){
  if(!Array.isArray(S.books))S.books=[];
  let b=S.books.find(x=>x.pdfId===meta.id||x.id===meta.id);
- if(!b){b={id:meta.id,pdfId:meta.id,title:clean(meta.title),author:clean(meta.author),mood:'literary',pages:Number(meta.pages)||0,status:'reading',started:today(),finished:'',rating:0,thoughts:'',notes:'',pdf:true};S.books.unshift(b);}
- else{b.title=clean(meta.title)||b.title;b.author=clean(meta.author)||b.author;b.pages=Number(meta.pages)||b.pages||0;b.status=b.status==='done'?'done':'reading';}
+ if(!b){b={id:meta.id,pdfId:meta.id,title:clean(meta.title),author:clean(meta.author),mood:'literary',pages:Number(meta.pages)||0,page:Number(meta.page)||1,pdfPage:Number(meta.page)||1,status:'reading',started:today(),finished:'',rating:0,thoughts:'',notes:'',pdf:true};S.books.unshift(b);}
+ else{b.title=clean(meta.title)||b.title;b.author=clean(meta.author)||b.author;b.pages=Number(meta.pages)||b.pages||0;b.page=Number(meta.page)||b.page||1;b.pdfPage=b.page;b.status=b.status==='done'?'done':'reading';}
  save();return b;
 }
 window.KairosBridge={
  addBook,
- markReadingStart:function(meta,page,total){const book=addBook(meta),day=today();book.pages=Number(total)||book.pages||0;book.pdfPage=Number(page)||1;if(!book.pdfDailyProgress||typeof book.pdfDailyProgress!=='object')book.pdfDailyProgress={};book.pdfDailyProgress[day]=Math.max(Number(book.pdfDailyProgress[day])||0,Number(page)||1);save();return book;},
+ markReadingStart:function(meta,page,total){const book=addBook(meta),day=today();book.pages=Number(total)||book.pages||0;book.page=Number(page)||book.page||1;book.pdfPage=book.page;book.pdfFurthestPage=Math.max(Number(book.pdfFurthestPage)||0,book.page);if(!book.pdfDailyProgress||typeof book.pdfDailyProgress!=='object')book.pdfDailyProgress={};book.pdfDailyProgress[day]=Math.max(Number(book.pdfDailyProgress[day])||0,Number(page)||1);save();return book;},
  setBookCover:function(id,url){const book=S.books.find(x=>x.pdfId===id||x.id===id);if(book){book.coverUrl=url;save();}},
  updateBookProgress:function(meta,page,total){
-  const b=addBook(meta),day=today();b.pages=Number(total)||b.pages||0;b.pdfPage=Number(page)||1;
+  const b=addBook(meta),day=today();b.pages=Number(total)||b.pages||0;b.page=Number(page)||1;b.pdfPage=b.page;b.pdfFurthestPage=Math.max(Number(b.pdfFurthestPage)||0,b.page);
   if(!b.pdfDailyProgress||typeof b.pdfDailyProgress!=='object')b.pdfDailyProgress={};
   const previous=Number(b.pdfDailyProgress[day])||0,now=Math.max(previous,Number(page)||1);
   if(now>previous){if(!S.reads[day])S.reads[day]={};S.reads[day][b.id]=(S.reads[day][b.id]||0)+(now-previous);b.pdfDailyProgress[day]=now;}
