@@ -10,6 +10,7 @@ function addBook(meta){
 }
 window.KairosBridge={
  addBook,
+ markReadingStart:function(meta,page,total){const book=addBook(meta),day=today();book.pages=Number(total)||book.pages||0;book.pdfPage=Number(page)||1;if(!book.pdfDailyProgress||typeof book.pdfDailyProgress!=='object')book.pdfDailyProgress={};book.pdfDailyProgress[day]=Math.max(Number(book.pdfDailyProgress[day])||0,Number(page)||1);save();return book;},
  updateBookProgress:function(meta,page,total){
   const b=addBook(meta),day=today();b.pages=Number(total)||b.pages||0;b.pdfPage=Number(page)||1;
   if(!b.pdfDailyProgress||typeof b.pdfDailyProgress!=='object')b.pdfDailyProgress={};
