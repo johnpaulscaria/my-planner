@@ -20,26 +20,30 @@ function themeView(id){const t=THEMES.find(x=>x.id===id);if(!t)return;theme=id;m
 function parseRef(ref){const m=ref.match(/^(.+?)\s+(\d+)(?::(\d+))?/);if(!m)return null;let name=m[1].toLowerCase().replace(/\s*\(.*\)/,'').replace(/\s+/g,' ');const alias={'1 samuel':'1-kings','2 samuel':'2-kings','1 kings':'3-kings','2 kings':'4-kings','joshua':'josue','ezra':'1-esdras','nehemiah':'2-esdras','1 chronicles':'1-paralipomenon','2 chronicles':'2-paralipomenon','song of songs':'canticle-of-canticles','sirach':'ecclesiasticus','ecclesiasticus':'ecclesiasticus','isaiah':'isaie','jeremiah':'jeremie','hosea':'osee','obadiah':'abdias','jonah':'jonas','micah':'micheas','habakkuk':'habacuc','zephaniah':'sophonias','haggai':'aggeus','zechariah':'zacharias','malachi':'malachie','revelation':'apocalypse'};const b=BOOKS.find(x=>x[0].toLowerCase()===name)||BOOKS.find(x=>x[1]===alias[name]);return b?{slug:b[1],name:b[0],chapter:Number(m[2]),verse:m[3]?Number(m[3]):null}:null;}
 async function chapterLoad(slug,ch){
  const key=slug+'/'+ch;if(cache[key])return cache[key];
- const url='https://thedouayrheims.com/api/chapter/'+encodeURIComponent(slug)+'/'+encodeURIComponent(ch);
- let lastError=null;
- for(let attempt=0;attempt<2;attempt++){
-  const controller=typeof AbortController!=='undefined'?new AbortController():null;
-  const timer=controller?setTimeout(()=>controller.abort(),15000):null;
+ const bookMeta=BOOKS.find(b=>b[1]===slug);
+ const bookName=bookMeta?bookMeta[0].replace(/\s*\([^)]*\)/g,''):slug;
+ const primary='https://thedouayrheims.com/api/chapter/'+encodeURIComponent(slug)+'/'+encodeURIComponent(ch);
+ const fallback='https://bible-api.com/'+encodeURIComponent(bookName+' '+ch)+'?translation=dra';
+ const errors=[];
+ // Primary: Original Douay-Rheims API. Fallback: DRA 1899 API with browser CORS support.
+ for(const url of [primary,fallback]){
   try{
-   const response=await fetch(url,{method:'GET',headers:{Accept:'application/json'},cache:attempt?'no-cache':'default',signal:controller?controller.signal:undefined});
-   if(!response.ok){
-    let detail='';try{const err=await response.json();detail=err.error||'';}catch{}
-    if(response.status>=500&&attempt===0){lastError=Error('Bible text server temporarily returned '+response.status+'.');continue;}
-    throw Error('Bible text service returned HTTP '+response.status+(detail?' — '+detail:'.'));
+   const controller=typeof AbortController!=='undefined'?new AbortController():null;
+   const timer=controller?setTimeout(()=>controller.abort(),15000):null;
+   let response;
+   try{response=await fetch(url,{method:'GET',headers:{Accept:'application/json'},cache:'default',signal:controller?controller.signal:undefined});}
+   finally{if(timer)clearTimeout(timer);}
+   if(!response.ok)throw Error('HTTP '+response.status);
+   const raw=await response.json();
+   let data=raw;
+   if(!Array.isArray(data.verses)&&Array.isArray(raw.verses)){
+    data={book_title:raw.reference||raw.book_name||bookName,chapter:Number(ch),verses:raw.verses.map(v=>({verse:v.verse,text:v.text}))};
    }
-   const d=await response.json();
-   if(!d||!Array.isArray(d.verses)||!d.verses.length)throw Error('The Bible service returned an empty or unexpected chapter. Please try another chapter.');
-   cache[key]=d;return d;
-  }catch(e){lastError=e;if(attempt===0&&e.name!=='AbortError')continue;}
-  finally{if(timer)clearTimeout(timer);}
+   if(!data||!Array.isArray(data.verses)||!data.verses.length)throw Error('Unexpected or empty chapter response');
+   cache[key]=data;return data;
+  }catch(e){errors.push((url===primary?'Original Douay-Rheims':'DRA fallback')+': '+(e.name==='AbortError'?'timed out':e.message||'network error'));}
  }
- const reason=lastError&&lastError.name==='AbortError'?'The Bible text request timed out.':(lastError&&lastError.message)||'Network request failed.';
- throw Error('Kairos could not load this chapter after retrying. '+reason+' Open https://thedouayrheims.com/api/chapter/'+encodeURIComponent(slug)+'/'+encodeURIComponent(ch)+' in a new tab to check whether the Bible service is reachable.');
+ throw Error('Kairos could not connect to either Bible text source. '+errors.join(' · ')+'. Check your internet connection or try again later.');
 }
 async function readChapter(slug,ch,focus){const target=$('[data-verses]',root);target.innerHTML='<p class="ksl-muted">Opening Scripture…</p>';try{const d=await chapterLoad(slug,ch);const bookName=d.book_title||slug;target.innerHTML='<div class="ksl-chapter-head"><h3>'+esc(bookName)+'</h3><span>Chapter '+ch+'</span></div>'+d.verses.map(v=>'<article class="ksl-verse" id="ksl-v-'+v.verse+'"><sup>'+v.verse+'</sup><span>'+esc(v.text)+'</span><button data-save-verse data-ref="'+esc(bookName+' '+ch+':'+v.verse)+'" data-text="'+esc(v.text)+'" title="Save verse">☆</button></article>').join('');if(focus){const el=$('#ksl-v-'+focus,root);if(el)el.scrollIntoView({block:'center'});}}catch(e){target.innerHTML='<p class="ksl-error">'+esc(e.message)+'</p>';}}
 async function openRef(ref){const p=parseRef(ref);if(!p)return;mode='books';book=p.slug;chapter=p.chapter;render();await readChapter(book,chapter,p.verse);}
