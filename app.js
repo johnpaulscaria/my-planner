@@ -338,7 +338,7 @@ const bookPalette = b => {
   const p = palettes[mood] || palettes.literary;
   return '--book-ink:'+p[0]+';--book-accent:'+p[1]+';--book-paper:'+p[2];
 };
-const bookCoverUrl = b => 'https://covers.openlibrary.org/b/title/' + encodeURIComponent(b.title || '') + '-M.jpg?default=false';
+const bookCoverUrl = b => b.coverUrl || ('https://covers.openlibrary.org/b/title/' + encodeURIComponent(b.title || '') + '-M.jpg?default=false');
 const bookRow = b => {
   const n = pagesFor(b.id), pc = b.pages ? Math.min(100, Math.round(n / b.pages * 100)) : 0;
   const palette = bookPalette(b);
