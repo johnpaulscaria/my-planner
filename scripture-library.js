@@ -23,7 +23,7 @@ async function malChapter(slug,ch){
  const key='ml/'+slug+'/'+ch;if(cache[key])return cache[key];
  const books=await loadMalayalamBible();
  const wanted=MAL_BOOK_ALIASES[slug]||((BOOKS.find(b=>b[1]===slug)||[])[0]||slug).replace(/\\s*\\([^)]*\\)/g,'');
- const found=books.find(b=>normBook(b.name||b.book_name||b.long_name)===normBook(wanted))||(slug==='psalms'?books.find(b=>/സങ്കീർത്തന|സങ്കീര്‍ത്തന/.test(String(b.name||b.book_name||b.long_name||''))):null);
+ const found=books.find(b=>normBook(b.name||b.book_name||b.long_name)===normBook(wanted))||(slug==='psalms'?books.find(b=>/സങ്കീർത്തന|സങ്കീര്‍ത്തന|സങ്കീർത്തങ്ങൾ|സങ്കീര്‍ത്തങ്ങള്/.test(String(b.name||b.book_name||b.long_name||''))):null);
  if(!found)throw Error('ഈ 1910-ലെ മലയാളം സത്യവേദപുസ്തകത്തിൽ ഈ പുസ്തകം ലഭ്യമല്ല. ദ്വിതീയപ്രമാണ ഗ്രന്ഥങ്ങൾ ഈ പതിപ്പിൽ ഉൾപ്പെട്ടിട്ടില്ല.');
  const chapters=found.chapters||[];
  const item=chapters.find(x=>Number(x.chapter||x.chapter_number)===Number(ch))||chapters[Number(ch)-1];
@@ -52,7 +52,7 @@ async function chapterLoad(slug,ch){
  const isPsalm=slug==='psalms';
  const candidates=[
   'https://thedouayrheims.com/api/chapter/'+encodeURIComponent(slug)+'/'+encodeURIComponent(ch),
-  ...(isPsalm?['https://thedouayrheims.com/api/chapter/psalm/'+encodeURIComponent(ch)]:[]),
+  ...(isPsalm?['https://thedouayrheims.com/api/chapter/psalm/'+encodeURIComponent(ch),'https://thedouayrheims.com/api/chapter/psalms/'+encodeURIComponent(ch)]:[]),
   'https://bible-api.com/'+encodeURIComponent(bookName+' '+ch)+'?translation=dra',
   ...(isPsalm?['https://bible-api.com/'+encodeURIComponent('Psalm '+ch)+'?translation=dra']:[])
  ];
