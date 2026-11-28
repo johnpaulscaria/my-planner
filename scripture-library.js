@@ -48,29 +48,33 @@ function parseRef(ref){const m=ref.match(/^(.+?)\s+(\d+)(?::(\d+))?/);if(!m)retu
 async function chapterLoad(slug,ch){
  const key=slug+'/'+ch;if(cache[key])return cache[key];
  const bookMeta=BOOKS.find(b=>b[1]===slug);
- const bookName=bookMeta?bookMeta[0].replace(/\s*\([^)]*\)/g,''):slug;
- const primary='https://thedouayrheims.com/api/chapter/'+encodeURIComponent(slug)+'/'+encodeURIComponent(ch);
- const fallback='https://bible-api.com/'+encodeURIComponent(bookName+' '+ch)+'?translation=dra';
+ const bookName=bookMeta?bookMeta[0].replace(/\\s*\\([^)]*\\)/g,''):slug;
+ const isPsalm=slug==='psalms';
+ const candidates=[
+  'https://thedouayrheims.com/api/chapter/'+encodeURIComponent(slug)+'/'+encodeURIComponent(ch),
+  ...(isPsalm?['https://thedouayrheims.com/api/chapter/psalm/'+encodeURIComponent(ch)]:[]),
+  'https://bible-api.com/'+encodeURIComponent(bookName+' '+ch)+'?translation=dra',
+  ...(isPsalm?['https://bible-api.com/'+encodeURIComponent('Psalm '+ch)+'?translation=dra']:[])
+ ];
  const errors=[];
- // Primary: Original Douay-Rheims API. Fallback: DRA 1899 API with browser CORS support.
- for(const url of [primary,fallback]){
+ for(const url of candidates){
   try{
    const controller=typeof AbortController!=='undefined'?new AbortController():null;
    const timer=controller?setTimeout(()=>controller.abort(),15000):null;
    let response;
-   try{response=await fetch(url,{method:'GET',headers:{Accept:'application/json'},cache:'default',signal:controller?controller.signal:undefined});}
+   try{response=await fetch(url,{method:'GET',headers:{Accept:'application/json'},cache:'no-cache',signal:controller?controller.signal:undefined});}
    finally{if(timer)clearTimeout(timer);}
    if(!response.ok)throw Error('HTTP '+response.status);
    const raw=await response.json();
-   let data=raw;
-   if(!Array.isArray(data.verses)&&Array.isArray(raw.verses)){
-    data={book_title:raw.reference||raw.book_name||bookName,chapter:Number(ch),verses:raw.verses.map(v=>({verse:v.verse,text:v.text}))};
-   }
-   if(!data||!Array.isArray(data.verses)||!data.verses.length)throw Error('Unexpected or empty chapter response');
+   const rawVerses=Array.isArray(raw)?raw:(raw.verses||raw.data?.verses||raw.chapter?.verses);
+   if(!Array.isArray(rawVerses)||!rawVerses.length)throw Error('Unexpected or empty chapter response');
+   const normalized=rawVerses.map(v=>({verse:Number(v.verse||v.verse_number||v.number),text:String(v.text||v.verse_text||v.content||'').trim()})).filter(v=>v.text);
+   if(!normalized.length)throw Error('No verse text in response');
+   const data={book_title:raw.book_title||raw.book_name||raw.reference||bookName,chapter:Number(ch),verses:normalized};
    cache[key]=data;return data;
-  }catch(e){errors.push((url===primary?'Original Douay-Rheims':'DRA fallback')+': '+(e.name==='AbortError'?'timed out':e.message||'network error'));}
+  }catch(e){errors.push(new URL(url).hostname+': '+(e.name==='AbortError'?'timed out':e.message||'network error'));}
  }
- throw Error('Kairos could not connect to either Bible text source. '+errors.join(' · ')+'. Check your internet connection or try again later.');
+ throw Error('Unable to load '+bookName+' '+ch+'. Alternate sources failed: '+errors.join(' · ')+'. Please check internet or try again.');
 }
 async function readChapter(slug,ch,focus){const target=$('[data-verses]',root);target.innerHTML='<p class="ksl-muted">'+(language==='ml'?'തിരുവചനം തുറക്കുന്നു…':'Opening Scripture…')+'</p>';try{const d=language==='ml'?await malChapter(slug,ch):await chapterLoad(slug,ch);const bookName=d.book_title||slug;target.innerHTML='<div class="ksl-chapter-head"><h3>'+esc(bookName)+'</h3><span>Chapter '+ch+'</span></div>'+d.verses.map(v=>'<article class="ksl-verse" id="ksl-v-'+v.verse+'"><sup>'+v.verse+'</sup><span>'+esc(v.text)+'</span><button data-save-verse data-ref="'+esc(bookName+' '+ch+':'+v.verse)+'" data-text="'+esc(v.text)+'" title="Save verse">☆</button></article>').join('');if(focus){const el=$('#ksl-v-'+focus,root);if(el)el.scrollIntoView({block:'center'});}}catch(e){target.innerHTML='<p class="ksl-error">'+esc(e.message)+'</p>';}}
 async function openRef(ref){const p=parseRef(ref);if(!p)return;mode='books';book=p.slug;chapter=p.chapter;render();await readChapter(book,chapter,p.verse);}
