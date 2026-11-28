@@ -14,7 +14,7 @@ let root=null,mode='themes',theme='spirit',book='john',chapter=1,cache={};
 const LANG_KEY='kairos.scripture.language.v1';
 let language=localStorage.getItem(LANG_KEY)||'ml',malBiblePromise=null;
 const MAL_BOOK_ALIASES={'josue':'Joshua','1-kings':'1 Samuel','2-kings':'2 Samuel','3-kings':'1 Kings','4-kings':'2 Kings','1-paralipomenon':'1 Chronicles','2-paralipomenon':'2 Chronicles','1-esdras':'Ezra','2-esdras':'Nehemiah','tobias':'Tobit','1-machabees':'1 Maccabees','2-machabees':'2 Maccabees','psalms':'Psalms','canticle-of-canticles':'Song of Solomon','ecclesiasticus':'Sirach','isaie':'Isaiah','jeremie':'Jeremiah','ezechiel':'Ezekiel','osee':'Hosea','abdias':'Obadiah','jonas':'Jonah','micheas':'Micah','habacuc':'Habakkuk','sophonias':'Zephaniah','aggeus':'Haggai','zacharias':'Zechariah','malachie':'Malachi','apocalypse':'Revelation'};
-function normBook(s){return String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'');}
+function normBook(s){return String(s||'').toLowerCase().replace(/[^\\p{L}\\p{N}]/gu,'');}
 async function loadMalayalamBible(){
  if(!malBiblePromise)malBiblePromise=fetch('https://api.getbible.net/v2/mal1910.json',{headers:{Accept:'application/json'}}).then(r=>{if(!r.ok)throw Error('Malayalam Bible source returned HTTP '+r.status);return r.json();}).then(d=>{const books=Array.isArray(d)?d:(d.books||[]);if(!books.length)throw Error('Malayalam Bible data was empty or had an unexpected format.');return books;}).catch(e=>{malBiblePromise=null;throw e;});
  return malBiblePromise;
@@ -23,7 +23,7 @@ async function malChapter(slug,ch){
  const key='ml/'+slug+'/'+ch;if(cache[key])return cache[key];
  const books=await loadMalayalamBible();
  const wanted=MAL_BOOK_ALIASES[slug]||((BOOKS.find(b=>b[1]===slug)||[])[0]||slug).replace(/\\s*\\([^)]*\\)/g,'');
- const found=books.find(b=>normBook(b.name||b.book_name||b.long_name)===normBook(wanted));
+ const found=books.find(b=>normBook(b.name||b.book_name||b.long_name)===normBook(wanted))||(slug==='psalms'?books.find(b=>/സങ്കീർത്തന|സങ്കീര്‍ത്തന/.test(String(b.name||b.book_name||b.long_name||''))):null);
  if(!found)throw Error('ഈ 1910-ലെ മലയാളം സത്യവേദപുസ്തകത്തിൽ ഈ പുസ്തകം ലഭ്യമല്ല. ദ്വിതീയപ്രമാണ ഗ്രന്ഥങ്ങൾ ഈ പതിപ്പിൽ ഉൾപ്പെട്ടിട്ടില്ല.');
  const chapters=found.chapters||[];
  const item=chapters.find(x=>Number(x.chapter||x.chapter_number)===Number(ch))||chapters[Number(ch)-1];
